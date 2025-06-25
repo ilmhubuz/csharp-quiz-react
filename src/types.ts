@@ -1,4 +1,4 @@
-export type QuestionType = 'mcq' | 'true_false' | 'fill' | 'error_spotting';
+export type QuestionType = 'mcq' | 'true_false' | 'fill' | 'error_spotting' | 'output_prediction';
 
 export interface MCQOption {
 	id: string;
@@ -41,4 +41,13 @@ export interface ErrorSpotQuestion {
 }
 
 
-export type Question = MCQQuestion | TrueFalseQuestion | FillQuestion | ErrorSpotQuestion;
+export interface OutputPredictionQuestion {
+	id: number;
+	type: 'output_prediction';
+	snippet: string;   // full C# code to display in Monaco read-only
+	prompt: string;    // markdown description of what to predict
+	answer: string;    // exact console output (including newlines)
+}
+
+// Union update:
+export type Question = MCQQuestion | TrueFalseQuestion | FillQuestion | ErrorSpotQuestion | OutputPredictionQuestion;

@@ -6,27 +6,31 @@ interface CodeEditorProps {
   code: string;
   editable?: boolean;
   onChange?: (value: string) => void;
+  language?: string;
 }
 
 export const CodeEditor: React.FC<CodeEditorProps> = ({ 
   code, 
   editable = false, 
-  onChange 
+  onChange,
+  language: propLanguage
 }) => {
   // Extract code from markdown code blocks and determine language
   const { cleanCode, language } = useMemo(() => {
     let cleanCode = code;
-    let language = 'csharp';
+    let language = propLanguage || 'csharp';
 
-    // Remove markdown code fences if present
-    const codeBlockMatch = code.match(/```(\w+)?\n?([\s\S]*?)```/);
-    if (codeBlockMatch) {
-      language = codeBlockMatch[1] || 'csharp';
-      cleanCode = codeBlockMatch[2]?.trim() || cleanCode;
+    // Only process markdown code blocks if no explicit language is provided
+    if (!propLanguage) {
+      const codeBlockMatch = code.match(/```(\w+)?\n?([\s\S]*?)```/);
+      if (codeBlockMatch) {
+        language = codeBlockMatch[1] || 'csharp';
+        cleanCode = codeBlockMatch[2]?.trim() || cleanCode;
+      }
     }
 
     return { cleanCode, language };
-  }, [code]);
+  }, [code, propLanguage]);
 
   // Calculate height based on lines of code (minimum 3 lines, maximum 10 lines)
   const lineCount = cleanCode.split('\n').length;

@@ -463,5 +463,40 @@
         "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public Person() { }\n}",
         "prompt": "Records with positional parameters cannot have an additional parameterless constructor without forwarding. Provide a corrected `Person` record definition that allows a parameterless constructor initializing both names to empty strings.",
         "answer": "public record Person(string FirstName, string LastName)\n{\n    public Person() : this(string.Empty, string.Empty) { }\n}"
+    },
+    {
+        "id": 36,
+        "type": "output_prediction",
+        "snippet": "class A\n{\n    public virtual string F() => \"A\";\n}\nclass B : A\n{\n    public override string F() => base.F() + \"B\";\n}\nclass C : B\n{\n    public new string F() => base.F() + \"C\";\n}\n\nA obj = new C();\nConsole.WriteLine(obj.F());",
+        "prompt": "What is printed when calling `obj.F()` on a base-typed reference to `new C()`?",
+        "answer": "AB"
+    },
+    {
+        "id": 37,
+        "type": "output_prediction",
+        "snippet": "interface ILog\n{\n    void Log(string msg) => Console.Write(\"DefaultLog:\");\n}\nclass Logger : ILog { }\n\nvar logger = new Logger();\n((ILog)logger).Log(\"Hello\");",
+        "prompt": "Given `Logger` implements `ILog` without its own `Log`, what is the console output?",
+        "answer": "DefaultLog:"
+    },
+    {
+        "id": 38,
+        "type": "output_prediction",
+        "snippet": "class Base\n{\n    public void Show() => Console.Write(\"Base\");\n    public virtual void Display() => Console.Write(\"BaseDisplay\");\n}\nclass Derived : Base\n{\n    public new void Show() => Console.Write(\"Derived\");\n    public override void Display() => Console.Write(\"DerivedDisplay\");\n}\n\nBase b = new Derived();\nb.Show();\nb.Display();",
+        "prompt": "What is the combined output when calling `b.Show()` then `b.Display()` on a `Base` variable referencing `new Derived()`?",
+        "answer": "BaseDerivedDisplay"
+    },
+    {
+        "id": 39,
+        "type": "output_prediction",
+        "snippet": "var numbers = new[] { 1, 2, 3 };\nint sum = 0;\nforeach (ref readonly var n in numbers)\n{\n    sum += n;\n}\nConsole.WriteLine(sum);",
+        "prompt": "What value is printed when summing via a `ref readonly` foreach over an int array?",
+        "answer": "6"
+    },
+    {
+        "id": 40,
+        "type": "output_prediction",
+        "snippet": "record R(int X)\n{\n    public override string ToString() => $\"R:{X}\";\n}\n\nvar r1 = new R(5);\nvar r2 = r1 with { X = 7 };\nConsole.WriteLine(r1);\nConsole.WriteLine(r2);",
+        "prompt": "Records override `ToString()`. What two lines are printed for `r1` and `r2`?",
+        "answer": "R:5\nR:7"
     }
 ]

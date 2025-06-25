@@ -9,7 +9,7 @@ import {
   Zoom
 } from '@mui/material';
 import { ArrowForward, ArrowBack, CheckCircle } from '@mui/icons-material';
-import type { Question, FillQuestion, ErrorSpotQuestion } from '../types';
+import type { Question, FillQuestion, ErrorSpotQuestion, OutputPredictionQuestion } from '../types';
 import { QuestionCard } from './QuestionCard';
 import questionsData from '../assets/questions.json';
 
@@ -41,6 +41,9 @@ export const QuizApp: React.FC = () => {
       const errorSpotQuestion = currentQuestion as ErrorSpotQuestion;
       // For error spotting questions, consider answered if the code has been modified from original
       return answer !== errorSpotQuestion.codeWithError && (answer as string).trim() !== '';
+    } else if (currentQuestion.type === 'output_prediction') {
+      // For output prediction questions, consider answered if any output has been entered
+      return typeof answer === 'string' && answer.trim() !== '';
     } else if (currentQuestion.type === 'mcq') {
       // For MCQ, check if at least one option is selected
       return Array.isArray(answer) && answer.length > 0;

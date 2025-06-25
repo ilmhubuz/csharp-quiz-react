@@ -8,7 +8,7 @@ import {
   Paper,
   Grid
 } from '@mui/material';
-import type { Question, MCQQuestion, TrueFalseQuestion, FillQuestion, ErrorSpotQuestion } from '../types';
+import type { Question, MCQQuestion, TrueFalseQuestion, FillQuestion, ErrorSpotQuestion, OutputPredictionQuestion } from '../types';
 import { CodeEditor } from './CodeEditor';
 import { MCQOptions } from './MCQOptions';
 import { TrueFalseOptions } from './TrueFalseOptions';
@@ -33,11 +33,13 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   const isTrueFalse = question.type === 'true_false';
   const isFill = question.type === 'fill';
   const isErrorSpot = question.type === 'error_spotting';
+  const isOutputPrediction = question.type === 'output_prediction';
   
   const mcqQuestion = question as MCQQuestion;
   const trueFalseQuestion = question as TrueFalseQuestion;
   const fillQuestion = question as FillQuestion;
   const errorSpotQuestion = question as ErrorSpotQuestion;
+  const outputPredictionQuestion = question as OutputPredictionQuestion;
 
   const handleFillAnswerChange = (code: string) => {
     onAnswerChange(question.id, code);
@@ -45,6 +47,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 
   const handleErrorSpotAnswerChange = (code: string) => {
     onAnswerChange(question.id, code);
+  };
+
+  const handleOutputPredictionAnswerChange = (output: string) => {
+    onAnswerChange(question.id, output);
   };
 
   return (
@@ -176,8 +182,86 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           </>
         )}
 
+        {/* Output Prediction Question Layout */}
+        {isOutputPrediction && (
+          <>
+            {/* First Row: Code Snippet and Question Prompt */}
+            <Grid container spacing={4} sx={{ mb: 4 }}>
+              {/* Left Column - Read-only Code Snippet */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Paper 
+                  elevation={2} 
+                  sx={{ 
+                    p: 0, 
+                    backgroundColor: 'grey.900',
+                    border: 1,
+                    borderColor: 'divider',
+                    height: 'fit-content'
+                  }}
+                >
+                  <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+                    <Typography variant="subtitle2" color="text.secondary" fontWeight="bold">
+                      Code Snippet
+                    </Typography>
+                  </Box>
+                  <CodeEditor 
+                    code={outputPredictionQuestion.snippet}
+                    editable={false}
+                  />
+                </Paper>
+              </Grid>
+
+              {/* Right Column - Question Prompt */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Paper 
+                  elevation={1} 
+                  sx={{ 
+                    p: 3, 
+                    backgroundColor: 'background.default',
+                    border: 1,
+                    borderColor: 'divider',
+                    height: 'fit-content'
+                  }}
+                >
+                  <Typography variant="subtitle2" color="text.secondary" mb={2} fontWeight="bold">
+                    Question
+                  </Typography>
+                  <MarkdownRenderer content={outputPredictionQuestion.prompt} />
+                </Paper>
+              </Grid>
+            </Grid>
+
+            {/* Second Row: Console Output Input */}
+            <Grid container spacing={4}>
+              <Grid size={{ xs: 12 }}>
+                <Paper 
+                  elevation={2} 
+                  sx={{ 
+                    p: 0, 
+                    backgroundColor: 'grey.900',
+                    border: 1,
+                    borderColor: 'divider'
+                  }}
+                >
+                  <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+                    <Typography variant="subtitle2" color="text.secondary" fontWeight="bold">
+                      Console Output (Your Answer)
+                    </Typography>
+                  </Box>
+                  <CodeEditor 
+                    code={answer as string || ''}
+                    editable={true}
+                    onChange={handleOutputPredictionAnswerChange}
+                    language="plaintext"
+                  />
+                </Paper>
+              </Grid>
+            </Grid>
+          </>
+        )}
+
         {/* MCQ/True-False Question Layout */}
-        {!isFill && !isErrorSpot && (
+        {!isFill && !isErrorSpot && !isOutputPrediction && (
           <>
             {/* First Row: Code and Question Prompt */}
             <Grid container spacing={4} sx={{ mb: 4 }}>
