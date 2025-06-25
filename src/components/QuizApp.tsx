@@ -8,7 +8,7 @@ import {
   Fab,
   Zoom
 } from '@mui/material';
-import { ArrowForward, CheckCircle } from '@mui/icons-material';
+import { ArrowForward, ArrowBack, CheckCircle } from '@mui/icons-material';
 import type { Question } from '../types';
 import { QuestionCard } from './QuestionCard';
 import questionsData from '../assets/questions.json';
@@ -44,6 +44,12 @@ export const QuizApp: React.FC = () => {
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prev => prev - 1);
     }
   };
 
@@ -120,6 +126,21 @@ export const QuizApp: React.FC = () => {
           </Typography>
         </Box>
       </Paper>
+
+      {/* Previous Button */}
+      <Zoom in={currentQuestionIndex > 0}>
+        <Fab
+          color="secondary"
+          sx={{
+            position: 'fixed',
+            bottom: 80,
+            left: 24,
+          }}
+          onClick={handlePrevious}
+        >
+          <ArrowBack />
+        </Fab>
+      </Zoom>
 
       {/* Next Button */}
       <Zoom in={isAnswered && !isLastQuestion}>

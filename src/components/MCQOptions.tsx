@@ -97,17 +97,7 @@ export const MCQOptions: React.FC<MCQOptionsProps> = ({
                     />
                   }
                   label={
-                    <Box sx={{ width: '100%' }}>
-                      <Typography 
-                        variant="body1" 
-                        component="span"
-                        fontWeight="bold"
-                        color={selectedAnswers.includes(option.id) ? 'primary.contrastText' : 'text.primary'}
-                        sx={{ mr: 1 }}
-                      >
-                        {option.id}.
-                      </Typography>
-                      <Box 
+                      <Box
                         component="span"
                         sx={{
                           '& *': {
@@ -119,7 +109,6 @@ export const MCQOptions: React.FC<MCQOptionsProps> = ({
                       >
                         <MarkdownRenderer content={option.option} />
                       </Box>
-                    </Box>
                   }
                   sx={{ 
                     margin: 0,

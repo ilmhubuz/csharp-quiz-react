@@ -32,6 +32,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ code }) => {
         height: `${height}px`,
         minHeight: '92px', // Minimum height for 3 lines
         maxHeight: '260px', // Maximum height for 10 lines
+        backgroundColor: 'rgb(18, 18, 18) !important',
+        paddingX: '16px !important',
         '& .monaco-editor': {
           borderRadius: 0,
         },
@@ -40,10 +42,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ code }) => {
         },
         '& .monaco-editor .monaco-editor-background': {
           backgroundColor: 'rgb(18, 18, 18) !important',
-        },
-        '& .monaco-editor .view-lines': {
-          paddingLeft: '16px !important',
-          paddingRight: '16px !important',
         }
       }}
     >
@@ -67,7 +65,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ code }) => {
             vertical: 'hidden',
             horizontal: 'auto',
             verticalScrollbarSize: 0,
-            horizontalScrollbarSize: 8,
+            horizontalScrollbarSize: 2,
           },
           overviewRulerLanes: 0,
           overviewRulerBorder: false,
