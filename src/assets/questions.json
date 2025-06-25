@@ -1,0 +1,175 @@
+[
+    {
+      "id": 1,
+      "type": "mcq",
+      "codeBefore": "```csharp\nbool IsLong(string? s) => s switch\n{\n    null                  => false,\n    { Length: > 5 and < 10 } => true,\n    _                     => false\n};\n```",
+      "codeAfter": "",
+      "prompt": "Which of these calls returns `true`?",
+      "options": [
+        { "id": "A", "option": "`IsLong(\"123456\")`" },
+        { "id": "B", "option": "`IsLong(\"1234567890\")`" },
+        { "id": "C", "option": "`IsLong(null!)`" },
+        { "id": "D", "option": "`IsLong(\"abcd\")`" }
+      ],
+      "answer": ["A"]
+    },
+    {
+      "id": 2,
+      "type": "mcq",
+      "codeBefore": "```csharp\nvoid M(in int x, out int y, params object[] rest) { }\n```",
+      "codeAfter": "",
+      "prompt": "Which of the following call sites is **illegal**?",
+      "options": [
+        { "id": "A", "option": "`M(5, out var y)`" },
+        { "id": "B", "option": "`int a = 1; M(a, out a)`" },
+        { "id": "C", "option": "`M(in 5, out _, 1, 2)`" },
+        { "id": "D", "option": "`M(5, out var y, \"x\", 3)`" }
+      ],
+      "answer": ["B"]
+    },
+    {
+      "id": 3,
+      "type": "mcq",
+      "codeBefore": "```csharp\npublic record Point(int X, int Y);\nvar p = new Point(1,2) with { Y = 3 };\n```",
+      "codeAfter": "",
+      "prompt": "Which statement about `Point` is **false**?",
+      "options": [
+        { "id": "A", "option": "Two `Point` instances compare equal if their `X` and `Y` values match." },
+        { "id": "B", "option": "You can override `ToString()` in a record." },
+        { "id": "C", "option": "`with` creates a new instance." },
+        { "id": "D", "option": "You can add a parameterless constructor to `Point`." }
+      ],
+      "answer": ["D"]
+    },
+    {
+      "id": 4,
+      "type": "mcq",
+      "codeBefore": "",
+      "codeAfter": "",
+      "prompt": "Which is **true** for the C# modifiers `partial` and `file`?",
+      "options": [
+        { "id": "A", "option": "`partial class` can span multiple files." },
+        { "id": "B", "option": "`file struct` can be referenced outside its file." },
+        { "id": "C", "option": "You can declare a type as both `partial` and `file`." },
+        { "id": "D", "option": "`file class` allows `private protected` members." }
+      ],
+      "answer": ["A"]
+    },
+    {
+      "id": 5,
+      "type": "mcq",
+      "codeBefore": "```csharp\nvoid F(params int[] nums) { }\n```",
+      "codeAfter": "",
+      "prompt": "What happens when you call `F(1, 2, new[]{3,4})`?",
+      "options": [
+        { "id": "A", "option": "Passes a single array `[1,2,3,4]`." },
+        { "id": "B", "option": "Passes two arguments: `1,2` and an array `[3,4]`." },
+        { "id": "C", "option": "Compile-time error." },
+        { "id": "D", "option": "Packs nested array as one element." }
+      ],
+      "answer": ["A"]
+    },
+    {
+      "id": 6,
+      "type": "mcq",
+      "codeBefore": "```csharp\npublic static TResult Combine<TSource, TResult>(TSource a, TSource b)\n    where TSource : ________, IComparable<TSource>\n    where TResult : TSource, new()\n{\n    // ...\n}\n```",
+      "codeAfter": "",
+      "prompt": "Which generic constraint should replace the blank to allow arithmetic operators on `TSource` in C# 12?",
+      "options": [
+        { "id": "A", "option": "`INumber<TSource>`" },
+        { "id": "B", "option": "`struct`" },
+        { "id": "C", "option": "`IArithmetic<TSource>`" },
+        { "id": "D", "option": "`class`" }
+      ],
+      "answer": ["A"]
+    },
+    {
+      "id": 7,
+      "type": "mcq",
+      "codeBefore": "```csharp\npublic static class Extensions\n{\n    public static bool IsEven(this int number)\n    {\n        return (number % 2) == 0;\n    }\n\n    public bool IsOdd(int number)\n    {\n        return (number % 2) != 0;\n    }\n}\n```",
+      "codeAfter": "",
+      "prompt": "Which statement is **true** about the code above?",
+      "options": [
+        { "id": "A", "option": "`IsEven` is an extension method, `IsOdd` is an instance method." },
+        { "id": "B", "option": "Both `IsEven` and `IsOdd` are valid extension methods." },
+        { "id": "C", "option": "`IsOdd` should be declared `static` to compile." },
+        { "id": "D", "option": "`this int` is invalid in an extension method." }
+      ],
+      "answer": ["C"]
+    },
+    {
+      "id": 8,
+      "type": "mcq",
+      "codeBefore": "```csharp\nfile interface IHelper\n{\n    void Help();\n}\n\n// In another file\n// class HelperImpl : IHelper { ... }\n```",
+      "codeAfter": "",
+      "prompt": "Which is **true** about `IHelper` declared above?",
+      "options": [
+        { "id": "A", "option": "`IHelper` can be implemented only in the same file." },
+        { "id": "B", "option": "`IHelper` is `public` across the assembly." },
+        { "id": "C", "option": "You can implement `IHelper` in multiple files." },
+        { "id": "D", "option": "`file interface` is not valid syntax." }
+      ],
+      "answer": ["A"]
+    },
+    {
+      "id": 9,
+      "type": "mcq",
+      "codeBefore": "```csharp\npublic struct DataPoint\n{\n    public readonly int X;\n    public readonly int Y;\n    public DataPoint(int x, int y) => (X, Y) = (x, y);\n}\n\nvar d1 = new DataPoint(1,2);\nvar d2 = d1;\n\nd2 = new DataPoint(3,4);\nConsole.WriteLine(d1.X + \",\" + d1.Y);\n```",
+      "codeAfter": "",
+      "prompt": "What will be printed, and why?",
+      "options": [
+        { "id": "A", "option": "`1,2` because structs are value types." },
+        { "id": "B", "option": "`3,4` because d2 changes d1." },
+        { "id": "C", "option": "`1,2` because readonly fields never change." },
+        { "id": "D", "option": "Compile error because DataPoint is readonly." }
+      ],
+      "answer": ["A"]
+    },
+    {
+      "id": 10,
+      "type": "mcq",
+      "codeBefore": "```csharp\nint Classify(int x) => x switch\n{\n    < 0 => -1,\n    > 0 => 1,\n    _    => 0\n};\n\nvar result = Classify(0);\n```",
+      "codeAfter": "",
+      "prompt": "What is the value of `result`?",
+      "options": [
+        { "id": "A", "option": "`-1`" },
+        { "id": "B", "option": "`0`" },
+        { "id": "C", "option": "`1`" },
+        { "id": "D", "option": "Compile-time error" }
+      ],
+      "answer": ["B"]
+    },
+    {
+      "id": 11,
+      "type": "true_false",
+      "codeBefore": "",
+      "codeAfter": "",
+      "prompt": "Declaring a file-scoped namespace (e.g. `namespace MyApp;`) only changes indentation—it does **not** affect accessibility.",
+      "answer": "true"
+    },
+    {
+      "id": 12,
+      "type": "true_false",
+      "codeBefore": "",
+      "codeAfter": "",
+      "prompt": "A `record struct` can include a user-defined parameterless constructor.",
+      "answer": "false"
+    },
+    {
+      "id": 13,
+      "type": "true_false",
+      "codeBefore": "",
+      "codeAfter": "",
+      "prompt": "An expression-bodied member using `=>` may contain code that throws exceptions.",
+      "answer": "true"
+    },
+    {
+      "id": 14,
+      "type": "true_false",
+      "codeBefore": "",
+      "codeAfter": "",
+      "prompt": "C# `switch` patterns can combine type and value checks in one case, e.g. `case string s && s.Length > 0:`.",
+      "answer": "true"
+    }
+  ]
+  
