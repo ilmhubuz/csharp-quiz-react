@@ -362,36 +362,36 @@
     {
         "id": 21,
         "type": "fill",
-        "codeWithBlank": "public static T Max<T>(T a, T b) where T : ______, IComparable<T>\n{\n    return a.CompareTo(b) > 0 ? a : b;\n}",
-        "prompt": "Replace the blank with the correct generic constraint to allow the `+` operator in C# 12.",
-        "answer": "public static T Max<T>(T a, T b) where T : INumber<T>, IComparable<T>\n{\n    return a.CompareTo(b) > 0 ? a : b;\n}"
+        "codeWithBlank": "public static T AddAll<T>(T[] values)\n    where T : ________, ________\n{\n    T sum = default!;\n    foreach (var v in values)\n    {\n        sum += v;\n    }\n    return sum;\n}",
+        "prompt": "Replace the two blanks with the appropriate .NET generic math interfaces so that both the `+` operator and `default` literal are supported for `T`.",
+        "answer": "public static T AddAll<T>(T[] values)\n    where T : INumber<T>, IAdditionOperators<T, T, T>\n{\n    T sum = default!;\n    foreach (var v in values)\n    {\n        sum += v;\n    }\n    return sum;\n}"
     },
     {
         "id": 22,
         "type": "fill",
-        "codeWithBlank": "public class Person\n{\n    public string Name { get; ______; }\n    public int Age { get; init; }\n}",
-        "prompt": "Replace the blank so that `Name` can only be set during object initialization.",
-        "answer": "public class Person\n{\n    public string Name { get; init; }\n    public int Age { get; init; }\n}"
+        "codeWithBlank": "file struct Point(int X, int Y)\n{\n    public void Deconstruct(out int x, out int y) => (x, y) = (______, ______);\n}",
+        "prompt": "Point is a file-scoped positional struct. Replace the blanks so that `Deconstruct` returns the values of its primary constructor parameters.",
+        "answer": "file struct Point(int X, int Y)\n{\n    public void Deconstruct(out int x, out int y) => (x, y) = (X, Y);\n}"
     },
     {
         "id": 23,
         "type": "fill",
-        "codeWithBlank": "public record Config\n{\n    public string Url { get; required set; }\n    public int Timeout { get; ______ set; }\n}",
-        "prompt": "Replace the blank so that `Timeout` cannot be changed after initialization, while `Url` remains required.",
-        "answer": "public record Config\n{\n    public string Url { get; required set; }\n    public int Timeout { get; init; set; }\n}"
+        "codeWithBlank": "public interface IRepository<T>\n{\n    void Add(T item);\n    T? Get(int id);\n}\n\npublic class Repo<T> : ______\n{\n    void IRepository<T>.Add(T item) { /*...*/ }\n    T? IRepository<T>.Get(int id) { /*...*/ }\n}",
+        "prompt": "Replace the blank so that `Repo<T>` explicitly implements `IRepository<T>`, hiding its `Add` and `Get` methods from the public API.",
+        "answer": "public class Repo<T> : IRepository<T>\n{\n    void IRepository<T>.Add(T item) { /*...*/ }\n    T? IRepository<T>.Get(int id) { /*...*/ }\n}"
     },
     {
         "id": 24,
         "type": "fill",
-        "codeWithBlank": "int Classify(int x) => x switch\n{\n    < 0 => -1,\n    0   => 0,\n    _   when x ______ 100 => 1,\n    _   => 2\n};",
-        "prompt": "Replace the blank with the correct relational pattern to match values less than or equal to 100.",
-        "answer": "int Classify(int x) => x switch\n{\n    < 0 => -1,\n    0   => 0,\n    _   when x <= 100 => 1,\n    _   => 2\n};"
+        "codeWithBlank": "public interface ILogger\n{\n    void Log(string message);\n    void LogError(Exception ex) => ______;\n}",
+        "prompt": "Replace the blank so that `LogError` calls `Log` with the exception's string representation.",
+        "answer": "public interface ILogger\n{\n    void Log(string message);\n    void LogError(Exception ex) => Log(ex.ToString());\n}"
     },
     {
         "id": 25,
         "type": "fill",
-        "codeWithBlank": "namespace MyApp;\n\nfile interface ILogger\n{\n    void Log(string message);\n}\n\nclass Logger : ______\n{\n    public void Log(string message) => Console.WriteLine(message);\n}",
-        "prompt": "Replace the blank so that `Logger` correctly implements the file-scoped `ILogger` interface.",
-        "answer": "namespace MyApp;\n\nfile interface ILogger\n{\n    void Log(string message);\n}\n\nclass Logger : ILogger\n{\n    public void Log(string message) => Console.WriteLine(message);\n}"
+        "codeWithBlank": "int Classify(object o) => o switch\n{\n    string s when ______ => 1,\n    int i when i % 2 == 0 => 2,\n    null                  => 0,\n    _                     => 3\n};",
+        "prompt": "Replace the blank with a pattern that matches non-empty strings using C# 12 pattern syntax.",
+        "answer": "int Classify(object o) => o switch\n{\n    string s when s.Length > 0 => 1,\n    int i when i % 2 == 0 => 2,\n    null                  => 0,\n    _                     => 3\n};"
     }
 ]

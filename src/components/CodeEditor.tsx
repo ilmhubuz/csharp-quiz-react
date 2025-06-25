@@ -4,9 +4,15 @@ import { Box } from '@mui/material';
 
 interface CodeEditorProps {
   code: string;
+  editable?: boolean;
+  onChange?: (value: string) => void;
 }
 
-export const CodeEditor: React.FC<CodeEditorProps> = ({ code }) => {
+export const CodeEditor: React.FC<CodeEditorProps> = ({ 
+  code, 
+  editable = false, 
+  onChange 
+}) => {
   // Extract code from markdown code blocks and determine language
   const { cleanCode, language } = useMemo(() => {
     let cleanCode = code;
@@ -25,6 +31,12 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ code }) => {
   // Calculate height based on lines of code (minimum 3 lines, maximum 10 lines)
   const lineCount = cleanCode.split('\n').length;
   const height = Math.max(3, Math.min(lineCount, 10)) * 24 + 20; // 24px per line + padding
+
+  const handleEditorChange = (value: string | undefined) => {
+    if (editable && onChange && value !== undefined) {
+      onChange(value);
+    }
+  };
 
   return (
     <Box 
@@ -50,8 +62,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ code }) => {
         language={language}
         value={cleanCode}
         theme="vs-dark"
+        onChange={handleEditorChange}
         options={{
-          readOnly: true,
+          readOnly: !editable,
           minimap: { enabled: false },
           scrollBeyondLastLine: false,
           wordWrap: 'off',
@@ -60,7 +73,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ code }) => {
           folding: false,
           lineDecorationsWidth: 0,
           lineNumbersMinChars: 3,
-          renderLineHighlight: 'none',
+          renderLineHighlight: editable ? 'line' : 'none',
           scrollbar: {
             vertical: 'hidden',
             horizontal: 'auto',
@@ -76,13 +89,13 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ code }) => {
           lineHeight: 24,
           padding: { top: 10, bottom: 10 },
           automaticLayout: true,
-          contextmenu: false,
-          quickSuggestions: false,
-          parameterHints: { enabled: false },
-          suggestOnTriggerCharacters: false,
-          acceptSuggestionOnEnter: 'off',
-          tabCompletion: 'off',
-          wordBasedSuggestions: 'off',
+          contextmenu: editable,
+          quickSuggestions: editable,
+          parameterHints: { enabled: editable },
+          suggestOnTriggerCharacters: editable,
+          acceptSuggestionOnEnter: editable ? 'on' : 'off',
+          tabCompletion: editable ? 'on' : 'off',
+          wordBasedSuggestions: editable ? 'currentDocument' : 'off',
         }}
       />
     </Box>
