@@ -46,6 +46,9 @@ export const QuizApp: React.FC = () => {
     } else if (currentQuestion.type === 'output_prediction') {
       // For output prediction questions, consider answered if any output has been entered
       return typeof answer === 'string' && answer.trim() !== '';
+    } else if (currentQuestion.type === 'code_writing') {
+      // For code writing questions, consider answered if any code has been entered
+      return typeof answer === 'string' && answer.trim() !== '';
     } else if (currentQuestion.type === 'mcq') {
       // For MCQ, check if at least one option is selected
       return Array.isArray(answer) && answer.length > 0;

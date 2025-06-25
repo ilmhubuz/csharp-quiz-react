@@ -76,6 +76,12 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
           // For output prediction, compare expected output
           isCorrect = outputQuestion.answer.trim() === (userAnswer as string).trim();
           break;
+        
+        case 'code_writing':
+          // For code writing questions, consider it correct if user provided any answer
+          // since there's no single correct answer for these open-ended questions
+          isCorrect = typeof userAnswer === 'string' && userAnswer.trim() !== '';
+          break;
       }
     }
 
@@ -99,6 +105,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
       case 'fill': return 'Fill in the Blank';
       case 'error_spotting': return 'Error Spotting';
       case 'output_prediction': return 'Output Prediction';
+      case 'code_writing': return 'Code Writing';
       default: return type;
     }
   };
@@ -112,7 +119,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
     }
     
     // For code-based questions, show truncated version
-    if (question.type === 'fill' || question.type === 'error_spotting') {
+    if (question.type === 'fill' || question.type === 'error_spotting' || question.type === 'output_prediction' || question.type === 'code_writing') {
       const codeAnswer = userAnswer as string;
       return codeAnswer.length > 100 ? codeAnswer.substring(0, 100) + '...' : codeAnswer;
     }
@@ -261,7 +268,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
               <strong>Your Answer:</strong> {formatUserAnswer(result)}
             </Typography>
 
-            {!result.isCorrect && (
+            {!result.isCorrect && result.question.type !== 'code_writing' && 'answer' in result.question && (
               <Typography variant="body2" color="success.main">
                 <strong>Correct Answer:</strong> {
                   Array.isArray(result.question.answer) 

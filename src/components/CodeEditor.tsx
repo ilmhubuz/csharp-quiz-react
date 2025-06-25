@@ -7,13 +7,17 @@ interface CodeEditorProps {
   editable?: boolean;
   onChange?: (value: string) => void;
   language?: string;
+  minLines?: number;
+  maxLines?: number;
 }
 
 export const CodeEditor: React.FC<CodeEditorProps> = ({ 
   code, 
   editable = false, 
   onChange,
-  language: propLanguage
+  language: propLanguage,
+  minLines = 3,
+  maxLines = 10
 }) => {
   // Extract code from markdown code blocks and determine language
   const { cleanCode, language } = useMemo(() => {
@@ -32,9 +36,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     return { cleanCode, language };
   }, [code, propLanguage]);
 
-  // Calculate height based on lines of code (minimum 3 lines, maximum 10 lines)
+  // Calculate height based on lines of code
   const lineCount = cleanCode.split('\n').length;
-  const height = Math.max(3, Math.min(lineCount, 10)) * 24 + 20; // 24px per line + padding
+  const height = Math.max(minLines, Math.min(lineCount, maxLines)) * 24 + 20; // 24px per line + padding
 
   const handleEditorChange = (value: string | undefined) => {
     if (editable && onChange && value !== undefined) {
@@ -46,8 +50,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     <Box 
       sx={{ 
         height: `${height}px`,
-        minHeight: '92px', // Minimum height for 3 lines
-        maxHeight: '260px', // Maximum height for 10 lines
+        minHeight: `${minLines * 24 + 20}px`,
+        maxHeight: `${maxLines * 24 + 20}px`,
         backgroundColor: 'rgb(18, 18, 18) !important',
         paddingX: '16px !important',
         '& .monaco-editor': {

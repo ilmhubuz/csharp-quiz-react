@@ -8,7 +8,7 @@ import {
   Paper,
   Grid
 } from '@mui/material';
-import type { Question, MCQQuestion, TrueFalseQuestion, FillQuestion, ErrorSpotQuestion, OutputPredictionQuestion } from '../types';
+import type { Question, MCQQuestion, TrueFalseQuestion, FillQuestion, ErrorSpotQuestion, OutputPredictionQuestion, CodeWritingQuestion } from '../types';
 import { CodeEditor } from './CodeEditor';
 import { MCQOptions } from './MCQOptions';
 import { TrueFalseOptions } from './TrueFalseOptions';
@@ -33,12 +33,14 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   const isFill = question.type === 'fill';
   const isErrorSpot = question.type === 'error_spotting';
   const isOutputPrediction = question.type === 'output_prediction';
+  const isCodeWriting = question.type === 'code_writing';
   
   const mcqQuestion = question as MCQQuestion;
   const trueFalseQuestion = question as TrueFalseQuestion;
   const fillQuestion = question as FillQuestion;
   const errorSpotQuestion = question as ErrorSpotQuestion;
   const outputPredictionQuestion = question as OutputPredictionQuestion;
+  const codeWritingQuestion = question as CodeWritingQuestion;
 
   const handleFillAnswerChange = (code: string) => {
     onAnswerChange(question.id, code);
@@ -50,6 +52,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 
   const handleOutputPredictionAnswerChange = (output: string) => {
     onAnswerChange(question.id, output);
+  };
+
+  const handleCodeWritingAnswerChange = (code: string) => {
+    onAnswerChange(question.id, code);
   };
 
   return (
@@ -259,8 +265,97 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           </>
         )}
 
+        {/* Code Writing Question Layout */}
+        {isCodeWriting && (
+          <>
+            {/* First Row: Question Prompt */}
+            <Grid container spacing={4} sx={{ mb: 4 }}>
+              <Grid size={{ xs: 12 }}>
+                <Paper 
+                  elevation={1} 
+                  sx={{ 
+                    p: 3, 
+                    backgroundColor: 'background.default',
+                    border: 1,
+                    borderColor: 'divider'
+                  }}
+                >
+                  <Typography variant="subtitle2" color="text.secondary" mb={2} fontWeight="bold">
+                    Question
+                  </Typography>
+                  <MarkdownRenderer content={codeWritingQuestion.prompt} />
+                </Paper>
+              </Grid>
+            </Grid>
+
+            {/* Examples Row */}
+            {codeWritingQuestion.examples && codeWritingQuestion.examples.length > 0 && (
+              <Grid container spacing={4} sx={{ mb: 4 }}>
+                <Grid size={{ xs: 12 }}>
+                  <Typography variant="h6" color="text.primary" mb={2} fontWeight="bold">
+                    Examples
+                  </Typography>
+                  {codeWritingQuestion.examples.map((example, index) => (
+                    <Box key={index} sx={{ mb: 3 }}>
+                      <Paper 
+                        elevation={2} 
+                        sx={{ 
+                          p: 0, 
+                          backgroundColor: 'grey.900',
+                          border: 1,
+                          borderColor: 'divider'
+                        }}
+                      >
+                        <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+                          <Typography variant="subtitle2" color="text.secondary" fontWeight="bold">
+                            Example {index + 1}
+                          </Typography>
+                        </Box>
+                        <CodeEditor 
+                          code={example}
+                          editable={false}
+                          language="bash"
+                        />
+                      </Paper>
+                    </Box>
+                  ))}
+                </Grid>
+              </Grid>
+            )}
+
+            {/* Code Input Row */}
+            <Grid container spacing={4}>
+              <Grid size={{ xs: 12 }}>
+                <Paper 
+                  elevation={2} 
+                  sx={{ 
+                    p: 0, 
+                    backgroundColor: 'grey.900',
+                    border: 1,
+                    borderColor: 'divider'
+                  }}
+                >
+                  <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+                    <Typography variant="subtitle2" color="text.secondary" fontWeight="bold">
+                      Your C# Code
+                    </Typography>
+                  </Box>
+                  <CodeEditor 
+                    code={answer as string || ''}
+                    editable={true}
+                    onChange={handleCodeWritingAnswerChange}
+                    language="csharp"
+                    minLines={10}
+                    maxLines={50}
+                  />
+                </Paper>
+              </Grid>
+            </Grid>
+          </>
+        )}
+
         {/* MCQ/True-False Question Layout */}
-        {!isFill && !isErrorSpot && !isOutputPrediction && (
+        {!isFill && !isErrorSpot && !isOutputPrediction && !isCodeWriting && (
           <>
             {/* First Row: Code and Question Prompt */}
             <Grid container spacing={4} sx={{ mb: 4 }}>
