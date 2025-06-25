@@ -1,0 +1,151 @@
+import React from 'react';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Chip,
+  Paper,
+  Grid
+} from '@mui/material';
+import type { Question, MCQQuestion, TrueFalseQuestion } from '../types';
+import { CodeEditor } from './CodeEditor';
+import { MCQOptions } from './MCQOptions';
+import { TrueFalseOptions } from './TrueFalseOptions';
+import { MarkdownRenderer } from './MarkdownRenderer';
+
+interface QuestionCardProps {
+  question: Question;
+  answer: string[] | string | undefined;
+  onAnswerChange: (questionId: number, answer: string[] | string) => void;
+  questionNumber: number;
+  totalQuestions: number;
+}
+
+export const QuestionCard: React.FC<QuestionCardProps> = ({
+  question,
+  answer,
+  onAnswerChange,
+  questionNumber,
+  totalQuestions
+}) => {
+  const isMCQ = question.type === 'mcq';
+  const mcqQuestion = question as MCQQuestion;
+  const trueFalseQuestion = question as TrueFalseQuestion;
+
+  return (
+    <Card 
+      elevation={4}
+      sx={{ 
+        width: '100%',
+        maxWidth: 1400,
+        backgroundColor: 'background.paper',
+        border: 1,
+        borderColor: 'divider'
+      }}
+    >
+      <CardContent sx={{ p: 4 }}>
+        {/* Header */}
+        <Box display="flex" alignItems="center" justifyContent="space-between" mb={3}>
+          <Typography variant="h4" color="primary" fontWeight="bold">
+            Question {questionNumber}
+          </Typography>
+          <Chip 
+            label={`${questionNumber}/${totalQuestions}`}
+            color="primary"
+            variant="outlined"
+            size="medium"
+          />
+        </Box>
+
+        {/* First Row: Code and Question Prompt */}
+        <Grid container spacing={4} sx={{ mb: 4 }}>
+          {/* Left Column - Code */}
+          {question.codeBefore && (
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Paper 
+                elevation={2} 
+                sx={{ 
+                  p: 0, 
+                  backgroundColor: 'grey.900',
+                  border: 1,
+                  borderColor: 'divider',
+                  height: 'fit-content'
+                }}
+              >
+                <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+                  <Typography variant="subtitle2" color="text.secondary" fontWeight="bold">
+                    Code
+                  </Typography>
+                </Box>
+                <CodeEditor code={question.codeBefore} />
+              </Paper>
+            </Grid>
+          )}
+
+          {/* Right Column - Question Prompt */}
+          <Grid size={{ xs: 12, md: question.codeBefore ? 6 : 12 }}>
+            <Paper 
+              elevation={1} 
+              sx={{ 
+                p: 3, 
+                backgroundColor: 'background.default',
+                border: 1,
+                borderColor: 'divider',
+                height: 'fit-content'
+              }}
+            >
+              <Typography variant="subtitle2" color="text.secondary" mb={2} fontWeight="bold">
+                Question
+              </Typography>
+              <MarkdownRenderer content={question.prompt} />
+            </Paper>
+          </Grid>
+        </Grid>
+
+        {/* Second Row: Options */}
+        <Box>
+          {isMCQ ? (
+            <MCQOptions
+              question={mcqQuestion}
+              selectedAnswers={answer as string[] || []}
+              onAnswerChange={(selectedOptions: string[]) => 
+                onAnswerChange(question.id, selectedOptions)
+              }
+            />
+          ) : (
+            <TrueFalseOptions
+              question={trueFalseQuestion}
+              selectedAnswer={answer as string}
+              onAnswerChange={(selectedOption: string) => 
+                onAnswerChange(question.id, selectedOption)
+              }
+            />
+          )}
+        </Box>
+
+        {/* Code After (if exists) */}
+        {question.codeAfter && (
+          <Box mt={4}>
+            <Paper 
+              elevation={2} 
+              sx={{ 
+                p: 0, 
+                backgroundColor: 'grey.900',
+                border: 1,
+                borderColor: 'divider'
+              }}
+            >
+              <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+                <Typography variant="subtitle2" color="text.secondary" fontWeight="bold">
+                  Additional Code
+                </Typography>
+              </Box>
+              <CodeEditor code={question.codeAfter} />
+            </Paper>
+          </Box>
+        )}
+      </CardContent>
+    </Card>
+  );
+}; 

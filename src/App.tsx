@@ -1,5 +1,6 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { QuizApp } from './components';
 
 const darkTheme = createTheme({
   palette: {
@@ -9,6 +10,18 @@ const darkTheme = createTheme({
     },
     secondary: {
       main: '#f48fb1',
+    },
+    success: {
+      main: '#4caf50',
+      dark: '#388e3c',
+      light: '#81c784',
+      contrastText: '#ffffff',
+    },
+    error: {
+      main: '#f44336',
+      dark: '#d32f2f',
+      light: '#e57373',
+      contrastText: '#ffffff',
     },
     background: {
       default: '#0a0a0a',
@@ -72,6 +85,7 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
+      <QuizApp />
     </ThemeProvider>
   );
 }
