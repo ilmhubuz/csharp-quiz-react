@@ -8,7 +8,7 @@ import {
   Paper,
   Grid
 } from '@mui/material';
-import type { Question, MCQQuestion, TrueFalseQuestion, FillQuestion } from '../types';
+import type { Question, MCQQuestion, TrueFalseQuestion, FillQuestion, ErrorSpotQuestion } from '../types';
 import { CodeEditor } from './CodeEditor';
 import { MCQOptions } from './MCQOptions';
 import { TrueFalseOptions } from './TrueFalseOptions';
@@ -32,12 +32,18 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   const isMCQ = question.type === 'mcq';
   const isTrueFalse = question.type === 'true_false';
   const isFill = question.type === 'fill';
+  const isErrorSpot = question.type === 'error_spotting';
   
   const mcqQuestion = question as MCQQuestion;
   const trueFalseQuestion = question as TrueFalseQuestion;
   const fillQuestion = question as FillQuestion;
+  const errorSpotQuestion = question as ErrorSpotQuestion;
 
   const handleFillAnswerChange = (code: string) => {
+    onAnswerChange(question.id, code);
+  };
+
+  const handleErrorSpotAnswerChange = (code: string) => {
     onAnswerChange(question.id, code);
   };
 
@@ -118,8 +124,60 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           </>
         )}
 
+        {/* Error Spotting Question Layout */}
+        {isErrorSpot && (
+          <>
+            {/* First Row: Editable Code and Question Prompt */}
+            <Grid container spacing={4} sx={{ mb: 4 }}>
+              {/* Left Column - Editable Code */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Paper 
+                  elevation={2} 
+                  sx={{ 
+                    p: 0, 
+                    backgroundColor: 'grey.900',
+                    border: 1,
+                    borderColor: 'divider',
+                    height: 'fit-content'
+                  }}
+                >
+                  <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+                    <Typography variant="subtitle2" color="text.secondary" fontWeight="bold">
+                      Code (Find & Fix Errors)
+                    </Typography>
+                  </Box>
+                  <CodeEditor 
+                    code={answer as string || errorSpotQuestion.codeWithError}
+                    editable={true}
+                    onChange={handleErrorSpotAnswerChange}
+                  />
+                </Paper>
+              </Grid>
+
+              {/* Right Column - Question Prompt */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Paper 
+                  elevation={1} 
+                  sx={{ 
+                    p: 3, 
+                    backgroundColor: 'background.default',
+                    border: 1,
+                    borderColor: 'divider',
+                    height: 'fit-content'
+                  }}
+                >
+                  <Typography variant="subtitle2" color="text.secondary" mb={2} fontWeight="bold">
+                    Question
+                  </Typography>
+                  <MarkdownRenderer content={errorSpotQuestion.prompt} />
+                </Paper>
+              </Grid>
+            </Grid>
+          </>
+        )}
+
         {/* MCQ/True-False Question Layout */}
-        {!isFill && (
+        {!isFill && !isErrorSpot && (
           <>
             {/* First Row: Code and Question Prompt */}
             <Grid container spacing={4} sx={{ mb: 4 }}>

@@ -393,5 +393,75 @@
         "codeWithBlank": "int Classify(object o) => o switch\n{\n    string s when ______ => 1,\n    int i when i % 2 == 0 => 2,\n    null                  => 0,\n    _                     => 3\n};",
         "prompt": "Replace the blank with a pattern that matches non-empty strings using C# 12 pattern syntax.",
         "answer": "int Classify(object o) => o switch\n{\n    string s when s.Length > 0 => 1,\n    int i when i % 2 == 0 => 2,\n    null                  => 0,\n    _                     => 3\n};"
+    },
+    {
+        "id": 26,
+        "type": "error_spotting",
+        "codeWithError": "public class Calculator\n{\n    public static T Subtract<T>(T a, T b) where T : IComparable<T>\n    {\n        return a - b;\n    }\n}",
+        "prompt": "Identify and fix the compilation error in the generic `Subtract` method declaration.",
+        "answer": "public class Calculator\n{\n    public static T Subtract<T>(T a, T b)\n        where T : ISubtractionOperators<T, T, T>\n    {\n        return a - b;\n    }\n}"
+    },
+    {
+        "id": 27,
+        "type": "error_spotting",
+        "codeWithError": "interface IShape\n{\n    double Area();\n}\n\npublic class Circle : IShape\n{\n    private readonly double radius;\n    public Circle(double radius) => this.radius = radius;\n    public double area() => Math.PI * radius * radius;\n}",
+        "prompt": "Find and correct the error in the `Circle` implementation of `IShape`.",
+        "answer": "interface IShape\n{\n    double Area();\n}\n\npublic class Circle : IShape\n{\n    private readonly double radius;\n    public Circle(double radius) => this.radius = radius;\n    public double Area() => Math.PI * radius * radius;\n}"
+    },
+    {
+        "id": 28,
+        "type": "error_spotting",
+        "codeWithError": "public struct Rectangle\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public Rectangle(int width, int height)\n    {\n        Width = width;\n    }\n}\n",
+        "prompt": "The `Rectangle` struct constructor is invalid. Explain and fix the error.",
+        "answer": "public struct Rectangle\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public Rectangle(int width, int height)\n    {\n        Width = width;\n        Height = height;\n    }\n}\n"
+    },
+    {
+        "id": 29,
+        "type": "error_spotting",
+        "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public string FullName => FirstName + \" \" + LastName;\n    public Person() {}\n}\n",
+        "prompt": "This record declaration fails under C# 12. Identify why and provide a corrected version.",
+        "answer": "public record Person(string FirstName, string LastName)\n{\n    public string FullName => FirstName + \" \" + LastName;\n    public Person() : this(string.Empty, string.Empty) {}\n}\n"
+    },
+    {
+        "id": 30,
+        "type": "error_spotting",
+        "codeWithError": "public class Utils\n{\n    public static void LogMessage(string? msg!)\n    {\n        Console.WriteLine(msg);\n    }\n}\n",
+        "prompt": "Spot and correct the misuse of nullable annotations in the `LogMessage` signature.",
+        "answer": "public class Utils\n{\n    public static void LogMessage(string? msg)\n    {\n        Console.WriteLine(msg);\n    }\n}\n"
+    },
+    {
+        "id": 31,
+        "type": "error_spotting",
+        "codeWithError": "public abstract class Base\n{\n    public abstract void Save(string data);\n}\n\npublic class FileSaver : Base\n{\n    public void Save(string data)\n    {\n        File.WriteAllText(\"out.txt\", data);\n    }\n}",
+        "prompt": "Fix the compile error: `FileSaver` fails to implement `Save`. Correct the code so `FileSaver` properly overrides the abstract method in `Base`.",
+        "answer": "public abstract class Base\n{\n    public abstract void Save(string data);\n}\n\npublic class FileSaver : Base\n{\n    public override void Save(string data)\n    {\n        File.WriteAllText(\"out.txt\", data);\n    }\n}"
+    },
+    {
+        "id": 32,
+        "type": "error_spotting",
+        "codeWithError": "struct Configuration\n{\n    public string Url { get; init; }\n    public Configuration() { Url = \"\"; }\n}",
+        "prompt": "Structs cannot define a parameterless constructor. Rewrite the code to initialize `Url` with a default value without adding a parameterless constructor.",
+        "answer": "struct Configuration\n{\n    public string Url { get; init; } = string.Empty;\n}"
+    },
+    {
+        "id": 33,
+        "type": "error_spotting",
+        "codeWithError": "public interface ICalc<T>\n{\n    T Add(T a, T b);\n}\n\npublic class Calculator : ICalc<int>\n{\n    public int Add(int a, int b)\n    {\n        return a + b;\n    }\n}",
+        "prompt": "The interface `ICalc<T>` requires a generic parameter, but `Calculator` uses a concrete type. Refactor so that `Calculator` remains generic and correctly implements `ICalc<T>`.",
+        "answer": "public interface ICalc<T>\n{\n    T Add(T a, T b);\n}\n\npublic class Calculator<T> : ICalc<T>\n    where T : IAdditionOperators<T, T, T>\n{\n    public T Add(T a, T b)\n    {\n        return a + b;\n    }\n}"
+    },
+    {
+        "id": 34,
+        "type": "error_spotting",
+        "codeWithError": "public static class StringUtils\n{\n    public static bool IsPalindrome(string s)\n    {\n        return s == new string(s.Reverse().ToArray());\n    }\n\n    public bool IsAnagram(this string s, string t)\n    {\n        return s.OrderBy(c => c).SequenceEqual(t.OrderBy(c => c));\n    }\n}",
+        "prompt": "Extension methods must be static. Fix the declaration of `IsAnagram` so it compiles and can be used as `someString.IsAnagram(otherString)`.",
+        "answer": "public static class StringUtils\n{\n    public static bool IsPalindrome(string s)\n    {\n        return s == new string(s.Reverse().ToArray());\n    }\n\n    public static bool IsAnagram(this string s, string t)\n    {\n        return s.OrderBy(c => c).SequenceEqual(t.OrderBy(c => c));\n    }\n}"
+    },
+    {
+        "id": 35,
+        "type": "error_spotting",
+        "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public Person() { }\n}",
+        "prompt": "Records with positional parameters cannot have an additional parameterless constructor without forwarding. Provide a corrected `Person` record definition that allows a parameterless constructor initializing both names to empty strings.",
+        "answer": "public record Person(string FirstName, string LastName)\n{\n    public Person() : this(string.Empty, string.Empty) { }\n}"
     }
 ]
