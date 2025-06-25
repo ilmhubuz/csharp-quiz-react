@@ -11,6 +11,7 @@ import {
 import { ArrowForward, ArrowBack, CheckCircle } from '@mui/icons-material';
 import type { Question, FillQuestion, ErrorSpotQuestion, OutputPredictionQuestion } from '../types';
 import { QuestionCard } from './QuestionCard';
+import { QuizResults } from './QuizResults';
 import questionsData from '../assets/questions.json';
 
 interface QuizState {
@@ -20,6 +21,7 @@ interface QuizState {
 export const QuizApp: React.FC = () => {
   const [questions] = useState<Question[]>(questionsData as Question[]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showResults, setShowResults] = useState(false);
   const [answers, setAnswers] = useState<QuizState>(() => {
     const saved = localStorage.getItem('quiz-answers');
     return saved ? JSON.parse(saved) : {};
@@ -77,6 +79,28 @@ export const QuizApp: React.FC = () => {
       setCurrentQuestionIndex(prev => prev - 1);
     }
   };
+
+  const handleShowResults = () => {
+    setShowResults(true);
+  };
+
+  const handleRetryQuiz = () => {
+    setShowResults(false);
+    setCurrentQuestionIndex(0);
+    setAnswers({});
+    localStorage.removeItem('quiz-answers');
+  };
+
+  // Show results page
+  if (showResults) {
+    return (
+      <QuizResults 
+        questions={questions}
+        answers={answers}
+        onRetry={handleRetryQuiz}
+      />
+    );
+  }
 
   if (!currentQuestion) {
     return (
@@ -191,6 +215,7 @@ export const QuizApp: React.FC = () => {
             bottom: 80,
             right: 24,
           }}
+          onClick={handleShowResults}
         >
           <CheckCircle />
         </Fab>
