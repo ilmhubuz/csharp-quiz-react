@@ -97,9 +97,20 @@ export const MCQOptions: React.FC<MCQOptionsProps> = ({
                     />
                   }
                   label={
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
+                      <Typography 
+                        variant="body1" 
+                        component="span"
+                        fontWeight="bold"
+                        color={selectedAnswers.includes(option.id) ? 'primary.contrastText' : 'text.primary'}
+                        sx={{ mr: 1, lineHeight: 1.6 }}
+                      >
+                        {option.id}.
+                      </Typography>
                       <Box
                         component="span"
                         sx={{
+                          flex: 1,
                           '& *': {
                             color: selectedAnswers.includes(option.id) 
                               ? 'primary.contrastText !important' 
@@ -109,14 +120,14 @@ export const MCQOptions: React.FC<MCQOptionsProps> = ({
                       >
                         <MarkdownRenderer content={option.option} />
                       </Box>
+                    </Box>
                   }
                   sx={{ 
                     margin: 0,
                     width: '100%',
-                    alignItems: 'flex-start',
+                    alignItems: 'center',
                     '& .MuiFormControlLabel-label': {
                       width: '100%',
-                      paddingTop: '2px',
                     }
                   }}
                 />
