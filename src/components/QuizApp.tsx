@@ -9,7 +9,7 @@ import {
   Zoom
 } from '@mui/material';
 import { ArrowForward, ArrowBack, CheckCircle } from '@mui/icons-material';
-import type { Question, FillQuestion, ErrorSpotQuestion, OutputPredictionQuestion } from '../types';
+import type { Question, FillQuestion, ErrorSpotQuestion } from '../types';
 import { QuestionCard } from './QuestionCard';
 import { QuizResults } from './QuizResults';
 import questionsData from '../assets/questions.json';

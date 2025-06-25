@@ -30,7 +30,6 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   totalQuestions
 }) => {
   const isMCQ = question.type === 'mcq';
-  const isTrueFalse = question.type === 'true_false';
   const isFill = question.type === 'fill';
   const isErrorSpot = question.type === 'error_spotting';
   const isOutputPrediction = question.type === 'output_prediction';
