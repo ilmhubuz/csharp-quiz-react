@@ -32,7 +32,7 @@
         "type": "mcq",
         "codeBefore": "```csharp\nvoid M(in int x, out int y, params object[] rest) { }\n```",
         "codeAfter": "",
-        "prompt": "Quyidagi funksiyani chaqirish usullaridan qaysi biri **noto‘g‘ri**?",
+        "prompt": "Quyidagi funksiyani chaqirish usullaridan qaysi biri **noto'g'ri**?",
         "options": [
             {
                 "id": "A",
@@ -60,15 +60,15 @@
         "type": "mcq",
         "codeBefore": "```csharp\npublic record Point(int X, int Y);\nvar p = new Point(1,2) with { Y = 3 };\n```",
         "codeAfter": "",
-        "prompt": "`Point` haqida qaysi fikr **noto‘g‘ri**?",
+        "prompt": "`Point` haqida qaysi fikr **noto'g'ri**?",
         "options": [
             {
                 "id": "A",
-                "option": "Agar `Point` obyektlarining `X` va `Y` qiymatlari bir xil bo‘lsa, ular teng deb hisoblanadi."
+                "option": "Agar `Point` obyektlarining `X` va `Y` qiymatlari bir xil bo'lsa, ular teng deb hisoblanadi."
             },
             {
                 "id": "B",
-                "option": "`record` tipida `ToString()` metodini o‘zgartirish mumkin."
+                "option": "`record` tipida `ToString()` metodini o'zgartirish mumkin."
             },
             {
                 "id": "C",
@@ -76,7 +76,7 @@
             },
             {
                 "id": "D",
-                "option": "`Point` uchun parametrsiz konstruktor qo‘shish mumkin."
+                "option": "`Point` uchun parametrsiz konstruktor qo'shish mumkin."
             }
         ],
         "answer": [
@@ -88,11 +88,11 @@
         "type": "mcq",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`partial` va `file` modifikatorlari haqida qaysi fikr **to‘g‘ri**?",
+        "prompt": "`partial` va `file` modifikatorlari haqida qaysi fikr **to'g'ri**?",
         "options": [
             {
                 "id": "A",
-                "option": "`partial class` bir nechta faylda bo‘lishi mumkin."
+                "option": "`partial class` bir nechta faylda bo'lishi mumkin."
             },
             {
                 "id": "B",
@@ -100,11 +100,11 @@
             },
             {
                 "id": "C",
-                "option": "Bir tipni bir vaqtning o‘zida `partial` va `file` deb e’lon qilish mumkin."
+                "option": "Bir tipni bir vaqtning o'zida `partial` va `file` deb e'lon qilish mumkin."
             },
             {
                 "id": "D",
-                "option": "`file class` da `private protected` a’zolar bo‘lishi mumkin."
+                "option": "`file class` da `private protected` a'zolar bo'lishi mumkin."
             }
         ],
         "answer": [
@@ -116,7 +116,7 @@
         "type": "mcq",
         "codeBefore": "```csharp\nvoid F(params int[] nums) { }\n```",
         "codeAfter": "",
-        "prompt": "`F(1, 2, new[]{3,4})` chaqirilganda nima sodir bo‘ladi?",
+        "prompt": "`F(1, 2, new[]{3,4})` chaqirilganda nima sodir bo'ladi?",
         "options": [
             {
                 "id": "A",
@@ -172,7 +172,7 @@
         "type": "mcq",
         "codeBefore": "```csharp\npublic static class Extensions\n{\n    public static bool IsEven(this int number)\n    {\n        return (number % 2) == 0;\n    }\n\n    public bool IsOdd(int number)\n    {\n        return (number % 2) != 0;\n    }\n}\n```",
         "codeAfter": "",
-        "prompt": "Yuqoridagi kod haqida qaysi fikr **to‘g‘ri**?",
+        "prompt": "Yuqoridagi kod haqida qaysi fikr **to'g'ri**?",
         "options": [
             {
                 "id": "A",
@@ -180,7 +180,7 @@
             },
             {
                 "id": "B",
-                "option": "`IsEven` va `IsOdd` ikkalasi ham extension method bo‘lishi mumkin."
+                "option": "`IsEven` va `IsOdd` ikkalasi ham extension method bo'lishi mumkin."
             },
             {
                 "id": "C",
@@ -200,7 +200,7 @@
         "type": "mcq",
         "codeBefore": "```csharp\nfile interface IHelper\n{\n    void Help();\n}\n\n// In another file\n// class HelperImpl : IHelper { ... }\n```",
         "codeAfter": "",
-        "prompt": "Yuqoridagi `IHelper` haqida qaysi fikr **to‘g‘ri**?",
+        "prompt": "Yuqoridagi `IHelper` haqida qaysi fikr **to'g'ri**?",
         "options": [
             {
                 "id": "A",
@@ -208,7 +208,7 @@
             },
             {
                 "id": "B",
-                "option": "`IHelper` butun assembly bo‘ylab `public` hisoblanadi."
+                "option": "`IHelper` butun assembly bo'ylab `public` hisoblanadi."
             },
             {
                 "id": "C",
@@ -216,7 +216,7 @@
             },
             {
                 "id": "D",
-                "option": "`file interface` noto‘g‘ri sintaksis."
+                "option": "`file interface` noto'g'ri sintaksis."
             }
         ],
         "answer": [
@@ -228,7 +228,7 @@
         "type": "mcq",
         "codeBefore": "```csharp\npublic struct DataPoint\n{\n    public readonly int X;\n    public readonly int Y;\n    public DataPoint(int x, int y) => (X, Y) = (x, y);\n}\n\nvar d1 = new DataPoint(1,2);\nvar d2 = d1;\n\nd2 = new DataPoint(3,4);\nConsole.WriteLine(d1.X + \",\" + d1.Y);\n```",
         "codeAfter": "",
-        "prompt": "Natija nima bo‘ladi va sababi?",
+        "prompt": "Natija nima bo'ladi va sababi?",
         "options": [
             {
                 "id": "A",
@@ -236,11 +236,11 @@
             },
             {
                 "id": "B",
-                "option": "`3,4` – chunki d2 o‘zgartirilsa, d1 ham o‘zgaradi."
+                "option": "`3,4` – chunki d2 o'zgartirilsa, d1 ham o'zgaradi."
             },
             {
                 "id": "C",
-                "option": "`1,2` – chunki readonly fieldlar o‘zgarmaydi."
+                "option": "`1,2` – chunki readonly fieldlar o'zgarmaydi."
             },
             {
                 "id": "D",
@@ -256,7 +256,7 @@
         "type": "mcq",
         "codeBefore": "```csharp\nint Classify(int x) => x switch\n{\n    < 0 => -1,\n    > 0 => 1,\n    _    => 0\n};\n\nvar result = Classify(0);\n```",
         "codeAfter": "",
-        "prompt": "`result` ning qiymati nima bo‘ladi?",
+        "prompt": "`result` ning qiymati nima bo'ladi?",
         "options": [
             {
                 "id": "A",
@@ -284,7 +284,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "Fayl doirasidagi namespace (`namespace MyApp;`) faqat kodni ichkariga suradi, lekin ko‘rinuvchanlikka ta’sir qilmaydi.",
+        "prompt": "Fayl doirasidagi namespace (`namespace MyApp;`) faqat kodni ichkariga suradi, lekin ko'rinuvchanlikka ta'sir qilmaydi.",
         "answer": "true"
     },
     {
@@ -292,7 +292,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`record struct` uchun foydalanuvchi tomonidan yaratilgan parametrsiz konstruktor bo‘lishi mumkin.",
+        "prompt": "`record struct` uchun foydalanuvchi tomonidan yaratilgan parametrsiz konstruktor bo'lishi mumkin.",
         "answer": "false"
     },
     {
@@ -300,7 +300,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`=>` bilan yozilgan expression-bodied member ichida istalgan kod, shu jumladan exception ham bo‘lishi mumkin.",
+        "prompt": "`=>` bilan yozilgan expression-bodied member ichida istalgan kod, shu jumladan exception ham bo'lishi mumkin.",
         "answer": "true"
     },
     {
@@ -316,7 +316,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`struct` uchun default parametrsiz konstruktorni o‘zgartirib yoki qayta aniqlab bo‘lmaydi.",
+        "prompt": "`struct` uchun default parametrsiz konstruktorni o'zgartirib yoki qayta aniqlab bo'lmaydi.",
         "answer": "true"
     },
     {
@@ -324,7 +324,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "C# `switch` expressionlari barcha mumkin bo‘lgan input patternlarni kompilyatsiya vaqtida qamrab olishi shart.",
+        "prompt": "C# `switch` expressionlari barcha mumkin bo'lgan input patternlarni kompilyatsiya vaqtida qamrab olishi shart.",
         "answer": "false"
     },
     {
@@ -332,7 +332,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "Extension methodlar faqat static class ichida e’lon qilinadi.",
+        "prompt": "Extension methodlar faqat static class ichida e'lon qilinadi.",
         "answer": "true"
     },
     {
@@ -348,7 +348,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "C# da recordlar default bo‘yicha reference type hisoblanadi.",
+        "prompt": "C# da recordlar default bo'yicha reference type hisoblanadi.",
         "answer": "true"
     },
     {
@@ -356,140 +356,140 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`sealed` metodni undan keyin boshqa klasslarda override qilib bo‘lmaydi.",
+        "prompt": "`sealed` metodni undan keyin boshqa klasslarda override qilib bo'lmaydi.",
         "answer": "true"
     },
     {
         "id": 21,
         "type": "fill",
         "codeWithBlank": "public static T AddAll<T>(T[] values)\n    where T : ________, ________\n{\n    T sum = default!;\n    foreach (var v in values)\n    {\n        sum += v;\n    }\n    return sum;\n}",
-        "prompt": "`T` uchun `+` operatori va `default` literalini ishlatish imkonini beruvchi .NET generic math interfeyslarini ikki bo‘sh joyga to‘g‘ri yozing.",
+        "prompt": "`T` uchun `+` operatori va `default` literalini ishlatish imkonini beruvchi .NET generic math interfeyslarini ikki bo'sh joyga to'g'ri yozing.",
         "answer": "public static T AddAll<T>(T[] values)\n    where T : INumber<T>, IAdditionOperators<T, T, T>\n{\n    T sum = default!;\n    foreach (var v in values)\n    {\n        sum += v;\n    }\n    return sum;\n}"
     },
     {
         "id": 22,
         "type": "fill",
         "codeWithBlank": "file struct Point(int X, int Y)\n{\n    public void Deconstruct(out int x, out int y) => (x, y) = (______, ______);\n}",
-        "prompt": "Point — file-scoped positional struct. Deconstruct metodi asosiy konstruktor parametrlarini qaytarishi uchun bo‘sh joylarni to‘g‘ri to‘ldiring.",
+        "prompt": "Point — file-scoped positional struct. Deconstruct metodi asosiy konstruktor parametrlarini qaytarishi uchun bo'sh joylarni to'g'ri to'ldiring.",
         "answer": "file struct Point(int X, int Y)\n{\n    public void Deconstruct(out int x, out int y) => (x, y) = (X, Y);\n}"
     },
     {
         "id": 23,
         "type": "fill",
         "codeWithBlank": "public interface IRepository<T>\n{\n    void Add(T item);\n    T? Get(int id);\n}\n\npublic class Repo<T> : ______\n{\n    void IRepository<T>.Add(T item) { /*...*/ }\n    T? IRepository<T>.Get(int id) { /*...*/ }\n}",
-        "prompt": "Repo<T> klassi `IRepository<T>` ni faqat explicit implementatsiya qilishi va `Add` hamda `Get` metodlarini public API dan yashirishi uchun bo‘sh joyni to‘g‘ri to‘ldiring.",
+        "prompt": "Repo<T> klassi `IRepository<T>` ni faqat explicit implementatsiya qilishi va `Add` hamda `Get` metodlarini public API dan yashirishi uchun bo'sh joyni to'g'ri to'ldiring.",
         "answer": "public class Repo<T> : IRepository<T>\n{\n    void IRepository<T>.Add(T item) { /*...*/ }\n    T? IRepository<T>.Get(int id) { /*...*/ }\n}"
     },
     {
         "id": 24,
         "type": "fill",
         "codeWithBlank": "public interface ILogger\n{\n    void Log(string message);\n    void LogError(Exception ex) => ______;\n}",
-        "prompt": "`LogError` metodi exception obyektini string ko‘rinishida `Log` ga uzatishi uchun bo‘sh joyni to‘g‘ri to‘ldiring.",
+        "prompt": "`LogError` metodi exception obyektini string ko'rinishida `Log` ga uzatishi uchun bo'sh joyni to'g'ri to'ldiring.",
         "answer": "public interface ILogger\n{\n    void Log(string message);\n    void LogError(Exception ex) => Log(ex.ToString());\n}"
     },
     {
         "id": 25,
         "type": "fill",
         "codeWithBlank": "int Classify(object o) => o switch\n{\n    string s when ______ => 1,\n    int i when i % 2 == 0 => 2,\n    null                  => 0,\n    _                     => 3\n};",
-        "prompt": "C# 12 pattern sintaksisidan foydalanib, bo‘sh joyga bo‘sh bo‘lmagan stringni aniqlovchi pattern yozing.",
+        "prompt": "C# 12 pattern sintaksisidan foydalanib, bo'sh joyga bo'sh bo'lmagan stringni aniqlovchi pattern yozing.",
         "answer": "int Classify(object o) => o switch\n{\n    string s when s.Length > 0 => 1,\n    int i when i % 2 == 0 => 2,\n    null                  => 0,\n    _                     => 3\n};"
     },
     {
         "id": 26,
         "type": "error_spotting",
         "codeWithError": "public class Calculator\n{\n    public static T Subtract<T>(T a, T b) where T : IComparable<T>\n    {\n        return a - b;\n    }\n}",
-        "prompt": "Generic `Subtract` metodidagi kompilyatsiya xatosini toping va to‘g‘rilang.",
+        "prompt": "Generic `Subtract` metodidagi kompilyatsiya xatosini toping va to'g'rilang.",
         "answer": "public class Calculator\n{\n    public static T Subtract<T>(T a, T b)\n        where T : ISubtractionOperators<T, T, T>\n    {\n        return a - b;\n    }\n}"
     },
     {
         "id": 27,
         "type": "error_spotting",
         "codeWithError": "interface IShape\n{\n    double Area();\n}\n\npublic class Circle : IShape\n{\n    private readonly double radius;\n    public Circle(double radius) => this.radius = radius;\n    public double area() => Math.PI * radius * radius;\n}",
-        "prompt": "`Circle` klassining `IShape` implementatsiyasidagi xatoni toping va to‘g‘rilang.",
+        "prompt": "`Circle` klassining `IShape` implementatsiyasidagi xatoni toping va to'g'rilang.",
         "answer": "interface IShape\n{\n    double Area();\n}\n\npublic class Circle : IShape\n{\n    private readonly double radius;\n    public Circle(double radius) => this.radius = radius;\n    public double Area() => Math.PI * radius * radius;\n}"
     },
     {
         "id": 28,
         "type": "error_spotting",
         "codeWithError": "public struct Rectangle\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public Rectangle(int width, int height)\n    {\n        Width = width;\n    }\n}\n",
-        "prompt": "`Rectangle` struct konstruktoridagi xatoni tushuntiring va to‘g‘rilang.",
+        "prompt": "`Rectangle` struct konstruktoridagi xatoni tushuntiring va to'g'rilang.",
         "answer": "public struct Rectangle\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public Rectangle(int width, int height)\n    {\n        Width = width;\n        Height = height;\n    }\n}\n"
     },
     {
         "id": 29,
         "type": "error_spotting",
         "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public string FullName => FirstName + \" \" + LastName;\n    public Person() {}\n}\n",
-        "prompt": "Ushbu record C# 12 da kompilyatsiya xatosi beradi. Sababini aniqlang va to‘g‘ri variantini yozing.",
+        "prompt": "Ushbu record C# 12 da kompilyatsiya xatosi beradi. Sababini aniqlang va to'g'ri variantini yozing.",
         "answer": "public record Person(string FirstName, string LastName)\n{\n    public string FullName => FirstName + \" \" + LastName;\n    public Person() : this(string.Empty, string.Empty) {}\n}\n"
     },
     {
         "id": 30,
         "type": "error_spotting",
         "codeWithError": "public class Utils\n{\n    public static void LogMessage(string? msg!)\n    {\n        Console.WriteLine(msg);\n    }\n}\n",
-        "prompt": "`LogMessage` metodidagi nullable annotation xatosini toping va to‘g‘rilang.",
+        "prompt": "`LogMessage` metodidagi nullable annotation xatosini toping va to'g'rilang.",
         "answer": "public class Utils\n{\n    public static void LogMessage(string? msg)\n    {\n        Console.WriteLine(msg);\n    }\n}\n"
     },
     {
         "id": 31,
         "type": "error_spotting",
         "codeWithError": "public abstract class Base\n{\n    public abstract void Save(string data);\n}\n\npublic class FileSaver : Base\n{\n    public void Save(string data)\n    {\n        File.WriteAllText(\"out.txt\", data);\n    }\n}",
-        "prompt": "`FileSaver` klassi `Save` metodini to‘g‘ri override qilmayapti. Xatoni tuzating.",
+        "prompt": "`FileSaver` klassi `Save` metodini to'g'ri override qilmayapti. Xatoni tuzating.",
         "answer": "public abstract class Base\n{\n    public abstract void Save(string data);\n}\n\npublic class FileSaver : Base\n{\n    public override void Save(string data)\n    {\n        File.WriteAllText(\"out.txt\", data);\n    }\n}"
     },
     {
         "id": 32,
         "type": "error_spotting",
         "codeWithError": "struct Configuration\n{\n    public string Url { get; init; }\n    public Configuration() { Url = \"\"; }\n}",
-        "prompt": "Structda parametrsiz konstruktor bo‘lishi mumkin emas. `Url` ni default qiymat bilan qanday initsializatsiya qilish mumkin?",
+        "prompt": "Structda parametrsiz konstruktor bo'lishi mumkin emas. `Url` ni default qiymat bilan qanday initsializatsiya qilish mumkin?",
         "answer": "struct Configuration\n{\n    public string Url { get; init; } = string.Empty;\n}"
     },
     {
         "id": 33,
         "type": "error_spotting",
         "codeWithError": "public interface ICalc<T>\n{\n    T Add(T a, T b);\n}\n\npublic class Calculator : ICalc<int>\n{\n    public int Add(int a, int b)\n    {\n        return a + b;\n    }\n}",
-        "prompt": "`ICalc<T>` interfeysi generic, lekin `Calculator` konkret tipdan foydalanmoqda. Uni generic qilib, to‘g‘ri implementatsiya qiling.",
+        "prompt": "`ICalc<T>` interfeysi generic, lekin `Calculator` konkret tipdan foydalanmoqda. Uni generic qilib, to'g'ri implementatsiya qiling.",
         "answer": "public interface ICalc<T>\n{\n    T Add(T a, T b);\n}\n\npublic class Calculator<T> : ICalc<T>\n    where T : IAdditionOperators<T, T, T>\n{\n    public T Add(T a, T b)\n    {\n        return a + b;\n    }\n}"
     },
     {
         "id": 34,
         "type": "error_spotting",
         "codeWithError": "public static class StringUtils\n{\n    public static bool IsPalindrome(string s)\n    {\n        return s == new string(s.Reverse().ToArray());\n    }\n\n    public bool IsAnagram(this string s, string t)\n    {\n        return s.OrderBy(c => c).SequenceEqual(t.OrderBy(c => c));\n    }\n}",
-        "prompt": "Extension methodlar static bo‘lishi kerak. `IsAnagram` metodini to‘g‘ri yozing.",
+        "prompt": "Extension methodlar static bo'lishi kerak. `IsAnagram` metodini to'g'ri yozing.",
         "answer": "public static class StringUtils\n{\n    public static bool IsPalindrome(string s)\n    {\n        return s == new string(s.Reverse().ToArray());\n    }\n\n    public static bool IsAnagram(this string s, string t)\n    {\n        return s.OrderBy(c => c).SequenceEqual(t.OrderBy(c => c));\n    }\n}"
     },
     {
         "id": 35,
         "type": "error_spotting",
         "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public Person() { }\n}",
-        "prompt": "Parametrli record uchun parametrsiz konstruktorni to‘g‘ri yozing, shunda ikkala ism ham bo‘sh string bo‘ladi.",
+        "prompt": "Parametrli record uchun parametrsiz konstruktorni to'g'ri yozing, shunda ikkala ism ham bo'sh string bo'ladi.",
         "answer": "public record Person(string FirstName, string LastName)\n{\n    public Person() : this(string.Empty, string.Empty) { }\n}"
     },
     {
         "id": 36,
         "type": "output_prediction",
         "snippet": "class A\n{\n    public virtual string F() => \"A\";\n}\nclass B : A\n{\n    public override string F() => base.F() + \"B\";\n}\nclass C : B\n{\n    public new string F() => base.F() + \"C\";\n}\n\nA obj = new C();\nConsole.WriteLine(obj.F());",
-        "prompt": "`obj.F()` chaqirilganda natija nima bo‘ladi?",
+        "prompt": "`obj.F()` chaqirilganda natija nima bo'ladi?",
         "answer": "AB"
     },
     {
         "id": 37,
         "type": "output_prediction",
         "snippet": "interface ILog\n{\n    void Log(string msg) => Console.Write(\"DefaultLog:\");\n}\nclass Logger : ILog { }\n\nvar logger = new Logger();\n((ILog)logger).Log(\"Hello\");",
-        "prompt": "`Logger` o‘z Log metodini yozmagan. `((ILog)logger).Log(\"Hello\")` chaqirilganda natija nima bo‘ladi?",
+        "prompt": "`Logger` o'z Log metodini yozmagan. `((ILog)logger).Log(\"Hello\")` chaqirilganda natija nima bo'ladi?",
         "answer": "DefaultLog:"
     },
     {
         "id": 38,
         "type": "output_prediction",
         "snippet": "class Base\n{\n    public void Show() => Console.Write(\"Base\");\n    public virtual void Display() => Console.Write(\"BaseDisplay\");\n}\nclass Derived : Base\n{\n    public new void Show() => Console.Write(\"Derived\");\n    public override void Display() => Console.Write(\"DerivedDisplay\");\n}\n\nBase b = new Derived();\nb.Show();\nb.Display();",
-        "prompt": "`b.Show()` va `b.Display()` chaqirilganda natija qanday bo‘ladi?",
+        "prompt": "`b.Show()` va `b.Display()` chaqirilganda natija qanday bo'ladi?",
         "answer": "BaseDerivedDisplay"
     },
     {
         "id": 39,
         "type": "output_prediction",
         "snippet": "var numbers = new[] { 1, 2, 3 };\nint sum = 0;\nforeach (ref readonly var n in numbers)\n{\n    sum += n;\n}\nConsole.WriteLine(sum);",
-        "prompt": "`ref readonly` foreach orqali massiv yig‘indisi chiqarilganda natija nima bo‘ladi?",
+        "prompt": "`ref readonly` foreach orqali massiv yig'indisi chiqarilganda natija nima bo'ladi?",
         "answer": "6"
     },
     {
@@ -502,7 +502,7 @@
     {
         "id": 41,
         "type": "code_writing",
-        "prompt": "### 1. Kontaktlar kitobi konsol dasturi\n\nFoydalanuvchi kontakt qo‘shishi va ro‘yxatini ko‘rishi mumkin bo‘lgan konsol dasturini yarating.\n\nHar bir kontaktning `Name`, `PhoneNumber` va `Email` maydonlari bo‘ladi. Kontaktlar uchun `record` tipidan foydalaning.\n\nDastur quyidagilarni qo‘llab-quvvatlashi kerak:\n- Yangi kontakt qo‘shish\n- Barcha kontaktlarni quyidagi formatda chiqarish: `Name - PhoneNumber - Email`\n\nKontaktlar ro‘yxatini xotirada `List<Contact>` orqali saqlang. Buyruqlarni tanlash uchun sikl va `switch` expression ishlating.\n\nAgar kerak bo‘lsa, mantiqni bo‘lish uchun `partial` classdan foydalaning.",
+        "prompt": "### 1. Kontaktlar kitobi konsol dasturi\n\nFoydalanuvchi kontakt qo'shishi va ro'yxatini ko'rishi mumkin bo'lgan konsol dasturini yarating.\n\nHar bir kontaktning `Name`, `PhoneNumber` va `Email` maydonlari bo'ladi. Kontaktlar uchun `record` tipidan foydalaning.\n\nDastur quyidagilarni qo'llab-quvvatlashi kerak:\n- Yangi kontakt qo'shish\n- Barcha kontaktlarni quyidagi formatda chiqarish: `Name - PhoneNumber - Email`\n\nKontaktlar ro'yxatini xotirada `List<Contact>` orqali saqlang. Buyruqlarni tanlash uchun sikl va `switch` expression ishlating.\n\nAgar kerak bo'lsa, mantiqni bo'lish uchun `partial` classdan foydalaning.",
         "examples": [
             "Buyruq kiriting (add/list/exit): add\nIsm kiriting: Alice\nTelefon kiriting: 9981234567\nEmail kiriting: alice@mail.com\nBuyruq kiriting (add/list/exit): list\nAlice - 9981234567 - alice@mail.com\nBuyruq kiriting (add/list/exit): exit"
         ]
@@ -510,7 +510,7 @@
     {
         "id": 42,
         "type": "code_writing",
-        "prompt": "### 2. Polimorfizm yordamida shakllar yuzasini hisoblash\n\nTurli shakllarning yuzasini hisoblaydigan konsol dasturini yozing.\n\n- `Shape` nomli abstract class yarating va unda abstract `double GetArea()` metodini e’lon qiling.\n- Kamida 2 ta voris class yarating: `Circle` va `Rectangle`.\n- `GetArea()` metodini `override` qilib yozing.\n- Foydalanuvchidan qaysi shakl yuzasini hisoblashni so‘rang.\n\n`switch` expression va `virtual` metodlardan to‘g‘ri foydalaning.",
+        "prompt": "### 2. Polimorfizm yordamida shakllar yuzasini hisoblash\n\nTurli shakllarning yuzasini hisoblaydigan konsol dasturini yozing.\n\n- `Shape` nomli abstract class yarating va unda abstract `double GetArea()` metodini e'lon qiling.\n- Kamida 2 ta voris class yarating: `Circle` va `Rectangle`.\n- `GetArea()` metodini `override` qilib yozing.\n- Foydalanuvchidan qaysi shakl yuzasini hisoblashni so'rang.\n\n`switch` expression va `virtual` metodlardan to'g'ri foydalaning.",
         "examples": [
             "Shakl kiriting (circle/rectangle): circle\nRadius kiriting: 2.5\nYuza: 19.63",
             "Shakl kiriting (circle/rectangle): rectangle\nKenglik kiriting: 4\nBalandlik kiriting: 3\nYuza: 12"
@@ -519,7 +519,7 @@
     {
         "id": 43,
         "type": "code_writing",
-        "prompt": "### 3. Extension method yordamida telefon raqamini tekshirish\n\n`IsValidUzPhone(this string phone)` extension metodini yarating. U quyidagilarni tekshiradi:\n- Satr `998` bilan boshlanishi kerak\n- Va aniq 12 ta raqamdan iborat bo‘lishi kerak\n\nKonsol dasturida foydalanuvchidan raqam kiriting, tekshirib, `Valid` yoki `Invalid` deb chiqaring.\n\n`this string` extension sintaksisini to‘g‘ri ishlating va kodni `static` classda joylashtiring.",
+        "prompt": "### 3. Extension method yordamida telefon raqamini tekshirish\n\n`IsValidUzPhone(this string phone)` extension metodini yarating. U quyidagilarni tekshiradi:\n- Satr `998` bilan boshlanishi kerak\n- Va aniq 12 ta raqamdan iborat bo'lishi kerak\n\nKonsol dasturida foydalanuvchidan raqam kiriting, tekshirib, `Valid` yoki `Invalid` deb chiqaring.\n\n`this string` extension sintaksisini to'g'ri ishlating va kodni `static` classda joylashtiring.",
         "examples": [
             "Telefon raqamini kiriting: 998901234567\nValid",
             "Telefon raqamini kiriting: 9901234567\nInvalid",
@@ -529,7 +529,7 @@
     {
         "id": 44,
         "type": "code_writing",
-        "prompt": "### 4. `record struct` yordamida koordinata tahlili\n\n`Point` nomli `record struct` yarating, unda `X` va `Y` property bo‘lsin.\n\n`Classify(Point p)` metodini yozing, u quyidagilarni qaytaradi:\n- Agar X va Y 0 bo‘lsa: `\"Origin\"`\n- Agar Y 0 bo‘lsa: `\"X-axis\"`\n- Agar X 0 bo‘lsa: `\"Y-axis\"`\n- Aks holda: `\"Quadrant\"`\n\nPattern matching va switch expressionlardan foydalaning.",
+        "prompt": "### 4. `record struct` yordamida koordinata tahlili\n\n`Point` nomli `record struct` yarating, unda `X` va `Y` property bo'lsin.\n\n`Classify(Point p)` metodini yozing, u quyidagilarni qaytaradi:\n- Agar X va Y 0 bo'lsa: `\"Origin\"`\n- Agar Y 0 bo'lsa: `\"X-axis\"`\n- Agar X 0 bo'lsa: `\"Y-axis\"`\n- Aks holda: `\"Quadrant\"`\n\nPattern matching va switch expressionlardan foydalaning.",
         "examples": [
             "X ni kiriting: 0\nY ni kiriting: 0\nJoylashuv: Origin",
             "X ni kiriting: 5\nY ni kiriting: 0\nJoylashuv: X-axis",
@@ -539,10 +539,660 @@
     {
         "id": 45,
         "type": "code_writing",
-        "prompt": "### 5. `params` va `switch` yordamida oddiy kalkulyator\n\n`Calculate(string operation, params double[] values)` metodini yarating. U quyidagilarni qo‘llab-quvvatlashi kerak:\n- `sum`, `average`, `max`, `min`\n- `switch` expressiondan foydalaning\n- Natijani double ko‘rinishida qaytaring\n\nBo‘sh input kabi holatlarni ham to‘g‘ri ishlang.\n\nFoydalanuvchi operatsiya va sonlarni kiritadigan konsol dasturini yozing.",
+        "prompt": "### 5. `params` va `switch` yordamida oddiy kalkulyator\n\n`Calculate(string operation, params double[] values)` metodini yarating. U quyidagilarni qo'llab-quvvatlashi kerak:\n- `sum`, `average`, `max`, `min`\n- `switch` expressiondan foydalaning\n- Natijani double ko'rinishida qaytaring\n\nBo'sh input kabi holatlarni ham to'g'ri ishlang.\n\nFoydalanuvchi operatsiya va sonlarni kiritadigan konsol dasturini yozing.",
         "examples": [
             "Operatsiyani kiriting: sum\nQiymatlarni probel bilan ajratib kiriting: 3 5 2\nNatija: 10",
             "Operatsiyani kiriting: average\nQiymatlarni probel bilan ajratib kiriting: 4 8\nNatija: 6"
+        ]
+    },
+    {
+        "id": 46,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar list = new List<int> { 1, 2, 3, 4, 5 };\nvar queue = new Queue<int>(list);\nvar result = queue.Dequeue();\n```",
+        "codeAfter": "",
+        "prompt": "`Queue<T>` FIFO tartibda ishlaydi. Yuqoridagi kodda `result` ning qiymati nima bo'ladi?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`1`"
+            },
+            {
+                "id": "B",
+                "option": "`5`"
+            },
+            {
+                "id": "C",
+                "option": "`0`"
+            },
+            {
+                "id": "D",
+                "option": "Exception"
+            }
+        ],
+        "answer": [
+            "A"
+        ]
+    },
+    {
+        "id": 47,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar dict = new Dictionary<string, int>\n{\n    [\"apple\"] = 5,\n    [\"banana\"] = 3\n};\ndict.TryAdd(\"apple\", 10);\nConsole.WriteLine(dict[\"apple\"]);\n```",
+        "codeAfter": "",
+        "prompt": "`Dictionary<TKey, TValue>` da `TryAdd` metodining xususiyati nimada? Natija nima bo'ladi?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`10` - chunki yangi qiymat qo'shiladi"
+            },
+            {
+                "id": "B",
+                "option": "`5` - chunki mavjud key ni update qilmaydi"
+            },
+            {
+                "id": "C",
+                "option": "Exception - chunki duplicate key"
+            },
+            {
+                "id": "D",
+                "option": "`15` - chunki qiymatlar qo'shiladi"
+            }
+        ],
+        "answer": [
+            "B"
+        ]
+    },
+    {
+        "id": 48,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar numbers = new int[] { 1, 2, 3, 4, 5 };\nvar lastTwo = numbers[^2..];\nConsole.WriteLine(string.Join(\", \", lastTwo));\n```",
+        "codeAfter": "",
+        "prompt": "Index (`^`) va Range (`..`) operatorlaridan foydalanilgan kodda natija qanday bo'ladi?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`4, 5`"
+            },
+            {
+                "id": "B",
+                "option": "`3, 4`"
+            },
+            {
+                "id": "C",
+                "option": "`2, 3, 4, 5`"
+            },
+            {
+                "id": "D",
+                "option": "`5`"
+            }
+        ],
+        "answer": [
+            "A"
+        ]
+    },
+    {
+        "id": 49,
+        "type": "mcq",
+        "codeBefore": "```csharp\nspan<int> span = stackalloc int[3] { 1, 2, 3 };\nReadOnlySpan<int> readOnlySpan = span;\nvar memory = span.ToArray().AsMemory();\n```",
+        "codeAfter": "",
+        "prompt": "`Span<T>` va `Memory<T>` haqida qaysi fikr **to'g'ri**?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`Span<T>` faqat stack da ishlaydi"
+            },
+            {
+                "id": "B",
+                "option": "`Memory<T>` heap va stack ikkalasida ham ishlaydi"
+            },
+            {
+                "id": "C",
+                "option": "`ReadOnlySpan<T>` dan `Span<T>` ga implicit cast mumkin"
+            },
+            {
+                "id": "D",
+                "option": "`Memory<T>` ref struct hisoblanadi"
+            }
+        ],
+        "answer": [
+            "B"
+        ]
+    },
+    {
+        "id": 50,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar hashSet = new HashSet<int> { 1, 2, 3 };\nvar list = new List<int> { 2, 3, 4, 5 };\nhashSet.IntersectWith(list);\n```",
+        "codeAfter": "",
+        "prompt": "`HashSet<T>.IntersectWith()` operatsiyasidan keyin `hashSet` da qanday elementlar qoladi?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`{ 1, 2, 3, 4, 5 }`"
+            },
+            {
+                "id": "B",
+                "option": "`{ 2, 3 }`"
+            },
+            {
+                "id": "C",
+                "option": "`{ 1 }`"
+            },
+            {
+                "id": "D",
+                "option": "`{ 4, 5 }`"
+            }
+        ],
+        "answer": [
+            "B"
+        ]
+    },
+    {
+        "id": 51,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar stack = new Stack<string>();\nstack.Push(\"first\");\nstack.Push(\"second\");\nvar result = stack.Peek();\nstack.Pop();\nConsole.WriteLine($\"{result}, {stack.Count}\");\n```",
+        "codeAfter": "",
+        "prompt": "`Stack<T>` LIFO prinsipi bo'yicha ishlaydi. Yuqoridagi kodda natija nima?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`first, 1`"
+            },
+            {
+                "id": "B",
+                "option": "`second, 1`"
+            },
+            {
+                "id": "C",
+                "option": "`second, 0`"
+            },
+            {
+                "id": "D",
+                "option": "`first, 0`"
+            }
+        ],
+        "answer": [
+            "B"
+        ]
+    },
+    {
+        "id": 52,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar numbers = new int[] { 10, 20, 30, 40, 50 };\nvar range = 1..^1;\nvar slice = numbers[range];\n```",
+        "codeAfter": "",
+        "prompt": "Range operatori `1..^1` nimani anglatadi va `slice` da qanday qiymatlar bo'ladi?",
+        "options": [
+            {
+                "id": "A",
+                "option": "1-indexdan oxirgi elementgacha: `{ 20, 30, 40, 50 }`"
+            },
+            {
+                "id": "B",
+                "option": "1-indexdan oxirgi elementni hisobga olmaganda: `{ 20, 30, 40 }`"
+            },
+            {
+                "id": "C",
+                "option": "Faqat 1-index: `{ 20 }`"
+            },
+            {
+                "id": "D",
+                "option": "Kompilyatsiya xatosi"
+            }
+        ],
+        "answer": [
+            "B"
+        ]
+    },
+    {
+        "id": 53,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar lookup = new string[] { \"a\", \"bb\", \"ccc\", \"a\", \"bb\" }\n    .ToLookup(x => x.Length);\nvar result = lookup[2].Count();\n```",
+        "codeAfter": "",
+        "prompt": "`ILookup<TKey, TElement>` haqida qaysi fikr to'g'ri va yuqoridagi kodda `result` nima?",
+        "options": [
+            {
+                "id": "A",
+                "option": "Lookup bir key uchun bitta value saqlaydi, result = 1"
+            },
+            {
+                "id": "B",
+                "option": "Lookup bir key uchun ko'p value saqlaydi, result = 2"
+            },
+            {
+                "id": "C",
+                "option": "Lookup faqat unique valuelar saqlaydi, result = 1"
+            },
+            {
+                "id": "D",
+                "option": "Exception - key topilmadi"
+            }
+        ],
+        "answer": [
+            "B"
+        ]
+    },
+    {
+        "id": 54,
+        "type": "mcq",
+        "codeBefore": "```csharp\nSpan<byte> buffer = stackalloc byte[1024];\nvar memory = new Memory<byte>(new byte[1024]);\nvar span1 = buffer.Slice(10, 100);\nvar span2 = memory.Span.Slice(10, 100);\n```",
+        "codeAfter": "",
+        "prompt": "`Span<T>.Slice()` va `Memory<T>.Span` haqida qaysi fikr **noto'g'ri**?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`Slice()` yangi Span yaratadi, copy emas"
+            },
+            {
+                "id": "B",
+                "option": "`Memory<T>.Span` property orqali Span olish mumkin"
+            },
+            {
+                "id": "C",
+                "option": "`span1` stack da, `span2` heap da joylashgan"
+            },
+            {
+                "id": "D",
+                "option": "`Slice()` operatsiyasi xotira allocate qiladi"
+            }
+        ],
+        "answer": [
+            "D"
+        ]
+    },
+    {
+        "id": 55,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar priorityQueue = new PriorityQueue<string, int>();\npriorityQueue.Enqueue(\"task1\", 3);\npriorityQueue.Enqueue(\"task2\", 1);\npriorityQueue.Enqueue(\"task3\", 2);\nvar result = priorityQueue.Dequeue();\n```",
+        "codeAfter": "",
+        "prompt": "`PriorityQueue<TElement, TPriority>` eng kichik priority ni birinchi chiqaradi. `result` nima bo'ladi?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`task1`"
+            },
+            {
+                "id": "B",
+                "option": "`task2`"
+            },
+            {
+                "id": "C",
+                "option": "`task3`"
+            },
+            {
+                "id": "D",
+                "option": "Exception"
+            }
+        ],
+        "answer": [
+            "B"
+        ]
+    },
+    {
+        "id": 56,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`Dictionary<TKey, TValue>` da key uchun `null` qiymat qo'yish mumkin, agar `TKey` nullable type bo'lsa.",
+        "answer": "true"
+    },
+    {
+        "id": 57,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`HashSet<T>` collection elementlarning unique bo'lishini kafolatlaydi va tartibni saqlaydi.",
+        "answer": "false"
+    },
+    {
+        "id": 58,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "Index operator `^0` massivning oxirgi elementini anglatadi.",
+        "answer": "false"
+    },
+    {
+        "id": 59,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "Range operator `..` faqat array va string uchun ishlatiladi, boshqa collectionlar uchun emas.",
+        "answer": "false"
+    },
+    {
+        "id": 60,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`Span<T>` ref struct bo'lgani uchun heap da saqlanishi mumkin emas.",
+        "answer": "true"
+    },
+    {
+        "id": 61,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`Memory<T>` async metodlarda ishlatish mumkin, lekin `Span<T>` ishlatib bo'lmaydi.",
+        "answer": "true"
+    },
+    {
+        "id": 62,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`Queue<T>` va `Stack<T>` ikkalasi ham generic collection bo'lib, thread-safe emas.",
+        "answer": "true"
+    },
+    {
+        "id": 63,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`SortedDictionary<TKey, TValue>` elementlarni key bo'yicha tartiblab saqlaydi.",
+        "answer": "true"
+    },
+    {
+        "id": 64,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "Range operator `numbers[2..]` 2-indexdan boshlab oxirigacha bo'lgan elementlarni oladi.",
+        "answer": "true"
+    },
+    {
+        "id": 65,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`LinkedList<T>` collection random access ni qo'llab-quvvatlaydi va indexer operator `[]` ga ega.",
+        "answer": "false"
+    },
+    {
+        "id": 66,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`ReadOnlySpan<T>` dan `Span<T>` ga implicit conversion mumkin.",
+        "answer": "false"
+    },
+    {
+        "id": 67,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`CollectionsMarshal.AsSpan()` metodi `List<T>` ni `Span<T>` ga xavfsiz tarzda convert qiladi.",
+        "answer": "true"
+    },
+    {
+        "id": 68,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "Spread operator `..` C# 12 da collection expressions uchun ishlatiladi.",
+        "answer": "true"
+    },
+    {
+        "id": 69,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`ConcurrentDictionary<TKey, TValue>` thread-safe bo'lib, lock-free operatsiyalarni qo'llab-quvvatlaydi.",
+        "answer": "true"
+    },
+    {
+        "id": 70,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`Memory<T>` va `ReadOnlyMemory<T>` ikkalasi ham ref struct hisoblanadi.",
+        "answer": "false"
+    },
+    {
+        "id": 71,
+        "type": "fill",
+        "codeWithBlank": "var numbers = new List<int> { 1, 2, 3, 4, 5 };\nvar result = numbers.GetRange(______, ______);\n// result should be { 2, 3, 4 }",
+        "prompt": "`List<T>.GetRange(int index, int count)` metodida bo'sh joylarni to'ldiring, shunda natija `{ 2, 3, 4 }` bo'lsin.",
+        "answer": "var numbers = new List<int> { 1, 2, 3, 4, 5 };\nvar result = numbers.GetRange(1, 3);\n// result should be { 2, 3, 4 }"
+    },
+    {
+        "id": 72,
+        "type": "fill",
+        "codeWithBlank": "var dict = new Dictionary<string, int> { [\"a\"] = 1, [\"b\"] = 2 };\nvar success = dict.________(\"c\", ______);\n// Agar key mavjud bo'lmasa, default qiymat qaytarsin",
+        "prompt": "`Dictionary<TKey, TValue>` da key mavjud bo'lmasa default qiymat qaytaradigan metod va qiymatni yozing.",
+        "answer": "var dict = new Dictionary<string, int> { [\"a\"] = 1, [\"b\"] = 2 };\nvar success = dict.TryGetValue(\"c\", out var value);\n// Agar key mavjud bo'lmasa, default qiymat qaytarsin"
+    },
+    {
+        "id": 73,
+        "type": "fill",
+        "codeWithBlank": "var text = \"Hello World\";\nvar slice = text[______];\n// slice should be \"World\"",
+        "prompt": "String dan \"World\" so'zini olish uchun Range operatorini yozing.",
+        "answer": "var text = \"Hello World\";\nvar slice = text[6..];\n// slice should be \"World\""
+    },
+    {
+        "id": 74,
+        "type": "fill",
+        "codeWithBlank": "Span<int> span = stackalloc int[5];\nspan.Fill(________);\nvar slice = span.Slice(______, ______);\n// Fill with 42, then get middle 3 elements",
+        "prompt": "`Span<T>` ni 42 bilan to'ldiring va o'rtadagi 3 ta elementni oling.",
+        "answer": "Span<int> span = stackalloc int[5];\nspan.Fill(42);\nvar slice = span.Slice(1, 3);\n// Fill with 42, then get middle 3 elements"
+    },
+    {
+        "id": 75,
+        "type": "fill",
+        "codeWithBlank": "var queue = new PriorityQueue<string, int>();\nqueue.Enqueue(\"low\", ______);\nqueue.Enqueue(\"high\", ______);\n// \"high\" should be dequeued first",
+        "prompt": "`PriorityQueue` da \"high\" birinchi chiqishi uchun priority qiymatlarini yozing.",
+        "answer": "var queue = new PriorityQueue<string, int>();\nqueue.Enqueue(\"low\", 10);\nqueue.Enqueue(\"high\", 1);\n// \"high\" should be dequeued first"
+    },
+    {
+        "id": 76,
+        "type": "fill",
+        "codeWithBlank": "var hashSet1 = new HashSet<int> { 1, 2, 3 };\nvar hashSet2 = new HashSet<int> { 3, 4, 5 };\nhashSet1.________(hashSet2);\n// Result: { 1, 2, 3, 4, 5 }",
+        "prompt": "Ikki `HashSet` ni birlashtirib, barcha unique elementlarni olish uchun metod nomini yozing.",
+        "answer": "var hashSet1 = new HashSet<int> { 1, 2, 3 };\nvar hashSet2 = new HashSet<int> { 3, 4, 5 };\nhashSet1.UnionWith(hashSet2);\n// Result: { 1, 2, 3, 4, 5 }"
+    },
+    {
+        "id": 77,
+        "type": "fill",
+        "codeWithBlank": "var list1 = new List<int> { 1, 2 };\nvar list2 = new List<int> { 3, 4 };\nvar combined = [______];\n// Use collection expression with spread",
+        "prompt": "C# 12 collection expression da spread operator yordamida ikki listni birlashtiring.",
+        "answer": "var list1 = new List<int> { 1, 2 };\nvar list2 = new List<int> { 3, 4 };\nvar combined = [..list1, ..list2];\n// Use collection expression with spread"
+    },
+    {
+        "id": 78,
+        "type": "fill",
+        "codeWithBlank": "var numbers = new int[] { 1, 2, 3, 4, 5 };\nvar memory = numbers.AsMemory();\nvar slice = memory.Slice(______, ______);\n// Get elements 2, 3, 4",
+        "prompt": "`Memory<T>` dan elementlar 2, 3, 4 ni olish uchun `Slice` parametrlarini yozing.",
+        "answer": "var numbers = new int[] { 1, 2, 3, 4, 5 };\nvar memory = numbers.AsMemory();\nvar slice = memory.Slice(1, 3);\n// Get elements 2, 3, 4"
+    },
+    {
+        "id": 79,
+        "type": "fill",
+        "codeWithBlank": "var sortedDict = new SortedDictionary<int, string>();\nsortedDict.Add(3, \"three\");\nsortedDict.Add(1, \"one\");\nsortedDict.Add(2, \"two\");\nvar firstKey = sortedDict.________.________;\n// Get the first key",
+        "prompt": "`SortedDictionary` da birinchi key ni olish uchun property chain ni yozing.",
+        "answer": "var sortedDict = new SortedDictionary<int, string>();\nsortedDict.Add(3, \"three\");\nsortedDict.Add(1, \"one\");\nsortedDict.Add(2, \"two\");\nvar firstKey = sortedDict.Keys.First();\n// Get the first key"
+    },
+    {
+        "id": 80,
+        "type": "fill",
+        "codeWithBlank": "ReadOnlySpan<char> text = \"Hello\";\nvar index = text.IndexOf(________);\nif (index >= 0)\n{\n    var found = text[index];\n}",
+        "prompt": "`ReadOnlySpan<char>` da 'l' harfini qidirish uchun parametrni yozing.",
+        "answer": "ReadOnlySpan<char> text = \"Hello\";\nvar index = text.IndexOf('l');\nif (index >= 0)\n{\n    var found = text[index];\n}"
+    },
+    {
+        "id": 81,
+        "type": "error_spotting",
+        "codeWithError": "var list = new List<int> { 1, 2, 3, 4, 5 };\nvar span = list.AsSpan();\nlist.Add(6);\nConsole.WriteLine(span.Length);",
+        "prompt": "`List<T>` ga element qo'shgandan so'ng `Span<T>` ishlatishda xatolik bor. Xatoni toping va tushuntiring.",
+        "answer": "var list = new List<int> { 1, 2, 3, 4, 5 };\nvar span = CollectionsMarshal.AsSpan(list);\n// list.Add(6); // Bu dangerous - span invalid bo'ladi\nConsole.WriteLine(span.Length);"
+    },
+    {
+        "id": 82,
+        "type": "error_spotting",
+        "codeWithError": "var dict = new Dictionary<string?, int>();\ndict.Add(null, 1);\ndict.Add(null, 2);\nConsole.WriteLine(dict.Count);",
+        "prompt": "`Dictionary` da `null` key bilan bog'liq xatolikni toping va to'g'rilang.",
+        "answer": "var dict = new Dictionary<string?, int>();\ndict.Add(null, 1);\n// dict.Add(null, 2); // Exception - duplicate key\ndict[null] = 2; // Bu to'g'ri - key ni update qiladi\nConsole.WriteLine(dict.Count);"
+    },
+    {
+        "id": 83,
+        "type": "error_spotting",
+        "codeWithError": "var numbers = new int[] { 1, 2, 3, 4, 5 };\nvar range = 2..^0;\nvar slice = numbers[range];\nConsole.WriteLine(slice.Length);",
+        "prompt": "Range operatorida xatolik bor. `^0` nima anglatadi va qanday to'g'rilash kerak?",
+        "answer": "var numbers = new int[] { 1, 2, 3, 4, 5 };\nvar range = 2..^1; // ^0 is beyond end, ^1 is last element\nvar slice = numbers[range];\nConsole.WriteLine(slice.Length);"
+    },
+    {
+        "id": 84,
+        "type": "error_spotting",
+        "codeWithError": "async Task ProcessAsync()\n{\n    Span<byte> buffer = stackalloc byte[1024];\n    await SomeAsyncMethod(buffer);\n}",
+        "prompt": "`Span<T>` ni async metod ichida ishlatishdagi xatolikni toping va to'g'rilang.",
+        "answer": "async Task ProcessAsync()\n{\n    Memory<byte> buffer = new byte[1024];\n    await SomeAsyncMethod(buffer);\n    // Yoki: var buffer = new byte[1024].AsMemory();\n}"
+    },
+    {
+        "id": 85,
+        "type": "error_spotting",
+        "codeWithError": "var queue = new Queue<int>();\nqueue.Enqueue(1);\nqueue.Enqueue(2);\nvar result = queue.Peek();\nqueue.Clear();\nvar next = queue.Peek();",
+        "prompt": "Bo'sh `Queue` dan element olishdagi xatolikni toping va to'g'rilang.",
+        "answer": "var queue = new Queue<int>();\nqueue.Enqueue(1);\nqueue.Enqueue(2);\nvar result = queue.Peek();\nqueue.Clear();\nvar next = queue.Count > 0 ? queue.Peek() : 0; // Check before peek"
+    },
+    {
+        "id": 86,
+        "type": "error_spotting",
+        "codeWithError": "var numbers = new List<int> { 1, 2, 3 };\nvar combined = [numbers, 4, 5];\nConsole.WriteLine(combined.Count);",
+        "prompt": "Collection expression da spread operatorisiz ishlatishdagi xatolikni toping.",
+        "answer": "var numbers = new List<int> { 1, 2, 3 };\nvar combined = [..numbers, 4, 5]; // Need spread operator\nConsole.WriteLine(combined.Count);"
+    },
+    {
+        "id": 87,
+        "type": "error_spotting",
+        "codeWithError": "ReadOnlySpan<int> span = new int[] { 1, 2, 3 };\nspan[0] = 10;\nConsole.WriteLine(span[0]);",
+        "prompt": "`ReadOnlySpan<T>` da elementni o'zgartirishdagi xatolikni toping.",
+        "answer": "Span<int> span = new int[] { 1, 2, 3 }; // Use Span<T> instead\nspan[0] = 10;\nConsole.WriteLine(span[0]);"
+    },
+    {
+        "id": 88,
+        "type": "error_spotting",
+        "codeWithError": "var stack = new Stack<string>();\nstack.Push(\"first\");\nstack.Push(\"second\");\nvar items = stack.ToArray();\nConsole.WriteLine(items[0]);",
+        "prompt": "`Stack<T>.ToArray()` metodining natijasida elementlar tartibini to'g'ri tushuntiring.",
+        "answer": "var stack = new Stack<string>();\nstack.Push(\"first\");\nstack.Push(\"second\");\nvar items = stack.ToArray();\n// items[0] is \"second\" (LIFO order)\nConsole.WriteLine(items[0]); // Prints \"second\""
+    },
+    {
+        "id": 89,
+        "type": "error_spotting",
+        "codeWithError": "var text = \"Hello World\";\nvar slice = text[5..^5];\nConsole.WriteLine(slice);",
+        "prompt": "String slicing da index va range xatoligini toping va to'g'rilang.",
+        "answer": "var text = \"Hello World\";\nvar slice = text[6..^0]; // Start from 6 (space after Hello), go to end\n// Or: var slice = text[6..]; for \"World\"\nConsole.WriteLine(slice);"
+    },
+    {
+        "id": 90,
+        "type": "error_spotting",
+        "codeWithError": "var memory = new Memory<int>();\nvar span = memory.Span;\nspan[0] = 42;\nConsole.WriteLine(span[0]);",
+        "prompt": "Bo'sh `Memory<T>` dan `Span<T>` olish va ishlatishdagi xatolikni toping.",
+        "answer": "var memory = new Memory<int>(new int[10]); // Initialize with array\nvar span = memory.Span;\nspan[0] = 42;\nConsole.WriteLine(span[0]);"
+    },
+    {
+        "id": 91,
+        "type": "output_prediction",
+        "snippet": "var dict = new Dictionary<int, string> { [1] = \"one\", [2] = \"two\" };\ndict.TryAdd(1, \"ONE\");\ndict.TryAdd(3, \"three\");\nConsole.WriteLine($\"{dict[1]}, {dict.Count}\");",
+        "prompt": "`Dictionary.TryAdd()` metodi mavjud key uchun qanday ishlaydi?",
+        "answer": "one, 3"
+    },
+    {
+        "id": 92,
+        "type": "output_prediction",
+        "snippet": "var numbers = new int[] { 10, 20, 30, 40, 50 };\nvar slice1 = numbers[1..4];\nvar slice2 = numbers[^3..^1];\nConsole.WriteLine($\"{slice1.Length}, {slice2.Length}\");",
+        "prompt": "Range operatorlari bilan slice olishda uzunliklar qanday bo'ladi?",
+        "answer": "3, 2"
+    },
+    {
+        "id": 93,
+        "type": "output_prediction",
+        "snippet": "var hashSet = new HashSet<int> { 1, 2, 3, 1, 2 };\nConsole.WriteLine(hashSet.Count);\nvar list = new List<int> { 1, 2, 3, 1, 2 };\nConsole.WriteLine(list.Count);",
+        "prompt": "`HashSet` va `List` da duplicate elementlar qanday ishlanadi?",
+        "answer": "3\n5"
+    },
+    {
+        "id": 94,
+        "type": "output_prediction",
+        "snippet": "Span<int> span = stackalloc int[3] { 1, 2, 3 };\nspan.Reverse();\nvar array = span.ToArray();\nConsole.WriteLine(string.Join(\", \", array));",
+        "prompt": "`Span<T>.Reverse()` metodining natijasi qanday bo'ladi?",
+        "answer": "3, 2, 1"
+    },
+    {
+        "id": 95,
+        "type": "output_prediction",
+        "snippet": "var queue = new Queue<char>();\nforeach (char c in \"ABC\")\n    queue.Enqueue(c);\nwhile (queue.Count > 0)\n    Console.Write(queue.Dequeue());",
+        "prompt": "`Queue<T>` FIFO tartibda elementlarni qanday chiqaradi?",
+        "answer": "ABC"
+    },
+    {
+        "id": 96,
+        "type": "output_prediction",
+        "snippet": "var stack = new Stack<char>();\nforeach (char c in \"ABC\")\n    stack.Push(c);\nwhile (stack.Count > 0)\n    Console.Write(stack.Pop());",
+        "prompt": "`Stack<T>` LIFO tartibda elementlarni qanday chiqaradi?",
+        "answer": "CBA"
+    },
+    {
+        "id": 97,
+        "type": "output_prediction",
+        "snippet": "var list1 = new List<int> { 1, 2 };\nvar list2 = new List<int> { 3, 4 };\nvar combined = [..list1, 5, ..list2];\nConsole.WriteLine(string.Join(\", \", combined));",
+        "prompt": "Collection expression da spread operator qanday ishlaydi?",
+        "answer": "1, 2, 5, 3, 4"
+    },
+    {
+        "id": 98,
+        "type": "output_prediction",
+        "snippet": "var priorityQueue = new PriorityQueue<string, int>();\npriorityQueue.Enqueue(\"C\", 3);\npriorityQueue.Enqueue(\"A\", 1);\npriorityQueue.Enqueue(\"B\", 2);\nConsole.WriteLine(priorityQueue.Dequeue());",
+        "prompt": "`PriorityQueue` eng kichik priority ni birinchi chiqaradi. Natija nima?",
+        "answer": "A"
+    },
+    {
+        "id": 99,
+        "type": "output_prediction",
+        "snippet": "ReadOnlySpan<char> text = \"Hello World\";\nvar index = text.LastIndexOf('l');\nConsole.WriteLine($\"{index}, {text[index]}\");",
+        "prompt": "`ReadOnlySpan<char>` da oxirgi 'l' harfining indexi va qiymati?",
+        "answer": "9, l"
+    },
+    {
+        "id": 100,
+        "type": "output_prediction",
+        "snippet": "var memory = \"Hello\".AsMemory();\nvar span = memory.Span;\nvar slice = span[1..^1];\nConsole.WriteLine(slice.ToString());",
+        "prompt": "String dan `Memory<T>` va `Span<T>` orqali slice olishda natija?",
+        "answer": "ell"
+    },
+    {
+        "id": 101,
+        "type": "code_writing",
+        "prompt": "### Generic Collection Manager\n\n`CollectionManager<T>` generic klassi yarating. Bu klass quyidagi collectionlarni boshqarsin:\n- `List<T>` - asosiy saqlash uchun\n- `HashSet<T>` - unique elementlar uchun\n- `Queue<T>` - FIFO operatsiyalar uchun\n\nMetodlar:\n- `AddItem(T item)` - barcha collectionlarga qo'shadi\n- `RemoveItem(T item)` - barcha collectionlardan olib tashlaydi\n- `GetUniqueCount()` - unique elementlar sonini qaytaradi\n- `GetNextInQueue()` - queue dan keyingi elementni oladi\n\n`where T : IEquatable<T>` constraint ishlating.",
+        "examples": [
+            "var manager = new CollectionManager<int>();\nmanager.AddItem(1);\nmanager.AddItem(1); // duplicate\nConsole.WriteLine(manager.GetUniqueCount()); // 1"
+        ]
+    },
+    {
+        "id": 102,
+        "type": "code_writing",
+        "prompt": "### Array Slicer with Range/Index\n\n`ArraySlicer` static klassi yarating. Quyidagi metodlarni implement qiling:\n- `GetSlice<T>(T[] array, Range range)` - Range operatori bilan slice oladi\n- `GetFromEnd<T>(T[] array, Index index)` - Oxiridan sanab index oladi\n- `GetMiddle<T>(T[] array)` - O'rtadagi elementlar (1/4 dan 3/4 gacha)\n- `SplitArray<T>(T[] array, int parts)` - Arrayni teng qismlarga bo'ladi\n\nHar bir metod appropriate range/index operatorlarini ishlating.",
+        "examples": [
+            "var numbers = new[] { 1, 2, 3, 4, 5, 6, 7, 8 };\nvar middle = ArraySlicer.GetMiddle(numbers); // { 3, 4, 5, 6 }\nvar fromEnd = ArraySlicer.GetFromEnd(numbers, ^2); // 7"
+        ]
+    },
+    {
+        "id": 103,
+        "type": "code_writing",
+        "prompt": "### Memory-Efficient Buffer Processor\n\n`BufferProcessor` klassi yarating. Katta massivlar bilan ishlash uchun `Memory<T>` va `Span<T>` dan foydalaning:\n\n- `ProcessChunks<T>(Memory<T> memory, int chunkSize, Action<Span<T>> processor)`\n- `FindPattern<T>(ReadOnlyMemory<T> memory, ReadOnlySpan<T> pattern) where T : IEquatable<T>`\n- `ReverseInPlace<T>(Memory<T> memory)`\n- `CopyWithTransform<T>(ReadOnlyMemory<T> source, Memory<T> destination, Func<T, T> transform)`\n\nStackalloc va heap allocation ni optimal tarzda ishlating.",
+        "examples": [
+            "var data = new int[1000].AsMemory();\nprocessor.ProcessChunks(data, 100, chunk => {\n    // Process each 100-element chunk\n});"
+        ]
+    },
+    {
+        "id": 104,
+        "type": "code_writing",
+        "prompt": "### Multi-Collection Data Store\n\n`DataStore<T>` klassi yarating, quyidagilarni implement qiling:\n- `Dictionary<string, T>` - key-value storage\n- `SortedDictionary<DateTime, T>` - chronological storage\n- `PriorityQueue<T, int>` - priority-based processing\n\nMetodlar:\n- `Store(string key, T value, int priority = 0)`\n- `GetByKey(string key)` - dictionary dan\n- `GetByTimeRange(DateTime start, DateTime end)` - time range bo'yicha\n- `ProcessNext()` - priority queue dan\n- `GetStatistics()` - har bir collection bo'yicha ma'lumot\n\nTurli collection typelarining xususiyatlarini to'g'ri ishlating.",
+        "examples": [
+            "var store = new DataStore<string>();\nstore.Store(\"task1\", \"Important task\", priority: 1);\nstore.Store(\"task2\", \"Urgent task\", priority: 10);\nvar next = store.ProcessNext(); // \"Important task\" (lower priority first)"
+        ]
+    },
+    {
+        "id": 105,
+        "type": "code_writing",
+        "prompt": "### Collection Expression Builder\n\nC# 12 collection expressions va spread operator ishlatib `CollectionBuilder` static klassi yarating:\n\n- `Combine<T>(params IEnumerable<T>[] collections)` - spread bilan birlashtirishc\n- `Interleave<T>(IEnumerable<T> first, IEnumerable<T> second)` - elementlarni navbatma-navbat\n- `CreateRange(int start, int count, int step = 1)` - arithmetic progression\n- `FilterAndCombine<T>(Func<T, bool> predicate, params IEnumerable<T>[] collections)`\n\nCollection expressions `[..]` sintaksisini ishlatib, performance optimized bo'lsin.",
+        "examples": [
+            "var list1 = [1, 2, 3];\nvar list2 = [4, 5, 6];\nvar combined = CollectionBuilder.Combine(list1, list2); // [1, 2, 3, 4, 5, 6]\nvar range = CollectionBuilder.CreateRange(0, 5, 2); // [0, 2, 4, 6, 8]"
         ]
     }
 ]
