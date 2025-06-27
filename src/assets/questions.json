@@ -1194,5 +1194,330 @@
         "examples": [
             "var list1 = [1, 2, 3];\nvar list2 = [4, 5, 6];\nvar combined = CollectionBuilder.Combine(list1, list2); // [1, 2, 3, 4, 5, 6]\nvar range = CollectionBuilder.CreateRange(0, 5, 2); // [0, 2, 4, 6, 8]"
         ]
+    },
+    {
+        "id": 106,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar numbers = new[] { 1, 2, 3, 4, 5, 6 };\nvar result = numbers\n    .Where(x => x % 2 == 0)\n    .Select(x => x * x)\n    .Sum();\n```",
+        "codeAfter": "",
+        "prompt": "LINQ chain operatsiyalari: juft sonlarni tanlab, kvadratga ko'tarib, yig'indisini hisoblamoqda. `result` nima bo'ladi?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`56` - (2² + 4² + 6² = 4 + 16 + 36)"
+            },
+            {
+                "id": "B",
+                "option": "`36` - faqat 6²"
+            },
+            {
+                "id": "C",
+                "option": "`91` - barcha sonlarning kvadrati yig'indisi"
+            },
+            {
+                "id": "D",
+                "option": "`12` - juft sonlar yig'indisi"
+            }
+        ],
+        "answer": [
+            "A"
+        ]
+    },
+    {
+        "id": 107,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar students = new[]\n{\n    new { Name = \"Ali\", Grade = 85 },\n    new { Name = \"Bobur\", Grade = 92 },\n    new { Name = \"Zara\", Grade = 78 }\n};\nvar result = students\n    .GroupBy(s => s.Grade >= 80 ? \"High\" : \"Low\")\n    .ToDictionary(g => g.Key, g => g.Count());\n```",
+        "codeAfter": "",
+        "prompt": "Students ni grade bo'yicha grouping qilib, har guruhda nechta student borligini hisoblamoqda. `result` nima?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`{ \"High\": 2, \"Low\": 1 }` - 80+ va 80- bo'yicha guruhlash"
+            },
+            {
+                "id": "B",
+                "option": "`{ \"High\": 1, \"Low\": 2 }` - teskari hisoblash"
+            },
+            {
+                "id": "C",
+                "option": "`{ \"85\": 1, \"92\": 1, \"78\": 1 }` - har grade bo'yicha"
+            },
+            {
+                "id": "D",
+                "option": "Exception - anonymous type bilan muammo"
+            }
+        ],
+        "answer": [
+            "A"
+        ]
+    },
+    {
+        "id": 108,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar list1 = new[] { 1, 2, 3, 4 };\nvar list2 = new[] { 3, 4, 5, 6 };\nvar union = list1.Union(list2).OrderBy(x => x);\nvar intersect = list1.Intersect(list2);\nConsole.WriteLine($\"{union.Count()}, {intersect.Count()}\");\n```",
+        "codeAfter": "",
+        "prompt": "Set operatsiyalari: `Union` barcha unique elementlar, `Intersect` umumiy elementlar. Natija?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`6, 2` - union: {1,2,3,4,5,6}, intersect: {3,4}"
+            },
+            {
+                "id": "B",
+                "option": "`8, 4` - barcha elementlar va duplicate"
+            },
+            {
+                "id": "C",
+                "option": "`4, 2` - faqat birinchi array"
+            },
+            {
+                "id": "D",
+                "option": "`6, 0` - intersection yo'q"
+            }
+        ],
+        "answer": [
+            "A"
+        ]
+    },
+    {
+        "id": 109,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar data = new[] { \"apple\", \"banana\", \"apricot\", \"cherry\" };\nvar result = data\n    .Where(x => x.StartsWith(\"a\"))\n    .OrderByDescending(x => x.Length)\n    .ThenBy(x => x)\n    .First();\n```",
+        "codeAfter": "",
+        "prompt": "Multi-level sorting: avval uzunlik bo'yicha kamayish, keyin alfavit bo'yicha o'sish. Birinchi element?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`\"apricot\"` - eng uzun 'a' bilan boshlanuvchi"
+            },
+            {
+                "id": "B",
+                "option": "`\"apple\"` - alfabetik jihatdan birinchi"
+            },
+            {
+                "id": "C",
+                "option": "`\"banana\"` - eng uzun"
+            },
+            {
+                "id": "D",
+                "option": "Exception - 'a' bilan boshlanuvchi yo'q"
+            }
+        ],
+        "answer": [
+            "A"
+        ]
+    },
+    {
+        "id": 110,
+        "type": "mcq",
+        "codeBefore": "```csharp\nvar query = from n in Enumerable.Range(1, 10)\n            let square = n * n\n            where square % 2 == 0\n            select new { Number = n, Square = square };\nvar result = query.Take(3).Sum(x => x.Square);\n```",
+        "codeAfter": "",
+        "prompt": "Query syntax: `let` keyword va deferred execution. Birinchi 3 ta juft kvadratning yig'indisi?",
+        "options": [
+            {
+                "id": "A",
+                "option": "`56` - (4 + 16 + 36 from 2², 4², 6²)"
+            },
+            {
+                "id": "B",
+                "option": "`30` - (1² + 2² + 3² ning jufti)"
+            },
+            {
+                "id": "C",
+                "option": "`20` - (2 + 4 + 6)²"
+            },
+            {
+                "id": "D",
+                "option": "`84` - barcha juft kvadratlar"
+            }
+        ],
+        "answer": [
+            "A"
+        ]
+    },
+    {
+        "id": 111,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "LINQ da `Where().Select()` chain `Select().Where()` bilan bir xil natija beradi, faqat performance farq qilishi mumkin.",
+        "answer": "false"
+    },
+    {
+        "id": 112,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`IEnumerable<T>` da LINQ operatsiyalari deferred execution qo'llaydi, ya'ni `ToList()` chaqirilgunga qadar execute bo'lmaydi.",
+        "answer": "true"
+    },
+    {
+        "id": 113,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`GroupBy()` metodi natijasi `IGrouping<TKey, TElement>` tipidagi elementlardan iborat `IEnumerable` qaytaradi.",
+        "answer": "true"
+    },
+    {
+        "id": 114,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "`First()` va `FirstOrDefault()` farqi shundaki, birinchisi exception beradi, ikkinchisi default qiymat qaytaradi.",
+        "answer": "true"
+    },
+    {
+        "id": 115,
+        "type": "true_false",
+        "codeBefore": "",
+        "codeAfter": "",
+        "prompt": "LINQ query syntax faqat `IEnumerable<T>` bilan ishlaydi, `IQueryable<T>` bilan ishlatib bo'lmaydi.",
+        "answer": "false"
+    },
+    {
+        "id": 116,
+        "type": "fill",
+        "codeWithBlank": "var numbers = new[] { 1, 2, 3, 4, 5 };\nvar result = numbers\n    .________(x => x > 2)\n    .________(x => x * 2)\n    .________();\n// Result should be [6, 8, 10]",
+        "prompt": "LINQ chain: 2 dan katta sonlarni filterlash, 2 ga ko'paytirish, array ga aylantirish.",
+        "answer": "var numbers = new[] { 1, 2, 3, 4, 5 };\nvar result = numbers\n    .Where(x => x > 2)\n    .Select(x => x * 2)\n    .ToArray();\n// Result should be [6, 8, 10]"
+    },
+    {
+        "id": 117,
+        "type": "fill",
+        "codeWithBlank": "var words = new[] { \"hello\", \"world\", \"linq\", \"query\" };\nvar grouped = words\n    .________(w => w.Length)\n    .________(g => g.Key, g => g.______());\n// Group by length, then create dictionary with counts",
+        "prompt": "So'zlarni uzunlik bo'yicha guruhlab, har guruhda nechta element borligini dictionary sifatida qaytaring.",
+        "answer": "var words = new[] { \"hello\", \"world\", \"linq\", \"query\" };\nvar grouped = words\n    .GroupBy(w => w.Length)\n    .ToDictionary(g => g.Key, g => g.Count());\n// Group by length, then create dictionary with counts"
+    },
+    {
+        "id": 118,
+        "type": "fill",
+        "codeWithBlank": "var source = Enumerable.Range(1, 100);\nvar result = source\n    .________(10)        // Skip first 10\n    .________(5)         // Take next 5\n    .________(x => x % 2 == 1)  // Only odd numbers\n    .Sum();",
+        "prompt": "Pagination va filtering: birinchi 10 tani o'tkazib yuborish, keyingi 5 tani olish, faqat toqlarini yig'ish.",
+        "answer": "var source = Enumerable.Range(1, 100);\nvar result = source\n    .Skip(10)        // Skip first 10\n    .Take(5)         // Take next 5\n    .Where(x => x % 2 == 1)  // Only odd numbers\n    .Sum();"
+    },
+    {
+        "id": 119,
+        "type": "fill",
+        "codeWithBlank": "var people = new[]\n{\n    new { Name = \"Ali\", Age = 25 },\n    new { Name = \"Sara\", Age = 30 }\n};\nvar result = people\n    .________(p => p.Age > 20)\n    .________(p => ________);\n// Check if any person older than 20, then check if all are older than 18",
+        "prompt": "Quantifier methods: biror kishi 20 yoshdan katta bo'lsa, barcha kishilar 18 dan katta ekanligini tekshiring.",
+        "answer": "var people = new[]\n{\n    new { Name = \"Ali\", Age = 25 },\n    new { Name = \"Sara\", Age = 30 }\n};\nvar hasOlder = people.Any(p => p.Age > 20);\nvar allAdults = people.All(p => p.Age > 18);\n// Check if any person older than 20, then check if all are older than 18"
+    },
+    {
+        "id": 120,
+        "type": "fill",
+        "codeWithBlank": "var customers = new[] { \"Alice\", \"Bob\", \"Charlie\" };\nvar orders = new[] { \"Alice\", \"Alice\", \"Bob\", \"David\" };\nvar result = customers\n    .________(orders, c => c, o => o, (c, orderGroup) => \n        new { Customer = c, OrderCount = orderGroup.________ });\n// Group join to count orders per customer",
+        "prompt": "Group join: har bir customer uchun order sonini hisoblash. Ba'zi customerlarning orderi yo'q bo'lishi mumkin.",
+        "answer": "var customers = new[] { \"Alice\", \"Bob\", \"Charlie\" };\nvar orders = new[] { \"Alice\", \"Alice\", \"Bob\", \"David\" };\nvar result = customers\n    .GroupJoin(orders, c => c, o => o, (c, orderGroup) => \n        new { Customer = c, OrderCount = orderGroup.Count() });\n// Group join to count orders per customer"
+    },
+    {
+        "id": 121,
+        "type": "error_spotting",
+        "codeWithError": "var numbers = new[] { 1, 2, 3, 4, 5 };\nvar query = numbers.Where(x => x > 2);\nnumbers[0] = 10;\nvar result = query.ToList();\nConsole.WriteLine(result.Count);",
+        "prompt": "Deferred execution muammosi: query yaratilgandan keyin source data o'zgardi. Natija qanday bo'ladi?",
+        "answer": "var numbers = new[] { 1, 2, 3, 4, 5 };\nvar query = numbers.Where(x => x > 2);\n// query hali execute bo'lmagan (deferred)\nnumbers[0] = 10;  // source data o'zgardi\nvar result = query.ToList();  // endi execute bo'ladi: [10, 3, 4, 5]\nConsole.WriteLine(result.Count);  // 4"
+    },
+    {
+        "id": 122,
+        "type": "error_spotting",
+        "codeWithError": "var data = new[] { 1, 2, 3 };\nvar result = data\n    .Select(x => x * 2)\n    .Where(x => x > 3)\n    .First();\n// Should get first element > 3 after doubling",
+        "prompt": "LINQ chain mantiqan to'g'ri, lekin qiymatlarni tekshirib ko'ring. 4 dan katta birinchi element topiladi?",
+        "answer": "var data = new[] { 1, 2, 3 };\nvar result = data\n    .Select(x => x * 2)    // [2, 4, 6]\n    .Where(x => x > 3)     // [4, 6]\n    .First();              // 4\n// Natija: 4 (to'g'ri ishlaydi)"
+    },
+    {
+        "id": 123,
+        "type": "error_spotting",
+        "codeWithError": "var items = new List<int> { 1, 2, 3, 4, 5 };\nforeach (var item in items.Where(x => x % 2 == 0))\n{\n    items.Remove(item);\n}\nConsole.WriteLine(items.Count);",
+        "prompt": "Collection modification during enumeration xatosi. LINQ query execute bo'layotganda source collection o'zgartirilmoqda.",
+        "answer": "var items = new List<int> { 1, 2, 3, 4, 5 };\n// To'g'ri yondashuv: avval natijani materialize qiling\nvar toRemove = items.Where(x => x % 2 == 0).ToList();\nforeach (var item in toRemove)\n{\n    items.Remove(item);\n}\nConsole.WriteLine(items.Count);"
+    },
+    {
+        "id": 124,
+        "type": "error_spotting",
+        "codeWithError": "var numbers = new[] { 1, 2, 3 };\nvar result = numbers\n    .GroupBy(x => x % 2)\n    .Select(g => g.Sum())\n    .Single();",
+        "prompt": "`Single()` method faqat bitta element bo'lgan collection uchun ishlatiladi. Bu yerda nechta group bor?",
+        "answer": "var numbers = new[] { 1, 2, 3 };\nvar result = numbers\n    .GroupBy(x => x % 2)    // 2 ta group: {0: [2], 1: [1,3]}\n    .Select(g => g.Sum())   // [2, 4]\n    .ToArray();             // Single() o'rniga ToArray() yoki First()/Last()\n// Single() exception beradi chunki 2 ta element bor"
+    },
+    {
+        "id": 125,
+        "type": "error_spotting",
+        "codeWithError": "var words = new[] { \"apple\", \"banana\", null, \"cherry\" };\nvar result = words\n    .Where(w => w.Length > 5)\n    .Count();",
+        "prompt": "Null reference exception: array da `null` element bor va `Length` property access qilinmoqda.",
+        "answer": "var words = new[] { \"apple\", \"banana\", null, \"cherry\" };\nvar result = words\n    .Where(w => w != null && w.Length > 5)  // Null check kerak\n    .Count();\n// Yoki: .Where(w => w?.Length > 5)"
+    },
+    {
+        "id": 126,
+        "type": "output_prediction",
+        "snippet": "var numbers = new[] { 1, 2, 3, 4, 5 };\nvar result = numbers\n    .SelectMany(x => Enumerable.Repeat(x, x))\n    .Sum();\nConsole.WriteLine(result);",
+        "prompt": "`SelectMany` har raqamni o'sha raqam marta takrorlaydi. Masalan, 3 ni 3 marta: [3,3,3]. Yig'indi?",
+        "answer": "30"
+    },
+    {
+        "id": 127,
+        "type": "output_prediction",
+        "snippet": "var data = \"hello world\";\nvar result = data\n    .Where(c => char.IsLetter(c))\n    .GroupBy(c => c)\n    .OrderByDescending(g => g.Count())\n    .First()\n    .Key;\nConsole.WriteLine(result);",
+        "prompt": "String dagi eng ko'p uchraydigan harfni topish. `hello world` da qaysi harf eng ko'p?",
+        "answer": "l"
+    },
+    {
+        "id": 128,
+        "type": "output_prediction",
+        "snippet": "var list1 = new[] { 1, 2, 3 };\nvar list2 = new[] { 2, 3, 4 };\nvar result = list1.Zip(list2, (a, b) => a + b).ToArray();\nConsole.WriteLine(string.Join(\", \", result));",
+        "prompt": "`Zip` method ikki collection elementlarini juftlab birlashtiradi. Har juftikning yig'indisi?",
+        "answer": "3, 5, 7"
+    },
+    {
+        "id": 129,
+        "type": "output_prediction",
+        "snippet": "var numbers = new[] { 5, 2, 8, 1, 9 };\nvar result = numbers\n    .TakeWhile(x => x != 8)\n    .Concat(numbers.SkipWhile(x => x != 8).Skip(1))\n    .ToArray();\nConsole.WriteLine(string.Join(\", \", result));",
+        "prompt": "8 raqamini olib tashlash: 8 gacha olib, 8 dan keyingilarni olib, birlashtirish. Natija?",
+        "answer": "5, 2, 1, 9"
+    },
+    {
+        "id": 130,
+        "type": "output_prediction",
+        "snippet": "var ranges = new[] { \n    Enumerable.Range(1, 3), \n    Enumerable.Range(4, 2) \n};\nvar flattened = ranges.SelectMany(r => r).Sum();\nConsole.WriteLine(flattened);",
+        "prompt": "`SelectMany` nested IEnumerable larni flatten qiladi. Range(1,3)=[1,2,3], Range(4,2)=[4,5]. Yig'indi?",
+        "answer": "15"
+    },
+    {
+        "id": 131,
+        "type": "code_writing",
+        "prompt": "### LINQ ma'lumotlar tahlili dasturi\n\nStudent ma'lumotlari bilan ishlaydigan konsol dasturini yozing.\n\n`Student` record yarating: `Name`, `Age`, `Grade`, `Subject` maydonlari bilan.\n\nQuyidagi LINQ operatsiyalarini implement qiling:\n- Barcha studentlarni grade bo'yicha guruhlab, har guruhda nechta student borligini chiqarish\n- Eng yosh va eng katta yoshdagi studentlarni topib chiqarish\n- Ma'lum subject bo'yicha o'rtacha grade ni hisoblash\n- Grade 80+ bo'lgan studentlarni name bo'yicha tartiblash\n\nDeferred execution va immediate execution farqini ko'rsating.",
+        "examples": [
+            "Students by grade groups:\nA: 3 students\nB: 5 students\n\nAge range: Min=18, Max=25\nMath average grade: 87.5"
+        ]
+    },
+    {
+        "id": 132,
+        "type": "code_writing",
+        "prompt": "### LINQ bilan matn tahlili\n\nMatn faylini tahlil qiladigan dastur yozing (yoki hardcoded string ishlating).\n\nQuyidagi funksiyalarni LINQ bilan implement qiling:\n- Eng uzun so'zni topish\n- Har harfning necha marta uchrashini hisoblash\n- Palindrom so'zlarni topish  \n- So'zlarni uzunlik bo'yicha guruhlab, har guruhdan eng kichik alfabetik tartibdagisini olish\n\nQuery syntax va method syntax ikkalasidan ham foydalaning.\n\n`SelectMany`, `GroupBy`, `OrderBy`, `Where` metodlarini ishlating.",
+        "examples": [
+            "Text: \"hello world level deed\"\nLongest word: world (5 letters)\nPalindromes: level, deed\nLetter 'l' appears 3 times"
+        ]
+    },
+    {
+        "id": 133,
+        "type": "code_writing",
+        "prompt": "### LINQ bilan e-commerce ma'lumotlari\n\n`Product`, `Order`, `Customer` recordlarini yarating.\n\nQuyidagi business logikani LINQ bilan yozing:\n- Eng ko'p sotilgan 5 ta mahsulot\n- Har bir customer ning jami xarid summasi\n- Oylik sotuvlar statistikasi (group by month)\n- Hech narsa sotib olmagan customerlar ro'yxati\n\n`Join`, `GroupJoin`, `Aggregate`, `Sum` metodlaridan foydalaning.\n\nNull safety va edge caselarni handle qiling (bo'sh collections, null values).",
+        "examples": [
+            "Top products:\n1. Laptop - 15 orders\n2. Phone - 12 orders\n\nCustomer spending:\nAli: $1,250\nSara: $890"
+        ]
+    },
+    {
+        "id": 134,
+        "type": "code_writing",
+        "prompt": "### LINQ Performance Comparison\n\nKatta collection lar bilan ishlash uchun performance test dasturini yozing.\n\nQuyidagilarni taqqoslang:\n- `Where().Count()` vs `Count(predicate)`\n- `Where().First()` vs `First(predicate)`  \n- `ToList().Where()` vs `Where().ToList()`\n- Deferred vs Immediate execution\n\n`Stopwatch` ishlatib, execution time ni o'lchang.\n\n1 million elementli `List<int>` yarating va turli LINQ operatsiyalarini test qiling.\n\nNatijalarni console ga formatted holda chiqaring.",
+        "examples": [
+            "Performance Test Results:\nWhere().Count(): 145ms\nCount(predicate): 98ms\n\nDeferred query creation: 0ms\nImmediate execution: 234ms"
+        ]
+    },
+    {
+        "id": 135,
+        "type": "code_writing",
+        "prompt": "### Custom LINQ Extension Methods\n\nO'zingizning LINQ extension methodlarini yarating:\n\n- `Batch<T>(this IEnumerable<T> source, int size)` - elementlarni chunk larga bo'lish\n- `DistinctBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector)` - key bo'yicha unique\n- `ForEach<T>(this IEnumerable<T> source, Action<T> action)` - har elementga action apply qilish\n- `IsEmpty<T>(this IEnumerable<T> source)` - collection bo'sh ekanligini tekshirish\n\nHar bir extension method uchun:\n- Null checking\n- Deferred execution (kerak bo'lsa)\n- `yield return` ishlatish\n- Generic constraints (kerak bo'lsa)\n\nTest kodini ham yozing.",
+        "examples": [
+            "var numbers = Enumerable.Range(1, 10);\nvar batches = numbers.Batch(3).ToList();\n// Result: [[1,2,3], [4,5,6], [7,8,9], [10]]\n\nvar people = GetPeople();\nvar unique = people.DistinctBy(p => p.Email);"
+        ]
     }
 ]
