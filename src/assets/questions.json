@@ -4,23 +4,23 @@
         "type": "mcq",
         "codeBefore": "```csharp\nbool IsLong(string? s) => s switch\n{\n    null                  => false,\n    { Length: > 5 and < 10 } => true,\n    _                     => false\n};\n```",
         "codeAfter": "",
-        "prompt": "Quyidagi chaqiruvlardan qaysi biri `true` natija qaytaradi?",
+        "prompt": "Quyidagi chaqiruvlardan qaysi biri `true` natija qaytaradi? (Pattern: uzunlik 5 dan katta VA 10 dan kichik bo'lishi kerak)",
         "options": [
             {
                 "id": "A",
-                "option": "`IsLong(\"123456\")`"
+                "option": "`IsLong(\"123456\")` - uzunlik 6"
             },
             {
                 "id": "B",
-                "option": "`IsLong(\"1234567890\")`"
+                "option": "`IsLong(\"1234567890\")` - uzunlik 10"
             },
             {
                 "id": "C",
-                "option": "`IsLong(null!)`"
+                "option": "`IsLong(null!)` - null qiymat"
             },
             {
                 "id": "D",
-                "option": "`IsLong(\"abcd\")`"
+                "option": "`IsLong(\"abcd\")` - uzunlik 4"
             }
         ],
         "answer": [
@@ -32,23 +32,23 @@
         "type": "mcq",
         "codeBefore": "```csharp\nvoid M(in int x, out int y, params object[] rest) { }\n```",
         "codeAfter": "",
-        "prompt": "Quyidagi funksiyani chaqirish usullaridan qaysi biri **noto'g'ri**?",
+        "prompt": "Quyidagi funksiyani chaqirish usullaridan qaysi biri **noto'g'ri**? (`in` parametr readonly, `out` parametr write-only)",
         "options": [
             {
                 "id": "A",
-                "option": "`M(5, out var y)`"
+                "option": "`M(5, out var y)` - literal `in` parametrga berilmoqda"
             },
             {
                 "id": "B",
-                "option": "`int a = 1; M(a, out a)`"
+                "option": "`int a = 1; M(a, out a)` - bir xil o'zgaruvchi `in` va `out` uchun"
             },
             {
                 "id": "C",
-                "option": "`M(in 5, out _, 1, 2)`"
+                "option": "`M(in 5, out _, 1, 2)` - `in` kalit so'zi bilan"
             },
             {
                 "id": "D",
-                "option": "`M(5, out var y, \"x\", 3)`"
+                "option": "`M(5, out var y, \"x\", 3)` - params bilan qo'shimcha argumentlar"
             }
         ],
         "answer": [
@@ -60,7 +60,7 @@
         "type": "mcq",
         "codeBefore": "```csharp\npublic record Point(int X, int Y);\nvar p = new Point(1,2) with { Y = 3 };\n```",
         "codeAfter": "",
-        "prompt": "`Point` haqida qaysi fikr **noto'g'ri**?",
+        "prompt": "Positional record `Point` haqida qaysi fikr **noto'g'ri**?",
         "options": [
             {
                 "id": "A",
@@ -68,15 +68,15 @@
             },
             {
                 "id": "B",
-                "option": "`record` tipida `ToString()` metodini o'zgartirish mumkin."
+                "option": "`record` tipida `ToString()` metodini override qilish mumkin."
             },
             {
                 "id": "C",
-                "option": "`with` operatori yangi obyekt yaratadi."
+                "option": "`with` operatori mavjud obyektdan yangi obyekt yaratadi."
             },
             {
                 "id": "D",
-                "option": "`Point` uchun parametrsiz konstruktor qo'shish mumkin."
+                "option": "Positional record uchun qo'shimcha parametrsiz konstruktor qo'shish mumkin."
             }
         ],
         "answer": [
@@ -92,7 +92,7 @@
         "options": [
             {
                 "id": "A",
-                "option": "`partial class` bir nechta faylda bo'lishi mumkin."
+                "option": "`partial class` bir nechta fayl bo'ylab bo'linishi mumkin."
             },
             {
                 "id": "B",
@@ -116,7 +116,7 @@
         "type": "mcq",
         "codeBefore": "```csharp\nvoid F(params int[] nums) { }\n```",
         "codeAfter": "",
-        "prompt": "`F(1, 2, new[]{3,4})` chaqirilganda nima sodir bo'ladi?",
+        "prompt": "`F(1, 2, new[]{3,4})` chaqirilganda nima sodir bo'ladi? (`params` faqat individual qiymatlar yoki bitta massiv qabul qiladi)",
         "options": [
             {
                 "id": "A",
@@ -124,43 +124,43 @@
             },
             {
                 "id": "B",
-                "option": "Ikki argument: `1,2` va massiv `[3,4]` uzatiladi."
+                "option": "Uch argument uzatiladi: `1`, `2`, va `int[]` massiv."
             },
             {
                 "id": "C",
-                "option": "Kompilyatsiya xatosi."
+                "option": "Kompilyatsiya xatosi - `int[]` ni `int` ga convert qilib bo'lmaydi."
             },
             {
                 "id": "D",
-                "option": "Ichki massiv bitta element sifatida qabul qilinadi."
+                "option": "Runtime exception - noto'g'ri argument tipi."
             }
         ],
         "answer": [
-            "A"
+            "C"
         ]
     },
     {
         "id": 6,
         "type": "mcq",
-        "codeBefore": "```csharp\npublic static TResult Combine<TSource, TResult>(TSource a, TSource b)\n    where TSource : ________, IComparable<TSource>\n    where TResult : TSource, new()\n{\n    // ...\n}\n```",
+        "codeBefore": "```csharp\npublic static TResult Combine<TSource, TResult>(TSource a, TSource b)\n    where TSource : ________, IComparable<TSource>\n    where TResult : TSource, new()\n{\n    // arifmetik operatorlar ishlatiladi: +, -, *, /\n}\n```",
         "codeAfter": "",
-        "prompt": "C# 12 da `TSource` uchun arifmetik operatorlardan foydalanish uchun qaysi generic cheklov kerak?",
+        "prompt": "C# 12 da `TSource` uchun arifmetik operatorlardan foydalanish uchun qaysi generic constraint kerak?",
         "options": [
             {
                 "id": "A",
-                "option": "`INumber<TSource>`"
+                "option": "`INumber<TSource>` - generic math interface"
             },
             {
                 "id": "B",
-                "option": "`struct`"
+                "option": "`struct` - value type constraint"
             },
             {
                 "id": "C",
-                "option": "`IArithmetic<TSource>`"
+                "option": "`IArithmetic<TSource>` - bunday interface yo'q"
             },
             {
                 "id": "D",
-                "option": "`class`"
+                "option": "`class` - reference type constraint"
             }
         ],
         "answer": [
@@ -172,7 +172,7 @@
         "type": "mcq",
         "codeBefore": "```csharp\npublic static class Extensions\n{\n    public static bool IsEven(this int number)\n    {\n        return (number % 2) == 0;\n    }\n\n    public bool IsOdd(int number)\n    {\n        return (number % 2) != 0;\n    }\n}\n```",
         "codeAfter": "",
-        "prompt": "Yuqoridagi kod haqida qaysi fikr **to'g'ri**?",
+        "prompt": "Extension methodlar haqida yuqoridagi kodda qaysi muammo bor?",
         "options": [
             {
                 "id": "A",
@@ -188,7 +188,7 @@
             },
             {
                 "id": "D",
-                "option": "`this int` extension methodda ishlatilmaydi."
+                "option": "`this int` kalit so'zi extension methodda kerak emas."
             }
         ],
         "answer": [
@@ -200,11 +200,11 @@
         "type": "mcq",
         "codeBefore": "```csharp\nfile interface IHelper\n{\n    void Help();\n}\n\n// In another file\n// class HelperImpl : IHelper { ... }\n```",
         "codeAfter": "",
-        "prompt": "Yuqoridagi `IHelper` haqida qaysi fikr **to'g'ri**?",
+        "prompt": "`file` modifier bilan e'lon qilingan `IHelper` haqida qaysi fikr **to'g'ri**?",
         "options": [
             {
                 "id": "A",
-                "option": "`IHelper` faqat shu faylda implementatsiya qilinishi mumkin."
+                "option": "`IHelper` faqat shu faylda ko'rinadi va implementatsiya qilinishi mumkin."
             },
             {
                 "id": "B",
@@ -226,13 +226,13 @@
     {
         "id": 9,
         "type": "mcq",
-        "codeBefore": "```csharp\npublic struct DataPoint\n{\n    public readonly int X;\n    public readonly int Y;\n    public DataPoint(int x, int y) => (X, Y) = (x, y);\n}\n\nvar d1 = new DataPoint(1,2);\nvar d2 = d1;\n\nd2 = new DataPoint(3,4);\nConsole.WriteLine(d1.X + \",\" + d1.Y);\n```",
+        "codeBefore": "```csharp\npublic struct DataPoint\n{\n    public readonly int X;\n    public readonly int Y;\n    public DataPoint(int x, int y) => (X, Y) = (x, y);\n}\n\nvar d1 = new DataPoint(1,2);\nvar d2 = d1;  // struct copy\n\nd2 = new DataPoint(3,4);\nConsole.WriteLine(d1.X + \",\" + d1.Y);\n```",
         "codeAfter": "",
-        "prompt": "Natija nima bo'ladi va sababi?",
+        "prompt": "Struct value semantics tufayli natija nima bo'ladi?",
         "options": [
             {
                 "id": "A",
-                "option": "`1,2` – chunki struct value type hisoblanadi."
+                "option": "`1,2` – chunki struct value type, d2 ni o'zgartirish d1 ga ta'sir qilmaydi."
             },
             {
                 "id": "B",
@@ -254,21 +254,21 @@
     {
         "id": 10,
         "type": "mcq",
-        "codeBefore": "```csharp\nint Classify(int x) => x switch\n{\n    < 0 => -1,\n    > 0 => 1,\n    _    => 0\n};\n\nvar result = Classify(0);\n```",
+        "codeBefore": "```csharp\nint Classify(int x) => x switch\n{\n    < 0 => -1,  // manfiy\n    > 0 => 1,   // musbat\n    _   => 0    // nol\n};\n\nvar result = Classify(0);\n```",
         "codeAfter": "",
-        "prompt": "`result` ning qiymati nima bo'ladi?",
+        "prompt": "Switch expression da 0 qiymati qaysi case ga mos keladi?",
         "options": [
             {
                 "id": "A",
-                "option": "`-1`"
+                "option": "`-1` - chunki < 0"
             },
             {
                 "id": "B",
-                "option": "`0`"
+                "option": "`0` - chunki `_` (default) case"
             },
             {
                 "id": "C",
-                "option": "`1`"
+                "option": "`1` - chunki > 0"
             },
             {
                 "id": "D",
@@ -284,7 +284,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "Fayl doirasidagi namespace (`namespace MyApp;`) faqat kodni ichkariga suradi, lekin ko'rinuvchanlikka ta'sir qilmaydi.",
+        "prompt": "File-scoped namespace (`namespace MyApp;`) faqat kodni tashkillashtirish uchun ishlatiladi va access modifierlar yoki ko'rinuvchanlikka ta'sir qilmaydi.",
         "answer": "true"
     },
     {
@@ -292,15 +292,15 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`record struct` uchun foydalanuvchi tomonidan yaratilgan parametrsiz konstruktor bo'lishi mumkin.",
-        "answer": "false"
+        "prompt": "C# 10+ da `record struct` uchun foydalanuvchi tomonidan yaratilgan parametrsiz konstruktor e'lon qilish mumkin.",
+        "answer": "true"
     },
     {
         "id": 13,
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`=>` bilan yozilgan expression-bodied member ichida istalgan kod, shu jumladan exception ham bo'lishi mumkin.",
+        "prompt": "Expression-bodied member (`=>`) ichida exception throw qilish va kompleks mantiq yozish mumkin.",
         "answer": "true"
     },
     {
@@ -308,7 +308,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "C# `switch` patternlari bir case ichida tip va qiymatni birga tekshirishi mumkin, masalan: `case string s && s.Length > 0:`.",
+        "prompt": "C# switch patternlari bir case ichida tip tekshirish va qo'shimcha shart birga yozilishi mumkin, masalan: `case string s when s.Length > 0:`.",
         "answer": "true"
     },
     {
@@ -316,7 +316,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`struct` uchun default parametrsiz konstruktorni o'zgartirib yoki qayta aniqlab bo'lmaydi.",
+        "prompt": "C# 10+ da struct uchun parametrsiz konstruktor e'lon qilish va default xatti-harakatni o'zgartirish mumkin.",
         "answer": "true"
     },
     {
@@ -324,7 +324,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "C# `switch` expressionlari barcha mumkin bo'lgan input patternlarni kompilyatsiya vaqtida qamrab olishi shart.",
+        "prompt": "C# switch expressionlari barcha mumkin bo'lgan input patternlarni kompilyatsiya vaqtida qamrab olishi shart (default case bo'lmasa ham).",
         "answer": "false"
     },
     {
@@ -332,7 +332,7 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "Extension methodlar faqat static class ichida e'lon qilinadi.",
+        "prompt": "Extension methodlar faqat static class ichida e'lon qilinadi va o'zi ham static bo'lishi kerak.",
         "answer": "true"
     },
     {
@@ -340,15 +340,15 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "Agar chaqirishda nomlangan argumentlardan foydalansangiz, ixtiyoriy parametrlar majburiy parametrlardan oldin kelishi mumkin.",
-        "answer": "false"
+        "prompt": "Named argumentlardan foydalanganda method chaqirishda optional parametrlarni required parametrlardan oldin yozish mumkin.",
+        "answer": "true"
     },
     {
         "id": 19,
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "C# da recordlar default bo'yicha reference type hisoblanadi.",
+        "prompt": "C# da `record` (record class) default bo'yicha reference type hisoblanadi.",
         "answer": "true"
     },
     {
@@ -356,153 +356,153 @@
         "type": "true_false",
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`sealed` metodni undan keyin boshqa klasslarda override qilib bo'lmaydi.",
+        "prompt": "`sealed` bilan belgilangan virtual metodni boshqa derived klasslarda override qilib bo'lmaydi.",
         "answer": "true"
     },
     {
         "id": 21,
         "type": "fill",
         "codeWithBlank": "public static T AddAll<T>(T[] values)\n    where T : ________, ________\n{\n    T sum = default!;\n    foreach (var v in values)\n    {\n        sum += v;\n    }\n    return sum;\n}",
-        "prompt": "`T` uchun `+` operatori va `default` literalini ishlatish imkonini beruvchi .NET generic math interfeyslarini ikki bo'sh joyga to'g'ri yozing.",
+        "prompt": "`T` uchun `+` operatori va `default` literalini ishlatish imkonini beruvchi .NET 7+ generic math interfeyslarini ikki bo'sh joyga yozing.",
         "answer": "public static T AddAll<T>(T[] values)\n    where T : INumber<T>, IAdditionOperators<T, T, T>\n{\n    T sum = default!;\n    foreach (var v in values)\n    {\n        sum += v;\n    }\n    return sum;\n}"
     },
     {
         "id": 22,
         "type": "fill",
         "codeWithBlank": "file struct Point(int X, int Y)\n{\n    public void Deconstruct(out int x, out int y) => (x, y) = (______, ______);\n}",
-        "prompt": "Point — file-scoped positional struct. Deconstruct metodi asosiy konstruktor parametrlarini qaytarishi uchun bo'sh joylarni to'g'ri to'ldiring.",
+        "prompt": "File-scoped positional struct da Deconstruct metodi primary constructor parametrlarini qaytarishi uchun bo'sh joylarni to'ldiring.",
         "answer": "file struct Point(int X, int Y)\n{\n    public void Deconstruct(out int x, out int y) => (x, y) = (X, Y);\n}"
     },
     {
         "id": 23,
         "type": "fill",
         "codeWithBlank": "public interface IRepository<T>\n{\n    void Add(T item);\n    T? Get(int id);\n}\n\npublic class Repo<T> : ______\n{\n    void IRepository<T>.Add(T item) { /*...*/ }\n    T? IRepository<T>.Get(int id) { /*...*/ }\n}",
-        "prompt": "Repo<T> klassi `IRepository<T>` ni faqat explicit implementatsiya qilishi va `Add` hamda `Get` metodlarini public API dan yashirishi uchun bo'sh joyni to'g'ri to'ldiring.",
+        "prompt": "Explicit interface implementation qilish uchun inheritance qismini to'ldiring (metodlar public emas, faqat interface orqali accessible).",
         "answer": "public class Repo<T> : IRepository<T>\n{\n    void IRepository<T>.Add(T item) { /*...*/ }\n    T? IRepository<T>.Get(int id) { /*...*/ }\n}"
     },
     {
         "id": 24,
         "type": "fill",
         "codeWithBlank": "public interface ILogger\n{\n    void Log(string message);\n    void LogError(Exception ex) => ______;\n}",
-        "prompt": "`LogError` metodi exception obyektini string ko'rinishida `Log` ga uzatishi uchun bo'sh joyni to'g'ri to'ldiring.",
+        "prompt": "Default interface implementation: `LogError` metodi exception ni string formatda `Log` metodiga uzatsin.",
         "answer": "public interface ILogger\n{\n    void Log(string message);\n    void LogError(Exception ex) => Log(ex.ToString());\n}"
     },
     {
         "id": 25,
         "type": "fill",
         "codeWithBlank": "int Classify(object o) => o switch\n{\n    string s when ______ => 1,\n    int i when i % 2 == 0 => 2,\n    null                  => 0,\n    _                     => 3\n};",
-        "prompt": "C# 12 pattern sintaksisidan foydalanib, bo'sh joyga bo'sh bo'lmagan stringni aniqlovchi pattern yozing.",
+        "prompt": "Pattern matching da bo'sh bo'lmagan (non-empty) stringni tekshiruvchi shart yozing.",
         "answer": "int Classify(object o) => o switch\n{\n    string s when s.Length > 0 => 1,\n    int i when i % 2 == 0 => 2,\n    null                  => 0,\n    _                     => 3\n};"
     },
     {
         "id": 26,
         "type": "error_spotting",
-        "codeWithError": "public class Calculator\n{\n    public static T Subtract<T>(T a, T b) where T : IComparable<T>\n    {\n        return a - b;\n    }\n}",
-        "prompt": "Generic `Subtract` metodidagi kompilyatsiya xatosini toping va to'g'rilang.",
+        "codeWithError": "public class Calculator\n{\n    public static T Subtract<T>(T a, T b) where T : IComparable<T>\n    {\n        return a - b;  // Bu yerda xato\n    }\n}",
+        "prompt": "Generic subtraction operatori uchun noto'g'ri constraint ishlatilgan. To'g'ri generic math interface bilen tuzating.",
         "answer": "public class Calculator\n{\n    public static T Subtract<T>(T a, T b)\n        where T : ISubtractionOperators<T, T, T>\n    {\n        return a - b;\n    }\n}"
     },
     {
         "id": 27,
         "type": "error_spotting",
-        "codeWithError": "interface IShape\n{\n    double Area();\n}\n\npublic class Circle : IShape\n{\n    private readonly double radius;\n    public Circle(double radius) => this.radius = radius;\n    public double area() => Math.PI * radius * radius;\n}",
-        "prompt": "`Circle` klassining `IShape` implementatsiyasidagi xatoni toping va to'g'rilang.",
+        "codeWithError": "interface IShape\n{\n    double Area();  // Capital A\n}\n\npublic class Circle : IShape\n{\n    private readonly double radius;\n    public Circle(double radius) => this.radius = radius;\n    public double area() => Math.PI * radius * radius;  // kichik a\n}",
+        "prompt": "Interface implementationida method name case sensitivity xatosi bor. Tuzating.",
         "answer": "interface IShape\n{\n    double Area();\n}\n\npublic class Circle : IShape\n{\n    private readonly double radius;\n    public Circle(double radius) => this.radius = radius;\n    public double Area() => Math.PI * radius * radius;\n}"
     },
     {
         "id": 28,
         "type": "error_spotting",
-        "codeWithError": "public struct Rectangle\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public Rectangle(int width, int height)\n    {\n        Width = width;\n    }\n}\n",
-        "prompt": "`Rectangle` struct konstruktoridagi xatoni tushuntiring va to'g'rilang.",
-        "answer": "public struct Rectangle\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public Rectangle(int width, int height)\n    {\n        Width = width;\n        Height = height;\n    }\n}\n"
+        "codeWithError": "public struct Rectangle\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public Rectangle(int width, int height)\n    {\n        Width = width;\n        // Height initsializatsiya qilinmagan!\n    }\n}",
+        "prompt": "Struct konstruktorida barcha fieldlar/propertylar initsializatsiya qilinishi kerak. Tuzating.",
+        "answer": "public struct Rectangle\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public Rectangle(int width, int height)\n    {\n        Width = width;\n        Height = height;\n    }\n}"
     },
     {
         "id": 29,
         "type": "error_spotting",
-        "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public string FullName => FirstName + \" \" + LastName;\n    public Person() {}\n}\n",
-        "prompt": "Ushbu record C# 12 da kompilyatsiya xatosi beradi. Sababini aniqlang va to'g'ri variantini yozing.",
-        "answer": "public record Person(string FirstName, string LastName)\n{\n    public string FullName => FirstName + \" \" + LastName;\n    public Person() : this(string.Empty, string.Empty) {}\n}\n"
+        "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public string FullName => FirstName + \" \" + LastName;\n    public Person() {}  // Primary constructor chaqirilmagan\n}",
+        "prompt": "Positional record uchun parametrsiz konstruktor primary constructor ni chaqirishi kerak. Tuzating.",
+        "answer": "public record Person(string FirstName, string LastName)\n{\n    public string FullName => FirstName + \" \" + LastName;\n    public Person() : this(string.Empty, string.Empty) {}\n}"
     },
     {
         "id": 30,
         "type": "error_spotting",
-        "codeWithError": "public class Utils\n{\n    public static void LogMessage(string? msg!)\n    {\n        Console.WriteLine(msg);\n    }\n}\n",
-        "prompt": "`LogMessage` metodidagi nullable annotation xatosini toping va to'g'rilang.",
-        "answer": "public class Utils\n{\n    public static void LogMessage(string? msg)\n    {\n        Console.WriteLine(msg);\n    }\n}\n"
+        "codeWithError": "public class Utils\n{\n    public static void LogMessage(string? msg!)  // ? va ! birga ishlatilgan\n    {\n        Console.WriteLine(msg);\n    }\n}",
+        "prompt": "Nullable annotation sintaksisida xato bor. Bir parametrda `?` va `!` birga ishlatilmaydi.",
+        "answer": "public class Utils\n{\n    public static void LogMessage(string? msg)\n    {\n        Console.WriteLine(msg);\n    }\n}"
     },
     {
         "id": 31,
         "type": "error_spotting",
-        "codeWithError": "public abstract class Base\n{\n    public abstract void Save(string data);\n}\n\npublic class FileSaver : Base\n{\n    public void Save(string data)\n    {\n        File.WriteAllText(\"out.txt\", data);\n    }\n}",
-        "prompt": "`FileSaver` klassi `Save` metodini to'g'ri override qilmayapti. Xatoni tuzating.",
+        "codeWithError": "public abstract class Base\n{\n    public abstract void Save(string data);\n}\n\npublic class FileSaver : Base\n{\n    public void Save(string data)  // override kalit so'zi yo'q\n    {\n        File.WriteAllText(\"out.txt\", data);\n    }\n}",
+        "prompt": "Abstract metodini implement qilishda `override` kalit so'zi kerak. Tuzating.",
         "answer": "public abstract class Base\n{\n    public abstract void Save(string data);\n}\n\npublic class FileSaver : Base\n{\n    public override void Save(string data)\n    {\n        File.WriteAllText(\"out.txt\", data);\n    }\n}"
     },
     {
         "id": 32,
         "type": "error_spotting",
-        "codeWithError": "struct Configuration\n{\n    public string Url { get; init; }\n    public Configuration() { Url = \"\"; }\n}",
-        "prompt": "Structda parametrsiz konstruktor bo'lishi mumkin emas. `Url` ni default qiymat bilan qanday initsializatsiya qilish mumkin?",
+        "codeWithError": "struct Configuration\n{\n    public string Url { get; init; }\n    public Configuration() { Url = \"\"; }  // C# 11+ da ruxsat etilgan, lekin init-only property bilan muammo\n}",
+        "prompt": "Init-only property ni konstruktor ichida to'g'ridan-to'g'ri initialize qilish o'rniga, property initializer ishlatish yaxshiroq. Tuzating.",
         "answer": "struct Configuration\n{\n    public string Url { get; init; } = string.Empty;\n}"
     },
     {
         "id": 33,
         "type": "error_spotting",
-        "codeWithError": "public interface ICalc<T>\n{\n    T Add(T a, T b);\n}\n\npublic class Calculator : ICalc<int>\n{\n    public int Add(int a, int b)\n    {\n        return a + b;\n    }\n}",
-        "prompt": "`ICalc<T>` interfeysi generic, lekin `Calculator` konkret tipdan foydalanmoqda. Uni generic qilib, to'g'ri implementatsiya qiling.",
+        "codeWithError": "public interface ICalc<T>\n{\n    T Add(T a, T b);\n}\n\npublic class Calculator : ICalc<int>  // Konkret tip bilan cheklangan\n{\n    public int Add(int a, int b)\n    {\n        return a + b;\n    }\n}",
+        "prompt": "Generic interface ni generic class bilan implement qiling va arifmetik operatorlar uchun constraint qo'shing.",
         "answer": "public interface ICalc<T>\n{\n    T Add(T a, T b);\n}\n\npublic class Calculator<T> : ICalc<T>\n    where T : IAdditionOperators<T, T, T>\n{\n    public T Add(T a, T b)\n    {\n        return a + b;\n    }\n}"
     },
     {
         "id": 34,
         "type": "error_spotting",
-        "codeWithError": "public static class StringUtils\n{\n    public static bool IsPalindrome(string s)\n    {\n        return s == new string(s.Reverse().ToArray());\n    }\n\n    public bool IsAnagram(this string s, string t)\n    {\n        return s.OrderBy(c => c).SequenceEqual(t.OrderBy(c => c));\n    }\n}",
-        "prompt": "Extension methodlar static bo'lishi kerak. `IsAnagram` metodini to'g'ri yozing.",
+        "codeWithError": "public static class StringUtils\n{\n    public static bool IsPalindrome(string s)\n    {\n        return s == new string(s.Reverse().ToArray());\n    }\n\n    public bool IsAnagram(this string s, string t)  // static emas\n    {\n        return s.OrderBy(c => c).SequenceEqual(t.OrderBy(c => c));\n    }\n}",
+        "prompt": "Extension method `static` bo'lishi kerak. Tuzating.",
         "answer": "public static class StringUtils\n{\n    public static bool IsPalindrome(string s)\n    {\n        return s == new string(s.Reverse().ToArray());\n    }\n\n    public static bool IsAnagram(this string s, string t)\n    {\n        return s.OrderBy(c => c).SequenceEqual(t.OrderBy(c => c));\n    }\n}"
     },
     {
         "id": 35,
         "type": "error_spotting",
-        "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public Person() { }\n}",
-        "prompt": "Parametrli record uchun parametrsiz konstruktorni to'g'ri yozing, shunda ikkala ism ham bo'sh string bo'ladi.",
+        "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public Person() { }  // Primary constructor chaqirilmagan\n}",
+        "prompt": "Positional record da parametrsiz konstruktor primary constructor ni chaqirishi kerak.",
         "answer": "public record Person(string FirstName, string LastName)\n{\n    public Person() : this(string.Empty, string.Empty) { }\n}"
     },
     {
         "id": 36,
         "type": "output_prediction",
-        "snippet": "class A\n{\n    public virtual string F() => \"A\";\n}\nclass B : A\n{\n    public override string F() => base.F() + \"B\";\n}\nclass C : B\n{\n    public new string F() => base.F() + \"C\";\n}\n\nA obj = new C();\nConsole.WriteLine(obj.F());",
-        "prompt": "`obj.F()` chaqirilganda natija nima bo'ladi?",
+        "snippet": "class A\n{\n    public virtual string F() => \"A\";\n}\nclass B : A\n{\n    public override string F() => base.F() + \"B\";  // \"AB\"\n}\nclass C : B\n{\n    public new string F() => base.F() + \"C\";  // \"ABC\" lekin virtual dispatch yo'q\n}\n\nA obj = new C();\nConsole.WriteLine(obj.F());  // A reference orqali chaqirilmoqda",
+        "prompt": "`new` keyword virtual dispatch ni to'xtatadi. `obj.F()` natijasi?",
         "answer": "AB"
     },
     {
         "id": 37,
         "type": "output_prediction",
-        "snippet": "interface ILog\n{\n    void Log(string msg) => Console.Write(\"DefaultLog:\");\n}\nclass Logger : ILog { }\n\nvar logger = new Logger();\n((ILog)logger).Log(\"Hello\");",
-        "prompt": "`Logger` o'z Log metodini yozmagan. `((ILog)logger).Log(\"Hello\")` chaqirilganda natija nima bo'ladi?",
+        "snippet": "interface ILog\n{\n    void Log(string msg) => Console.Write(\"DefaultLog:\");  // Default implementation\n}\nclass Logger : ILog { }  // O'z implementatsiyasi yo'q\n\nvar logger = new Logger();\n((ILog)logger).Log(\"Hello\");",
+        "prompt": "Logger class Log metodini override qilmagan. Default interface implementation ishlatiladi.",
         "answer": "DefaultLog:"
     },
     {
         "id": 38,
         "type": "output_prediction",
-        "snippet": "class Base\n{\n    public void Show() => Console.Write(\"Base\");\n    public virtual void Display() => Console.Write(\"BaseDisplay\");\n}\nclass Derived : Base\n{\n    public new void Show() => Console.Write(\"Derived\");\n    public override void Display() => Console.Write(\"DerivedDisplay\");\n}\n\nBase b = new Derived();\nb.Show();\nb.Display();",
-        "prompt": "`b.Show()` va `b.Display()` chaqirilganda natija qanday bo'ladi?",
+        "snippet": "class Base\n{\n    public void Show() => Console.Write(\"Base\");  // Virtual emas\n    public virtual void Display() => Console.Write(\"BaseDisplay\");\n}\nclass Derived : Base\n{\n    public new void Show() => Console.Write(\"Derived\");  // Hiding\n    public override void Display() => Console.Write(\"DerivedDisplay\");  // Override\n}\n\nBase b = new Derived();\nb.Show();     // Base reference -> Base.Show()\nb.Display();  // Virtual dispatch -> Derived.Display()",
+        "prompt": "`new` vs `override` farqi. Natija qanday?",
         "answer": "BaseDerivedDisplay"
     },
     {
         "id": 39,
         "type": "output_prediction",
-        "snippet": "var numbers = new[] { 1, 2, 3 };\nint sum = 0;\nforeach (ref readonly var n in numbers)\n{\n    sum += n;\n}\nConsole.WriteLine(sum);",
-        "prompt": "`ref readonly` foreach orqali massiv yig'indisi chiqarilganda natija nima bo'ladi?",
+        "snippet": "var numbers = new[] { 1, 2, 3 };\nint sum = 0;\nforeach (ref readonly var n in numbers)  // Reference by readonly\n{\n    sum += n;  // 1+2+3\n}\nConsole.WriteLine(sum);",
+        "prompt": "`ref readonly` faqat performance uchun, hisoblash bir xil. Yig'indi nima?",
         "answer": "6"
     },
     {
         "id": 40,
         "type": "output_prediction",
-        "snippet": "record R(int X)\n{\n    public override string ToString() => $\"R:{X}\";\n}\n\nvar r1 = new R(5);\nvar r2 = r1 with { X = 7 };\nConsole.WriteLine(r1);\nConsole.WriteLine(r2);",
-        "prompt": "`r1` va `r2` uchun ikki qatorda nima chiqadi?",
+        "snippet": "record R(int X)\n{\n    public override string ToString() => $\"R:{X}\";  // Custom ToString\n}\n\nvar r1 = new R(5);\nvar r2 = r1 with { X = 7 };  // Copy with modification\nConsole.WriteLine(r1);\nConsole.WriteLine(r2);",
+        "prompt": "Record da custom ToString va `with` expression. Ikki qator natija?",
         "answer": "R:5\nR:7"
     },
     {
         "id": 41,
         "type": "code_writing",
-        "prompt": "### 1. Kontaktlar kitobi konsol dasturi\n\nFoydalanuvchi kontakt qo'shishi va ro'yxatini ko'rishi mumkin bo'lgan konsol dasturini yarating.\n\nHar bir kontaktning `Name`, `PhoneNumber` va `Email` maydonlari bo'ladi. Kontaktlar uchun `record` tipidan foydalaning.\n\nDastur quyidagilarni qo'llab-quvvatlashi kerak:\n- Yangi kontakt qo'shish\n- Barcha kontaktlarni quyidagi formatda chiqarish: `Name - PhoneNumber - Email`\n\nKontaktlar ro'yxatini xotirada `List<Contact>` orqali saqlang. Buyruqlarni tanlash uchun sikl va `switch` expression ishlating.\n\nAgar kerak bo'lsa, mantiqni bo'lish uchun `partial` classdan foydalaning.",
+        "prompt": "### 1. Kontaktlar kitobi konsol dasturi\n\nFoydalanuvchi kontakt qo'shishi va ro'yxatini ko'rishi mumkin bo'lgan konsol dasturini yarating.\n\nHar bir kontaktning `Name`, `PhoneNumber` va `Email` maydonlari bo'ladi. Kontaktlar uchun `record` tipidan foydalaning.\n\nDastur quyidagilarni qo'llab-quvvatlashi kerak:\n- Yangi kontakt qo'shish (`add`)\n- Barcha kontaktlarni ko'rish (`list`)\n- Dasturdan chiqish (`exit`)\n\nKontaktlar ro'yxatini xotirada `List<Contact>` orqali saqlang. Buyruqlarni tanlash uchun sikl va `switch` expression ishlating.",
         "examples": [
             "Buyruq kiriting (add/list/exit): add\nIsm kiriting: Alice\nTelefon kiriting: 9981234567\nEmail kiriting: alice@mail.com\nBuyruq kiriting (add/list/exit): list\nAlice - 9981234567 - alice@mail.com\nBuyruq kiriting (add/list/exit): exit"
         ]
@@ -510,7 +510,7 @@
     {
         "id": 42,
         "type": "code_writing",
-        "prompt": "### 2. Polimorfizm yordamida shakllar yuzasini hisoblash\n\nTurli shakllarning yuzasini hisoblaydigan konsol dasturini yozing.\n\n- `Shape` nomli abstract class yarating va unda abstract `double GetArea()` metodini e'lon qiling.\n- Kamida 2 ta voris class yarating: `Circle` va `Rectangle`.\n- `GetArea()` metodini `override` qilib yozing.\n- Foydalanuvchidan qaysi shakl yuzasini hisoblashni so'rang.\n\n`switch` expression va `virtual` metodlardan to'g'ri foydalaning.",
+        "prompt": "### 2. Polimorfizm yordamida shakllar yuzasini hisoblash\n\nTurli shakllarning yuzasini hisoblaydigan konsol dasturini yozing.\n\nTalablar:\n- `Shape` nomli abstract class yarating va unda abstract `double GetArea()` metodini e'lon qiling\n- `Circle` va `Rectangle` voris classlarini yarating\n- `GetArea()` metodini har bir classda `override` qiling\n- Foydalanuvchidan shakl turini tanlashni so'rang\n- `switch` expression va polimorfizmdan foydalaning",
         "examples": [
             "Shakl kiriting (circle/rectangle): circle\nRadius kiriting: 2.5\nYuza: 19.63",
             "Shakl kiriting (circle/rectangle): rectangle\nKenglik kiriting: 4\nBalandlik kiriting: 3\nYuza: 12"
@@ -519,7 +519,7 @@
     {
         "id": 43,
         "type": "code_writing",
-        "prompt": "### 3. Extension method yordamida telefon raqamini tekshirish\n\n`IsValidUzPhone(this string phone)` extension metodini yarating. U quyidagilarni tekshiradi:\n- Satr `998` bilan boshlanishi kerak\n- Va aniq 12 ta raqamdan iborat bo'lishi kerak\n\nKonsol dasturida foydalanuvchidan raqam kiriting, tekshirib, `Valid` yoki `Invalid` deb chiqaring.\n\n`this string` extension sintaksisini to'g'ri ishlating va kodni `static` classda joylashtiring.",
+        "prompt": "### 3. Extension method yordamida telefon raqamini tekshirish\n\n`IsValidUzPhone(this string phone)` extension metodini yarating:\n\nQoidalar:\n- Satr `998` bilan boshlanishi kerak\n- Aniq 12 ta raqamdan iborat bo'lishi kerak\n- Faqat raqamlar bo'lishi kerak\n\nKonsol dasturida foydalanuvchidan raqam kiritishni so'rab, natijani `Valid` yoki `Invalid` deb chiqaring.\n\nExtension metodni `static` classda joylashtiring.",
         "examples": [
             "Telefon raqamini kiriting: 998901234567\nValid",
             "Telefon raqamini kiriting: 9901234567\nInvalid",
@@ -529,7 +529,7 @@
     {
         "id": 44,
         "type": "code_writing",
-        "prompt": "### 4. `record struct` yordamida koordinata tahlili\n\n`Point` nomli `record struct` yarating, unda `X` va `Y` property bo'lsin.\n\n`Classify(Point p)` metodini yozing, u quyidagilarni qaytaradi:\n- Agar X va Y 0 bo'lsa: `\"Origin\"`\n- Agar Y 0 bo'lsa: `\"X-axis\"`\n- Agar X 0 bo'lsa: `\"Y-axis\"`\n- Aks holda: `\"Quadrant\"`\n\nPattern matching va switch expressionlardan foydalaning.",
+        "prompt": "### 4. `record struct` yordamida koordinata tahlili\n\n`Point` nomli `record struct` yarating, unda `X` va `Y` property bo'lsin.\n\n`Classify(Point p)` metodini yozing:\n- Agar X va Y ikkalasi ham 0: `\"Origin\"`\n- Agar faqat Y 0: `\"X-axis\"`\n- Agar faqat X 0: `\"Y-axis\"`\n- Boshqa holatlarda: `\"Quadrant\"`\n\nPattern matching va switch expressionlardan foydalaning.\n\nFoydalanuvchidan koordinatalarni kiritishni so'rang va natijani chiqaring.",
         "examples": [
             "X ni kiriting: 0\nY ni kiriting: 0\nJoylashuv: Origin",
             "X ni kiriting: 5\nY ni kiriting: 0\nJoylashuv: X-axis",
@@ -539,7 +539,7 @@
     {
         "id": 45,
         "type": "code_writing",
-        "prompt": "### 5. `params` va `switch` yordamida oddiy kalkulyator\n\n`Calculate(string operation, params double[] values)` metodini yarating. U quyidagilarni qo'llab-quvvatlashi kerak:\n- `sum`, `average`, `max`, `min`\n- `switch` expressiondan foydalaning\n- Natijani double ko'rinishida qaytaring\n\nBo'sh input kabi holatlarni ham to'g'ri ishlang.\n\nFoydalanuvchi operatsiya va sonlarni kiritadigan konsol dasturini yozing.",
+        "prompt": "### 5. `params` va `switch` yordamida oddiy kalkulyator\n\n`Calculate(string operation, params double[] values)` metodini yarating:\n\nQo'llab-quvvatlanadigan operatsiyalar:\n- `\"sum\"` - barcha qiymatlarni qo'shish\n- `\"average\"` - o'rtacha qiymat\n- `\"max\"` - eng katta qiymat\n- `\"min\"` - eng kichik qiymat\n\n`switch` expressiondan foydalaning va edge caselarni handle qiling (bo'sh array, noto'g'ri operatsiya).\n\nKonsol dasturida foydalanuvchidan operatsiya va sonlarni kiritishni so'rang.",
         "examples": [
             "Operatsiyani kiriting: sum\nQiymatlarni probel bilan ajratib kiriting: 3 5 2\nNatija: 10",
             "Operatsiyani kiriting: average\nQiymatlarni probel bilan ajratib kiriting: 4 8\nNatija: 6"
