@@ -21,6 +21,7 @@ import {
 } from '@mui/icons-material';
 import type { TopicCategory, QuestionType, Question, CategoryProgress, TypeProgress } from '../types';
 import { progressStorage } from '../services/progressStorage';
+import { calculateOverallStats, calculateCategoryStats, calculateTypeStats } from '../services/answerStorage';
 import { CATEGORY_INFO, TYPE_INFO } from '../constants/categories';
 
 interface HomePageProps {
@@ -35,14 +36,45 @@ interface HomePageProps {
 export const HomePage: React.FC<HomePageProps> = ({ questions, onStartQuiz }) => {
   const [tabValue, setTabValue] = useState(0);
   const [, setProgress] = useState(progressStorage.loadProgress());
-  const [stats, setStats] = useState(progressStorage.getProgressStats());
+  const [stats, setStats] = useState<any>(null);
 
   useEffect(() => {
     // Initialize progress with current questions
     const initializedProgress = progressStorage.initializeProgress(questions);
     progressStorage.updateAggregateProgress(questions);
     setProgress(initializedProgress);
-    setStats(progressStorage.getProgressStats());
+    
+    // Calculate dynamic stats from localStorage answers
+    const overallStats = calculateOverallStats(questions);
+    const categoryStats = calculateCategoryStats(questions);
+    const typeStats = calculateTypeStats(questions);
+    
+    setStats({
+      totalQuestions: overallStats.totalQuestions,
+      answeredQuestions: overallStats.answeredQuestions,
+      overallSuccessRate: overallStats.overallSuccessRate,
+      categoryStats: categoryStats.map(cat => ({
+        category: cat.category,
+        progress: {
+          category: cat.category,
+          totalQuestions: cat.totalQuestions,
+          answeredQuestions: cat.answeredQuestions,
+          correctAnswers: cat.correctAnswers,
+          successRate: cat.successRate,
+          difficultyBreakdown: {} // Keep structure but not used in display
+        } as CategoryProgress
+      })),
+      typeStats: typeStats.map(type => ({
+        type: type.questionType,
+        progress: {
+          questionType: type.questionType,
+          totalQuestions: type.totalQuestions,
+          answeredQuestions: type.answeredQuestions,
+          correctAnswers: type.correctAnswers,
+          successRate: type.successRate
+        } as TypeProgress
+      }))
+    });
   }, [questions]);
 
   const handleTabChange = (_: any, newValue: number) => {
@@ -66,11 +98,49 @@ export const HomePage: React.FC<HomePageProps> = ({ questions, onStartQuiz }) =>
   const handleResetProgress = () => {
     if (window.confirm('Barcha progress ma\'lumotlarini o\'chirmoqchimisiz? Bu amalni bekor qilib bo\'lmaydi.')) {
       progressStorage.clearProgress();
+      // Also clear answers from localStorage for complete reset
+      localStorage.removeItem('quiz_answers');
       const newProgress = progressStorage.initializeProgress(questions);
       setProgress(newProgress);
-      setStats(progressStorage.getProgressStats());
+      
+      // Recalculate stats after reset
+      const overallStats = calculateOverallStats(questions);
+      const categoryStats = calculateCategoryStats(questions);
+      const typeStats = calculateTypeStats(questions);
+      
+      setStats({
+        totalQuestions: overallStats.totalQuestions,
+        answeredQuestions: overallStats.answeredQuestions,
+        overallSuccessRate: overallStats.overallSuccessRate,
+        categoryStats: categoryStats.map(cat => ({
+          category: cat.category,
+          progress: {
+            category: cat.category,
+            totalQuestions: cat.totalQuestions,
+            answeredQuestions: cat.answeredQuestions,
+            correctAnswers: cat.correctAnswers,
+            successRate: cat.successRate,
+            difficultyBreakdown: {}
+          } as CategoryProgress
+        })),
+        typeStats: typeStats.map(type => ({
+          type: type.questionType,
+          progress: {
+            questionType: type.questionType,
+            totalQuestions: type.totalQuestions,
+            answeredQuestions: type.answeredQuestions,
+            correctAnswers: type.correctAnswers,
+            successRate: type.successRate
+          } as TypeProgress
+        }))
+      });
     }
   };
+
+  // Show loading if stats not ready
+  if (!stats) {
+    return <LinearProgress />;
+  }
 
   const CategoryCard: React.FC<{ category: TopicCategory; progress: CategoryProgress }> = ({ category, progress }) => {
     const info = CATEGORY_INFO[category];
@@ -284,7 +354,7 @@ export const HomePage: React.FC<HomePageProps> = ({ questions, onStartQuiz }) =>
               Kategoriyalar bo'yicha
             </Typography>
           </Grid>
-          {stats.categoryStats.map(({ category, progress }) => (
+          {stats.categoryStats.map(({ category, progress }: { category: TopicCategory; progress: CategoryProgress }) => (
             <Grid key={category} size={{ xs: 12, sm: 6, lg: 4 }}>
               <CategoryCard category={category} progress={progress} />
             </Grid>
@@ -300,7 +370,7 @@ export const HomePage: React.FC<HomePageProps> = ({ questions, onStartQuiz }) =>
               Savol turi bo'yicha
             </Typography>
           </Grid>
-          {stats.typeStats.map(({ type, progress }) => (
+          {stats.typeStats.map(({ type, progress }: { type: QuestionType; progress: TypeProgress }) => (
             <Grid key={type} size={{ xs: 12, sm: 6, lg: 4 }}>
               <TypeCard type={type} progress={progress} />
             </Grid>

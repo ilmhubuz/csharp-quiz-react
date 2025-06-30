@@ -64,6 +64,7 @@ export const EnhancedQuizApp: React.FC = () => {
   const [showResults, setShowResults] = useState(false);
   const [answers, setAnswers] = useState<QuizState>({});
   const [showMetadata, setShowMetadata] = useState(false);
+  const [homeRefreshKey, setHomeRefreshKey] = useState(0);
 
   const currentQuestion = filteredQuestions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === filteredQuestions.length - 1;
@@ -137,6 +138,8 @@ export const EnhancedQuizApp: React.FC = () => {
     setShowResults(false);
     setCurrentQuestionIndex(0);
     setAnswers({});
+    // Trigger HomePage refresh to show updated progress
+    setHomeRefreshKey(prev => prev + 1);
   };
 
   const handleAnswerChange = (questionId: number, answer: string[] | string) => {
@@ -148,6 +151,9 @@ export const EnhancedQuizApp: React.FC = () => {
     
     // Save to localStorage
     answerStorage.saveAnswer(questionId, answer);
+    
+    // Trigger HomePage refresh to show updated progress
+    setHomeRefreshKey(prev => prev + 1);
   };
 
   const handleNext = () => {
@@ -204,7 +210,7 @@ export const EnhancedQuizApp: React.FC = () => {
 
   // Show home page
   if (viewMode === 'home') {
-    return <HomePage questions={allQuestions} onStartQuiz={handleStartQuiz} />;
+    return <HomePage key={homeRefreshKey} questions={allQuestions} onStartQuiz={handleStartQuiz} />;
   }
 
   // Show results page

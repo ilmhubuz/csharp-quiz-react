@@ -83,4 +83,148 @@ class AnswerStorage {
 }
 
 // Export singleton instance
-export const answerStorage = new AnswerStorage(); 
+export const answerStorage = new AnswerStorage();
+
+// Answer validation and scoring functionality
+export function validateAnswer(questionId: number, userAnswer: any, questions: any[]): boolean {
+  const question = questions.find(q => q.id === questionId);
+  if (!question) return false;
+
+  const correctAnswer = question.answer;
+  
+  // Handle different question types
+  switch (question.type) {
+    case 'mcq':
+      // MCQ answers are arrays of option IDs
+      if (Array.isArray(userAnswer) && Array.isArray(correctAnswer)) {
+        return JSON.stringify(userAnswer.sort()) === JSON.stringify(correctAnswer.sort());
+      }
+      return false;
+      
+    case 'true_false':
+      // True/false answers are strings
+      return userAnswer === correctAnswer;
+      
+    case 'error_spotting':
+    case 'output_prediction':
+    case 'code_writing':
+    case 'fill':
+      // Text-based answers - exact match (case-insensitive, trimmed)
+      if (typeof userAnswer === 'string' && typeof correctAnswer === 'string') {
+        return userAnswer.trim().toLowerCase() === correctAnswer.trim().toLowerCase();
+      }
+      return false;
+      
+    default:
+      return false;
+  }
+}
+
+export function calculateOverallStats(questions: any[]): any {
+  const savedAnswers = answerStorage.loadAnswers();
+  
+  const stats = {
+    totalQuestions: questions.length,
+    answeredQuestions: 0,
+    correctAnswers: 0,
+    overallSuccessRate: 0
+  };
+
+  for (const question of questions) {
+    const userAnswer = savedAnswers[question.id];
+    if (userAnswer !== undefined) {
+      stats.answeredQuestions++;
+      if (validateAnswer(question.id, userAnswer, questions)) {
+        stats.correctAnswers++;
+      }
+    }
+  }
+
+  stats.overallSuccessRate = stats.answeredQuestions > 0 ? (stats.correctAnswers / stats.answeredQuestions) * 100 : 0;
+
+  return stats;
+}
+
+export function calculateCategoryStats(questions: any[]): any[] {
+  const savedAnswers = answerStorage.loadAnswers();
+  const categoryMap: Record<string, any> = {};
+
+  // Initialize categories
+  questions.forEach(question => {
+    const category = question.metadata.category;
+    if (!categoryMap[category]) {
+      categoryMap[category] = {
+        category,
+        totalQuestions: 0,
+        answeredQuestions: 0,
+        correctAnswers: 0,
+        successRate: 0
+      };
+    }
+    categoryMap[category].totalQuestions++;
+  });
+
+  // Calculate progress for each category
+  questions.forEach(question => {
+    const category = question.metadata.category;
+    const userAnswer = savedAnswers[question.id];
+    
+    if (userAnswer !== undefined) {
+      categoryMap[category].answeredQuestions++;
+      if (validateAnswer(question.id, userAnswer, questions)) {
+        categoryMap[category].correctAnswers++;
+      }
+    }
+  });
+
+  // Calculate success rates
+  Object.values(categoryMap).forEach((categoryStats: any) => {
+    categoryStats.successRate = categoryStats.answeredQuestions > 0 
+      ? (categoryStats.correctAnswers / categoryStats.answeredQuestions) * 100 
+      : 0;
+  });
+
+  return Object.values(categoryMap);
+}
+
+export function calculateTypeStats(questions: any[]): any[] {
+  const savedAnswers = answerStorage.loadAnswers();
+  const typeMap: Record<string, any> = {};
+
+  // Initialize types
+  questions.forEach(question => {
+    const questionType = question.type;
+    if (!typeMap[questionType]) {
+      typeMap[questionType] = {
+        questionType,
+        totalQuestions: 0,
+        answeredQuestions: 0,
+        correctAnswers: 0,
+        successRate: 0
+      };
+    }
+    typeMap[questionType].totalQuestions++;
+  });
+
+  // Calculate progress for each type
+  questions.forEach(question => {
+    const questionType = question.type;
+    const userAnswer = savedAnswers[question.id];
+    
+    if (userAnswer !== undefined) {
+      typeMap[questionType].answeredQuestions++;
+      if (validateAnswer(question.id, userAnswer, questions)) {
+        typeMap[questionType].correctAnswers++;
+      }
+    }
+  });
+
+  // Calculate success rates
+  Object.values(typeMap).forEach((typeStats: any) => {
+    typeStats.successRate = typeStats.answeredQuestions > 0 
+      ? (typeStats.correctAnswers / typeStats.answeredQuestions) * 100 
+      : 0;
+  });
+
+  return Object.values(typeMap);
+} 
