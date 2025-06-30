@@ -16,7 +16,8 @@ import {
   CheckCircle, 
   Cancel, 
   RestartAlt,
-  Quiz as QuizIcon 
+  Quiz as QuizIcon,
+  Home as HomeIcon
 } from '@mui/icons-material';
 import type { Question, MCQQuestion, TrueFalseQuestion, FillQuestion, ErrorSpotQuestion, OutputPredictionQuestion } from '../types';
 
@@ -24,6 +25,7 @@ interface QuizResultsProps {
   questions: Question[];
   answers: { [questionId: number]: string[] | string };
   onRetry: () => void;
+  onGoHome?: () => void;
 }
 
 interface QuestionResult {
@@ -36,7 +38,8 @@ interface QuestionResult {
 export const QuizResults: React.FC<QuizResultsProps> = ({
   questions,
   answers,
-  onRetry
+  onRetry,
+  onGoHome
 }) => {
   // Calculate results
   const results: QuestionResult[] = questions.map((question, index) => {
@@ -281,8 +284,8 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
         </Card>
       ))}
 
-      {/* Retry Button */}
-      <Box display="flex" justifyContent="center" mt={4}>
+      {/* Action Buttons */}
+      <Box display="flex" justifyContent="center" gap={2} mt={4}>
         <Button
           variant="contained"
           size="large"
@@ -298,6 +301,24 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
         >
           Retry Quiz
         </Button>
+        
+        {onGoHome && (
+          <Button
+            variant="outlined"
+            size="large"
+            startIcon={<HomeIcon />}
+            onClick={onGoHome}
+            sx={{
+              px: 4,
+              py: 1.5,
+              fontSize: '1.1rem',
+              fontWeight: 'bold',
+              borderRadius: 2
+            }}
+          >
+            Go Home
+          </Button>
+        )}
       </Box>
     </Container>
   );

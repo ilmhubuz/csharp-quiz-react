@@ -4,4 +4,6 @@ export { MCQOptions } from './MCQOptions';
 export { QuestionCard } from './QuestionCard';
 export { QuizApp } from './QuizApp';
 export { QuizResults } from './QuizResults';
-export { TrueFalseOptions } from './TrueFalseOptions'; 
+export { TrueFalseOptions } from './TrueFalseOptions';
+export { HomePage } from './HomePage';
+export { EnhancedQuizApp } from './EnhancedQuizApp'; 
