@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   LinearProgress,
-  Button,
   Paper,
   Tabs,
   Tab,
@@ -15,7 +14,6 @@ import {
   Grid
 } from '@mui/material';
 import {
-  PlayArrow,
   Quiz,
   Assessment,
   Home,

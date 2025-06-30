@@ -41,6 +41,7 @@ import { QuestionCard } from './QuestionCard';
 import { QuizResults } from './QuizResults';
 import { HomePage } from './HomePage';
 import { progressStorage } from '../services/progressStorage';
+import { answerStorage } from '../services/answerStorage';
 import { CATEGORY_INFO, TYPE_INFO, DIFFICULTY_INFO } from '../constants/categories';
 import questionsData from '../assets/questions.json';
 
@@ -73,7 +74,7 @@ export const EnhancedQuizApp: React.FC = () => {
     progressStorage.updateAggregateProgress(allQuestions);
   }, [allQuestions]);
 
-  // Filter questions based on quiz config
+  // Filter questions based on quiz config and load saved answers
   useEffect(() => {
     if (!quizConfig) {
       setFilteredQuestions([]);
@@ -94,7 +95,11 @@ export const EnhancedQuizApp: React.FC = () => {
 
     setFilteredQuestions(filtered);
     setCurrentQuestionIndex(0);
-    setAnswers({});
+    
+    // Load saved answers for the filtered questions
+    const questionIds = filtered.map(q => q.id);
+    const savedAnswers = answerStorage.getAnswersForQuestions(questionIds);
+    setAnswers(savedAnswers);
   }, [quizConfig, allQuestions]);
 
   // Enhanced answer checking logic
@@ -135,10 +140,14 @@ export const EnhancedQuizApp: React.FC = () => {
   };
 
   const handleAnswerChange = (questionId: number, answer: string[] | string) => {
+    // Update local state
     setAnswers(prev => ({
       ...prev,
       [questionId]: answer
     }));
+    
+    // Save to localStorage
+    answerStorage.saveAnswer(questionId, answer);
   };
 
   const handleNext = () => {
