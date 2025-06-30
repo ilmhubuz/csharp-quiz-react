@@ -10,7 +10,6 @@ import {
   Tab,
   IconButton,
   Tooltip,
-  Alert,
   Grid
 } from '@mui/material';
 import {
@@ -377,20 +376,6 @@ export const HomePage: React.FC<HomePageProps> = ({ questions, onStartQuiz }) =>
           ))}
         </Grid>
       )}
-
-      {/* Tips */}
-      <Grid container spacing={2} sx={{ mt: 4 }}>
-        <Grid size={12}>
-          <Alert severity="info" sx={{ mb: 2 }}>
-            <strong>Maslahat:</strong> Avval "Asosiy Til Xususiyatlari" kabi oson kategoriyalardan boshlang, keyin "LINQ va Funksional Dasturlash" kabi murakkab mavzularga o'ting.
-          </Alert>
-        </Grid>
-        <Grid size={12}>
-          <Alert severity="success">
-            <strong>Jarayon Kuzatuvi:</strong> Sizning javoblaringiz va jarayoningiz avtomatik ravishda mahalliy saqlanadi. Siz turli kategoriyalar va turlar o'rtasida jarayoningizni yo'qotmasdan almashishingiz mumkin.
-          </Alert>
-        </Grid>
-      </Grid>
     </Container>
   );
 }; 
