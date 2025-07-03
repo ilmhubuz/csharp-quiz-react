@@ -48,6 +48,14 @@ export const CATEGORY_INFO: Record<TopicCategory, CategoryInfo> = {
     description: 'Performance optimization, memory management, advanced patterns va best practices',
     icon: '🚀',
     color: '#E74C3C'
+  },
+  'exception-handling': {
+    id: 'exception-handling',
+    name: 'Exception Handling',
+    nameUz: 'Exception Handling',
+    description: 'Try-catch, finally, custom exceptions, exception filtering, re-throwing va exception best practices',
+    icon: '⚠️',
+    color: '#FF9800'
   }
 };
 

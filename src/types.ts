@@ -10,7 +10,8 @@ export type TopicCategory =
   | 'metod-xususiyatlari'
   | 'kolleksiyalar-ma\'lumot-tuzilmalari'
   | 'linq-funksional-dasturlash'
-  | 'ilg\'or-mavzular';
+  | 'ilg\'or-mavzular'
+  | 'exception-handling';
 
 export type ConceptTag = 
   // Core Language Features
@@ -46,6 +47,10 @@ export type ConceptTag =
   | 'quantifiers' | 'any' | 'all' | 'contains'
   | 'query-syntax' | 'method-syntax' | 'let-clause'
   | 'deferred-execution' | 'immediate-execution' | 'materialization'
+  
+  // Exception Handling
+  | 'try-catch' | 'finally-blocks' | 'custom-exceptions' | 'exception-filtering' | 'when-clauses'
+  | 're-throwing' | 'exception-propagation' | 'exception-best-practices' | 'exception-types'
   
   // Advanced Topics
   | 'performance' | 'memory-allocation' | 'ref-returns' | 'ref-structs'
