@@ -1108,9 +1108,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`Dictionary<TKey, TValue>` da key uchun `null` qiymat qo'yish mumkin, agar `TKey` nullable type bo'lsa.",
+        "prompt": "**Dictionary<TKey, TValue>** da key uchun `null` qiymat qo'yish mumkin, agar `TKey` nullable type bo'lsa.\n\n**Nullable reference types (C# 8+):**\n- `string?` - nullable reference type\n- `int?` - nullable value type\n- Dictionary null key qabul qilish mumkinmi?",
         "answer": "true",
-        "explanation": "To'g'ri. Agar TKey nullable type bo'lsa (masalan, string? yoki int?), Dictionary null key qabul qiladi."
+        "explanation": "✓ **To'g'ri statement**\n\n✓ **Nullable key qo'llab-quvvatlash:**\n- `Dictionary<string?, int>` - null key qabul qiladi\n- `Dictionary<int?, string>` - null key qabul qiladi\n- `Dictionary<string, int>` - null key qabul qilmaydi (non-nullable)\n\n✓ **Misol:** `dict[null] = 42` - nullable TKey uchun valid"
     },
     {
         "id": 57,
@@ -1121,9 +1121,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`HashSet<T>` collection elementlarning unique bo'lishini kafolatlaydi va tartibni saqlaydi.",
+        "prompt": "**HashSet<T>** collection elementlarning unique bo'lishini kafolatlaydi va tartibni saqlaydi.\n\n**HashSet xususiyatlari:**\n- Unique elementlar kafolati\n- Hash table based implementation\n- Tartib saqlash haqida gap\n- SortedSet alternative",
         "answer": "false",
-        "explanation": "Yolg'on. HashSet uniqueness kafolatlaydi, lekin insertion tartibini saqlamaydi. Tartib uchun SortedSet ishlatiladi."
+        "explanation": "✗ **Yolg'on statement**\n\n✓ **HashSet xususiyatlari:**\n- Uniqueness kafolatlaydi ✓\n- Insertion tartibini saqlamaydi ✗\n- O(1) average time complexity\n- Hash table based\n\n✓ **Tartib uchun alternativalar:**\n- `SortedSet<T>` - sorted order\n- `LinkedHashSet` - insertion order (Java da, C# da yo'q)"
     },
     {
         "id": 58,
@@ -1134,9 +1134,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "Index operator `^0` massivning oxirgi elementini anglatadi.",
+        "prompt": "**Index operator** `^0` massivning oxirgi elementini anglatadi.\n\n**Index operator (C# 8+):**\n- `^1` - oxirgi element\n- `^2` - oxirdan ikkinchi element\n- `^0` - nima demakchi?\n- Array bounds checking",
         "answer": "false",
-        "explanation": "Yolg'on. ^0 massiv uzunligini bildiradi (bounds dan tashqarida). Oxirgi element ^1 bilan ko'rsatiladi."
+        "explanation": "✗ **Yolg'on statement**\n\n✓ **Index operator qoidalari:**\n- `^0` - array length ni bildiradi (bounds dan tashqarida)\n- `^1` - oxirgi element (length - 1)\n- `^2` - oxirdan ikkinchi element (length - 2)\n\n✓ **Misol:** `arr[^0]` → `IndexOutOfRangeException`"
     },
     {
         "id": 59,
@@ -1147,9 +1147,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "Range operator `..` faqat array va string uchun ishlatiladi, boshqa collectionlar uchun emas.",
+        "prompt": "**Range operator** `..` faqat array va string uchun ishlatiladi, boshqa collectionlar uchun emas.\n\n**Range operator (C# 8+):**\n- Array da `arr[1..3]`\n- String da `str[2..5]`\n- List<T> da ishlatish mumkinmi?\n- Span<T> da ishlatish mumkinmi?",
         "answer": "false",
-        "explanation": "Yolg'on. Range operator (..) indexer qo'llab-quvvatlaydigan barcha collection lar uchun ishlatiladi (List<T>, Span<T> va h.k.)."
+        "explanation": "✗ **Yolg'on statement**\n\n✓ **Range operator qo'llab-quvvatlash:**\n- Array ✓\n- String ✓\n- List<T> ✓\n- Span<T> ✓\n- ReadOnlySpan<T> ✓\n- Memory<T> ✓\n\n✓ **Shart:** Indexer va Length/Count property ni qo'llab-quvvatlaydigan barcha collection lar"
     },
     {
         "id": 60,
@@ -1160,9 +1160,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`Span<T>` ref struct bo'lgani uchun heap da saqlanishi mumkin emas.",
+        "prompt": "**Span<T>** ref struct bo'lgani uchun heap da saqlanishi mumkin emas.\n\n**Ref struct limitations (C# 7.2+):**\n- Stack-only allocation\n- Heap da saqlash mumkin emasmi?\n- Class field sifatida ishlatish mumkin emasmi?\n- Boxing mumkin emasmi?",
         "answer": "true",
-        "explanation": "To'g'ri. Span<T> ref struct bo'lib, faqat stack da saqlanadi. Heap da saqlash uchun Memory<T> ishlatiladi."
+        "explanation": "✓ **To'g'ri statement**\n\n✓ **Ref struct limitations:**\n- Heap da saqlash mumkin emas ✓\n- Class field bo'la olmaydi ✓\n- Boxing mumkin emas ✓\n- Async method da ishlatish mumkin emas ✓\n\n✓ **Heap uchun alternativ:** `Memory<T>` - heap va stack ikkalasida ham ishlaydi"
     },
     {
         "id": 61,
