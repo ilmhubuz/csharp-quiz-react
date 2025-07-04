@@ -943,7 +943,7 @@
         },
         "codeBefore": "```csharp\nvar stack = new Stack<string>();\nstack.Push(\"first\");\nstack.Push(\"second\");\nvar result = stack.Peek();\nstack.Pop();\nConsole.WriteLine($\"{result}, {stack.Count}\");\n```",
         "codeAfter": "",
-        "prompt": "`Stack<T>` LIFO prinsipi bo'yicha ishlaydi. Yuqoridagi kodda natija nima?",
+        "prompt": "**Stack<T>** LIFO (Last In, First Out) prinsipi bo'yicha ishlaydi.\n\n**Kod tahlili:**\n- `Push(\"first\")` → stack: [\"first\"]\n- `Push(\"second\")` → stack: [\"first\", \"second\"]\n- `Peek()` - oxirgi elementni qaytaradi (olib tashlamaydi)\n- `Pop()` - oxirgi elementni olib tashlaydi\n\n**Savol:** `Console.WriteLine` natijasi nima?",
         "options": [
             {
                 "id": "A",
@@ -965,7 +965,7 @@
         "answer": [
             "B"
         ],
-        "explanation": "Stack LIFO: Peek() oxirgi qo'shilgan 'second' ni qaytaradi (olib tashlamaydi), keyin Pop() uni olib tashlaydi. Count = 1 qoladi."
+        "explanation": "✓ **Stack LIFO qoidasi:** Oxirgi qo'shilgan element birinchi chiqadi\n\n✓ **Kod bajarilishi:**\n- `Peek()` → \"second\" (oxirgi element, olib tashlamaydi)\n- `Pop()` → \"second\" ni olib tashlaydi\n- `Count` → 1 (\"first\" qoladi)\n\n✓ **Natija:** `\"second, 1\"`"
     },
     {
         "id": 52,
@@ -976,7 +976,7 @@
         },
         "codeBefore": "```csharp\nvar numbers = new int[] { 10, 20, 30, 40, 50 };\nvar range = 1..^1;\nvar slice = numbers[range];\n```",
         "codeAfter": "",
-        "prompt": "Range operatori `1..^1` nimani anglatadi va `slice` da qanday qiymatlar bo'ladi?",
+        "prompt": "**Range operatori** `1..^1` nimani anglatadi?\n\n**Kod tahlili:**\n- Array: `{10, 20, 30, 40, 50}`\n- `1..^1` - 1-index dan oxirgi elementgacha (exclusive)\n- `^1` - oxirgi element pozitsiyasi\n- Range da end exclusive\n\n**Savol:** `slice` da qanday qiymatlar bo'ladi?",
         "options": [
             {
                 "id": "A",
@@ -998,7 +998,7 @@
         "answer": [
             "B"
         ],
-        "explanation": "1..^1 degani index 1 dan (20) boshlab, oxirgi elementgacha (exclusive). ^1 oxirgi element pozitsiyasi, lekin range da exclusive. Natija: {20, 30, 40}."
+        "explanation": "✓ **Range syntax:** `start..end` (end exclusive)\n\n✓ **Index hisoblash:**\n- `1` → index 1 (qiymat 20)\n- `^1` → oxirgi element pozitsiyasi (index 4)\n- `1..^1` → index 1 dan 4 gacha (exclusive)\n\n✓ **Natija:** `{20, 30, 40}` (index 1, 2, 3)"
     },
     {
         "id": 53,
@@ -1009,7 +1009,7 @@
         },
         "codeBefore": "```csharp\nvar lookup = new string[] { \"a\", \"bb\", \"ccc\", \"a\", \"bb\" }\n    .ToLookup(x => x.Length);\nvar result = lookup[2].Count();\n```",
         "codeAfter": "",
-        "prompt": "`ILookup<TKey, TElement>` haqida qaysi fikr to'g'ri va yuqoridagi kodda `result` nima?",
+        "prompt": "**ILookup<TKey, TElement>** one-to-many mapping qanday ishlaydi?\n\n**Kod tahlili:**\n- Array: `{\"a\", \"bb\", \"ccc\", \"a\", \"bb\"}`\n- `ToLookup(x => x.Length)` - string length bo'yicha guruhlash\n- `lookup[2]` - length = 2 bo'lgan elementlar\n- `Count()` - shu group dagi elementlar soni\n\n**Savol:** `result` ning qiymati nima?",
         "options": [
             {
                 "id": "A",
@@ -1031,7 +1031,7 @@
         "answer": [
             "B"
         ],
-        "explanation": "ILookup one-to-many mapping. Length=2 uchun 'bb' 2 marta mavjud, shuning uchun Count()=2."
+        "explanation": "✓ **ILookup xususiyati:** One-to-many mapping - bir key uchun ko'p value\n\n✓ **Guruhlanish:**\n- Key = 1: `{\"a\", \"a\"}` (2 ta)\n- Key = 2: `{\"bb\", \"bb\"}` (2 ta)\n- Key = 3: `{\"ccc\"}` (1 ta)\n\n✓ **Natija:** `lookup[2].Count()` = 2 (\"bb\" ikki marta)"
     },
     {
         "id": 54,
@@ -1042,7 +1042,7 @@
         },
         "codeBefore": "```csharp\nSpan<byte> buffer = stackalloc byte[1024];\nvar memory = new Memory<byte>(new byte[1024]);\nvar span1 = buffer.Slice(10, 100);\nvar span2 = memory.Span.Slice(10, 100);\n```",
         "codeAfter": "",
-        "prompt": "`Span<T>.Slice()` va `Memory<T>.Span` haqida qaysi fikr **noto'g'ri**?",
+        "prompt": "**Span<T>.Slice()** va **Memory<T>.Span** haqida qaysi fikr **noto'g'ri**?\n\n**Kod tahlili:**\n- `stackalloc` - stack da memory allocation\n- `new byte[1024]` - heap da memory allocation\n- `Slice(10, 100)` - 10-indexdan 100 ta element\n- Zero-copy operations\n\n**Savol:** Qaysi statement yolg'on?",
         "options": [
             {
                 "id": "A",
@@ -1064,7 +1064,7 @@
         "answer": [
             "D"
         ],
-        "explanation": "Slice() operatsiyasi yangi xotira allocate qilmaydi - faqat mavjud memory ga yangi view (ko'rinish) yaratadi. Bu zero-copy operatsiya."
+        "explanation": "✓ **Noto'g'ri statement:** `Slice()` operatsiyasi xotira allocate qiladi\n\n✓ **Zero-copy operatsiya:** `Slice()` yangi xotira allocate qilmaydi\n- Faqat mavjud memory ga yangi view (ko'rinish) yaratadi\n- Pointer va length ma'lumotlarini o'zgartiradi\n\n✓ **To'g'ri statements:**\n- A: Slice() yangi Span yaratadi, lekin copy emas\n- B: Memory<T>.Span property mavjud\n- C: span1 stack da, span2 heap da"
     },
     {
         "id": 55,
@@ -1075,7 +1075,7 @@
         },
         "codeBefore": "```csharp\nvar priorityQueue = new PriorityQueue<string, int>();\npriorityQueue.Enqueue(\"task1\", 3);\npriorityQueue.Enqueue(\"task2\", 1);\npriorityQueue.Enqueue(\"task3\", 2);\nvar result = priorityQueue.Dequeue();\n```",
         "codeAfter": "",
-        "prompt": "`PriorityQueue<TElement, TPriority>` eng kichik priority ni birinchi chiqaradi. `result` nima bo'ladi?",
+        "prompt": "**PriorityQueue<TElement, TPriority>** (C# 10+) min-heap sifatida ishlaydi.\n\n**Kod tahlili:**\n- `Enqueue(\"task1\", 3)` - priority = 3\n- `Enqueue(\"task2\", 1)` - priority = 1\n- `Enqueue(\"task3\", 2)` - priority = 2\n- `Dequeue()` - eng kichik priority li elementni chiqaradi\n\n**Savol:** `result` ning qiymati nima?",
         "options": [
             {
                 "id": "A",
@@ -1097,7 +1097,7 @@
         "answer": [
             "B"
         ],
-        "explanation": "PriorityQueue min-heap - eng kichik priority birinchi chiqadi. task2 ning priority si 1 (eng kichik), shuning uchun birinchi chiqadi."
+        "explanation": "✓ **PriorityQueue qoidasi:** Min-heap - eng kichik priority birinchi chiqadi\n\n✓ **Priority tartiblanishi:**\n- task2: priority = 1 (eng kichik)\n- task3: priority = 2\n- task1: priority = 3\n\n✓ **Natija:** `Dequeue()` → \"task2\" (eng kichik priority)"
     },
     {
         "id": 56,
