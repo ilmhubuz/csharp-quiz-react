@@ -706,9 +706,11 @@
             "category": "asosiy-til-xususiyatlari",
             "subcategory": "konsol dasturlari"
         },
-        "prompt": "### 1. Kontaktlar kitobi konsol dasturi\n\nFoydalanuvchi kontakt qo'shishi va ro'yxatini ko'rishi mumkin bo'lgan konsol dasturini yarating.\n\nHar bir kontaktning `Name`, `PhoneNumber` va `Email` maydonlari bo'ladi. Kontaktlar uchun `record` tipidan foydalaning.\n\nDastur quyidagilarni qo'llab-quvvatlashi kerak:\n- Yangi kontakt qo'shish (`add`)\n- Barcha kontaktlarni ko'rish (`list`)\n- Dasturdan chiqish (`exit`)\n\nKontaktlar ro'yxatini xotirada `List<Contact>` orqali saqlang. Buyruqlarni tanlash uchun sikl va `switch` expression ishlating.",
+        "prompt": "**Kontaktlar kitobi** konsol dasturi yarating.\n\n**Talablar:**\n- `record Contact(string Name, string PhoneNumber, string Email)` \n- `List<Contact>` da saqlash\n- `switch` expression bilan buyruqlar: `add`, `list`, `exit`\n- `while` loop bilan davom etish\n\n**Buyruqlar:**\n- `add` - yangi kontakt qo'shish\n- `list` - barcha kontaktlarni ko'rsatish  \n- `exit` - dasturdan chiqish",
         "examples": [
-            "Buyruq kiriting (add/list/exit): add\nIsm kiriting: Alice\nTelefon kiriting: 9981234567\nEmail kiriting: alice@mail.com\nBuyruq kiriting (add/list/exit): list\nAlice - 9981234567 - alice@mail.com\nBuyruq kiriting (add/list/exit): exit"
+            "Buyruq: add\nIsm: Alice\nTelefon: 998901234567\nEmail: alice@mail.com\nKontakt qo'shildi!",
+            "Buyruq: list\nAlice - 998901234567 - alice@mail.com\nBob - 998987654321 - bob@mail.com",
+            "Buyruq: exit\nDastur yakunlandi."
         ]
     },
     {
@@ -718,10 +720,10 @@
             "category": "tip-tizimi-oop",
             "subcategory": "polimorfizm"
         },
-        "prompt": "### 2. Polimorfizm yordamida shakllar yuzasini hisoblash\n\nTurli shakllarning yuzasini hisoblaydigan konsol dasturini yozing.\n\nTalablar:\n- `Shape` nomli abstract class yarating va unda abstract `double GetArea()` metodini e'lon qiling\n- `Circle` va `Rectangle` voris classlarini yarating\n- `GetArea()` metodini har bir classda `override` qiling\n- Foydalanuvchidan shakl turini tanlashni so'rang\n- `switch` expression va polimorfizmdan foydalaning",
+        "prompt": "**Polimorfizm** bilan shakllar yuzasini hisoblash.\n\n**Talablar:**\n- `abstract class Shape` va `abstract double GetArea()` metodi\n- `Circle` (radius) va `Rectangle` (width, height) voris classlar\n- `GetArea()` ni har birida `override` qiling\n- `switch` expression bilan shakl tanlash\n- Polimorfizm orqali yuzani hisoblash",
         "examples": [
-            "Shakl kiriting (circle/rectangle): circle\nRadius kiriting: 2.5\nYuza: 19.63",
-            "Shakl kiriting (circle/rectangle): rectangle\nKenglik kiriting: 4\nBalandlik kiriting: 3\nYuza: 12"
+            "Shakl: circle\nRadius: 2.5\nYuza: 19.63",
+            "Shakl: rectangle\nEni: 4\nBoyi: 3\nYuza: 12"
         ]
     },
     {
@@ -731,11 +733,11 @@
             "category": "metod-xususiyatlari",
             "subcategory": "extension methods"
         },
-        "prompt": "### 3. Extension method yordamida telefon raqamini tekshirish\n\n`IsValidUzPhone(this string phone)` extension metodini yarating:\n\nQoidalar:\n- Satr `998` bilan boshlanishi kerak\n- Aniq 12 ta raqamdan iborat bo'lishi kerak\n- Faqat raqamlar bo'lishi kerak\n\nKonsol dasturida foydalanuvchidan raqam kiritishni so'rab, natijani `Valid` yoki `Invalid` deb chiqaring.\n\nExtension metodni `static` classda joylashtiring.",
+        "prompt": "**Extension method** bilan telefon raqamini tekshirish.\n\n**Talablar:**\n- `static class PhoneValidator` yarating\n- `IsValidUzPhone(this string phone)` extension metodi\n- `998` bilan boshlanishi, 12 ta raqam, faqat raqamlar\n- Konsol dasturida test qiling\n\n**Validation qoidalari:**\n- `998` prefiksi majburiy\n- Jami 12 ta belgi\n- Faqat raqamlar (`char.IsDigit`)",
         "examples": [
-            "Telefon raqamini kiriting: 998901234567\nValid",
-            "Telefon raqamini kiriting: 9901234567\nInvalid",
-            "Telefon raqamini kiriting: 998123\nInvalid"
+            "Telefon: 998901234567\nNatija: Valid",
+            "Telefon: 9901234567\nNatija: Invalid",
+            "Telefon: 998abc123456\nNatija: Invalid"
         ]
     },
     {
@@ -745,11 +747,12 @@
             "category": "asosiy-til-xususiyatlari",
             "subcategory": "record structs"
         },
-        "prompt": "### 4. `record struct` yordamida koordinata tahlili\n\n`Point` nomli `record struct` yarating, unda `X` va `Y` property bo'lsin.\n\n`Classify(Point p)` metodini yozing:\n- Agar X va Y ikkalasi ham 0: `\"Origin\"`\n- Agar faqat Y 0: `\"X-axis\"`\n- Agar faqat X 0: `\"Y-axis\"`\n- Boshqa holatlarda: `\"Quadrant\"`\n\nPattern matching va switch expressionlardan foydalaning.\n\nFoydalanuvchidan koordinatalarni kiritishni so'rang va natijani chiqaring.",
+        "prompt": "**Record struct** bilan koordinata tahlili.\n\n**Talablar:**\n- `record struct Point(int X, int Y)` yarating\n- `Classify(Point p)` metodini yozing\n- **Pattern matching** va **switch expression** ishlating\n\n**Classification qoidalari:**\n- `X = 0, Y = 0` → `\"Origin\"`\n- `X ≠ 0, Y = 0` → `\"X-axis\"`\n- `X = 0, Y ≠ 0` → `\"Y-axis\"`\n- Boshqa → `\"Quadrant\"`",
         "examples": [
-            "X ni kiriting: 0\nY ni kiriting: 0\nJoylashuv: Origin",
-            "X ni kiriting: 5\nY ni kiriting: 0\nJoylashuv: X-axis",
-            "X ni kiriting: 3\nY ni kiriting: 4\nJoylashuv: Quadrant"
+            "X: 0, Y: 0\nJoylashuv: Origin",
+            "X: 5, Y: 0\nJoylashuv: X-axis", 
+            "X: 0, Y: 3\nJoylashuv: Y-axis",
+            "X: 2, Y: 4\nJoylashuv: Quadrant"
         ]
     },
     {
@@ -759,10 +762,11 @@
             "category": "metod-xususiyatlari",
             "subcategory": "params arrays"
         },
-        "prompt": "### 5. `params` va `switch` yordamida oddiy kalkulyator\n\n`Calculate(string operation, params double[] values)` metodini yarating:\n\nQo'llab-quvvatlanadigan operatsiyalar:\n- `\"sum\"` - barcha qiymatlarni qo'shish\n- `\"average\"` - o'rtacha qiymat\n- `\"max\"` - eng katta qiymat\n- `\"min\"` - eng kichik qiymat\n\n`switch` expressiondan foydalaning va edge caselarni handle qiling (bo'sh array, noto'g'ri operatsiya).\n\nKonsol dasturida foydalanuvchidan operatsiya va sonlarni kiritishni so'rang.",
+        "prompt": "**Params array** va **switch expression** bilan kalkulyator.\n\n**Talablar:**\n- `Calculate(string operation, params double[] values)` metodi\n- `switch` expression bilan operatsiyalar\n- Edge case handling (bo'sh array, noto'g'ri operatsiya)\n\n**Operatsiyalar:**\n- `\"sum\"` - yig'indi\n- `\"average\"` - o'rtacha\n- `\"max\"` - maksimal\n- `\"min\"` - minimal",
         "examples": [
-            "Operatsiyani kiriting: sum\nQiymatlarni probel bilan ajratib kiriting: 3 5 2\nNatija: 10",
-            "Operatsiyani kiriting: average\nQiymatlarni probel bilan ajratib kiriting: 4 8\nNatija: 6"
+            "Operatsiya: sum\nSonlar: 3 5 2\nNatija: 10",
+            "Operatsiya: average\nSonlar: 4 8\nNatija: 6",
+            "Operatsiya: max\nSonlar: 1 9 5\nNatija: 9"
         ]
     },
     {
