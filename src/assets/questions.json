@@ -8,15 +8,15 @@
         },
         "codeBefore": "```csharp\nbool IsLong(string? s) => s switch\n{\n    null                  => false,\n    { Length: > 5 and < 10 } => true,\n    _                     => false\n};\n```",
         "codeAfter": "",
-        "prompt": "Quyidagi chaqiruvlardan qaysi biri `true` natija qaytaradi? (Pattern: uzunlik 5 dan katta VA 10 dan kichik bo'lishi kerak)",
+        "prompt": "Yuqoridagi **pattern matching** kodida qaysi method chaqiruvi `true` natija qaytaradi?\n\n**Eslatma:** Property pattern `{ Length: > 5 and < 10 }` string uzunligi 5 dan **katta** va 10 dan **kichik** bo'lgan holatlarda `true` qaytaradi.",
         "options": [
             {
                 "id": "A",
-                "option": "`IsLong(\"123456\")` - uzunlik 6"
+                "option": "`IsLong(\"123456\")` - string uzunligi 6"
             },
             {
                 "id": "B",
-                "option": "`IsLong(\"1234567890\")` - uzunlik 10"
+                "option": "`IsLong(\"1234567890\")` - string uzunligi 10"
             },
             {
                 "id": "C",
@@ -24,13 +24,13 @@
             },
             {
                 "id": "D",
-                "option": "`IsLong(\"abcd\")` - uzunlik 4"
+                "option": "`IsLong(\"abcd\")` - string uzunligi 4"
             }
         ],
         "answer": [
             "A"
         ],
-        "explanation": "Property pattern `{ Length: > 5 and < 10 }` uzunligi 6-9 orasidagi stringlarni tanlaydi. Faqat A variant uzunligi 6 bo'lib bu shartni qanoatlantiradi."
+        "explanation": "Property pattern `{ Length: > 5 and < 10 }` uzunligi 6-9 orasidagi stringlarni tanlaydi. A variant: string uzunligi 6 (5 < 6 < 10 ✓), B variant: uzunlik 10 (10 >= 10 ✗), C variant: null (false ✗), D variant: uzunlik 4 (4 <= 5 ✗)."
     },
     {
         "id": 2,
@@ -41,34 +41,29 @@
         },
         "codeBefore": "```csharp\nvoid M(in int x, out int y, params object[] rest) { }\n```",
         "codeAfter": "",
-        "prompt": "Quyidagi funksiyani chaqirish usullaridan qaysi biri **noto'g'ri**? (`in` parametr readonly, `out` parametr write-only)",
+        "prompt": "Yuqoridagi method da turli **parameter** turlari mavjud:\n- `in` - **readonly** parameter (o'qish uchun)\n- `out` - **write-only** parameter (yozish uchun)\n- `params` - **variable argument** list\n\nQaysi method chaqiruvi **noto'g'ri** va **compilation error** beradi?",
         "options": [
             {
                 "id": "A",
-                "option": "`M(5, out var y)` - literal `in` parametrga berilmoqda",
-                "explanation_uz": "Literallarni in parametrlarga berish mumkin"
+                "option": "`M(5, out var y)` - literal qiymat `in` parameter uchun"
             },
             {
                 "id": "B",
-                "option": "`int a = 1; M(a, out a)` - bir xil o'zgaruvchi `in` va `out` uchun",
-                "explanation_uz": "Bir xil o'zgaruvchini in va out parametrlarda ishlatib bo'lmaydi"
+                "option": "`int a = 1; M(a, out a)` - bir xil variable ni `in` va `out` uchun ishlatish"
             },
             {
                 "id": "C",
-                "option": "`M(in 5, out _, 1, 2)` - `in` kalit so'zi bilan",
-                "explanation_uz": "Aniq in kalit so'zini ishlatish mumkin"
+                "option": "`M(in 5, out _, 1, 2)` - explicit `in` keyword va discard pattern"
             },
             {
                 "id": "D",
-                "option": "`M(5, out var y, \"x\", 3)` - params bilan qo'shimcha argumentlar",
-                "explanation_uz": "params uchun qo'shimcha argumentlar ruxsat etilgan"
+                "option": "`M(5, out var y, \"x\", 3)` - `params` bilan qo'shimcha argumentlar"
             }
         ],
         "answer": [
             "B"
         ],
-        "explanation": "The same variable cannot be used for both `in` (readonly) and `out` (write-only) parameters in the same method call.",
-        "explanation_uz": "Bir xil o'zgaruvchini bir metod chaqiruvida ham `in` (readonly) ham `out` (write-only) parametr sifatida ishlatib bo'lmaydi."
+        "explanation": "Bir xil variable ni bir method chaqiruvida ham `in` (readonly) ham `out` (write-only) parameter sifatida ishlatib bo'lmaydi. Bu logik contradiction yaratadi va compiler error beradi. A: literal `in` ga valid ✓, C: explicit `in` keyword valid ✓, D: `params` qo'shimcha argumentlar qabul qiladi ✓."
     },
     {
         "id": 3,
@@ -79,34 +74,29 @@
         },
         "codeBefore": "```csharp\npublic record Point(int X, int Y);\nvar p = new Point(1,2) with { Y = 3 };\n```",
         "codeAfter": "",
-        "prompt": "Positional record `Point` haqida qaysi fikr **noto'g'ri**?",
+        "prompt": "Yuqoridagi **positional record** `Point` haqida qaysi gap **noto'g'ri**?\n\n**Eslatma:** Positional recordlar avtomatik property, constructor, equality comparison va `with` expression support beradi.",
         "options": [
             {
                 "id": "A",
-                "option": "Agar `Point` obyektlarining `X` va `Y` qiymatlari bir xil bo'lsa, ular teng deb hisoblanadi.",
-                "explanation_uz": "Recordlar qiymatga asoslangan tenglikka ega"
+                "option": "Agar ikki `Point` objectining `X` va `Y` qiymatlari bir xil bo'lsa, ular **value equality** asosida teng hisoblanadi"
             },
             {
                 "id": "B",
-                "option": "`record` tipida `ToString()` metodini override qilish mumkin.",
-                "explanation_uz": "Recordlarda ToString() metodini override qilish mumkin"
+                "option": "Record typeda `ToString()` methodini **override** qilib, custom string representation yaratish mumkin"
             },
             {
                 "id": "C",
-                "option": "`with` operatori mavjud obyektdan yangi obyekt yaratadi.",
-                "explanation_uz": "with expression yangi instanslar yaratadi"
+                "option": "`with` expression orqali mavjud recorddan **copy** yaratib, ba'zi propertylarini o'zgartirish mumkin"
             },
             {
                 "id": "D",
-                "option": "Positional record uchun qo'shimcha parametrsiz konstruktor qo'shish mumkin.",
-                "explanation_uz": "Positional recordlarga qo'shimcha parametrsiz konstruktor qo'shib bo'lmaydi"
+                "option": "Positional record ga qo'shimcha **parameterless constructor** qo'shish mumkin va primary constructorni bypass qilish mumkin"
             }
         ],
         "answer": [
             "D"
         ],
-        "explanation": "Positional records cannot have additional parameterless constructors. The primary constructor is the only way to create instances.",
-        "explanation_uz": "Positional recordlarga qo'shimcha parametrsiz konstruktor qo'shib bo'lmaydi. Primary konstruktor yagona yaratish usulidir."
+        "explanation": "Positional recordlarga qo'shimcha parameterless constructor qo'shib bo'lmaydi. Primary constructor - yagona yaratish usuli. A: recordlar value-based equality ga ega ✓, B: ToString() override qilish mumkin ✓, C: with expression copy-with-modifications pattern ✓."
     },
     {
         "id": 4,
@@ -117,34 +107,29 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`partial` va `file` modifikatorlari haqida qaysi fikr **to'g'ri**?",
+        "prompt": "C# da **type modifierlar** haqida qaysi gap **to'g'ri**?\n\n**Modifier turlari:**\n- `partial` - type ni bir nechta fayllarga bo'lish uchun\n- `file` - type ni faqat joriy faylda ko'rinish uchun",
         "options": [
             {
                 "id": "A",
-                "option": "`partial class` bir nechta fayl bo'ylab bo'linishi mumkin.",
-                "explanation_uz": "Partial klasslar bir nechta faylda bo'linishi mumkin"
+                "option": "`partial class` ni **bir nechta fayl** bo'ylab bo'lib, har qismini alohida faylda yozish mumkin"
             },
             {
                 "id": "B",
-                "option": "`file struct` ni boshqa fayldan chaqirish mumkin.",
-                "explanation_uz": "File turlari faqat o'sha fayl ichida ko'rinadi"
+                "option": "`file struct` ni **boshqa fayldan** access qilib, instance yaratish mumkin"
             },
             {
                 "id": "C",
-                "option": "Bir tipni bir vaqtning o'zida `partial` va `file` deb e'lon qilish mumkin.",
-                "explanation_uz": "file va partial modifikatorlarni birga ishlatib bo'lmaydi"
+                "option": "Bir typeni **bir vaqtning o'zida** ham `partial` ham `file` modifier bilan e'lon qilish mumkin"
             },
             {
                 "id": "D",
-                "option": "`file class` da `private protected` a'zolar bo'lishi mumkin.",
-                "explanation_uz": "File klasslarda private protected a'zolar bo'lishi mumkin emas"
+                "option": "`file class` da **private protected** access modifier ishlatib, member yaratish mumkin"
             }
         ],
         "answer": [
             "A"
         ],
-        "explanation": "Partial classes can be split across multiple files in the same assembly, allowing code organization and separation of concerns.",
-        "explanation_uz": "Partial klasslar bir assemblydagi bir nechta faylga bo'linishi mumkin, bu kodni tashkil qilish va mas'uliyatlarni ajratishga yordam beradi."
+        "explanation": "Partial classlar bir assemblydagi bir nechta faylga bo'linishi mumkin, kodni organize qilish va modularity uchun foydali. B: file types faqat joriy faylda visible ✗, C: partial va file modifierlarni birga ishlatib bo'lmaydi ✗, D: file classda private protected member bo'lishi mumkin emas ✗."
     },
     {
         "id": 5,
@@ -155,34 +140,29 @@
         },
         "codeBefore": "```csharp\nvoid F(params int[] nums) { }\n```",
         "codeAfter": "",
-        "prompt": "`F(1, 2, new[]{3,4})` chaqirilganda nima sodir bo'ladi? (`params` faqat individual qiymatlar yoki bitta massiv qabul qiladi)",
+        "prompt": "Yuqoridagi methodga `F(1, 2, new[]{3,4})` **chaqiruvi** amalga oshirilganda nima bo'ladi?\n\n**Eslatma:** `params` parameter ikki xil usulda ishlatiladi:\n- Individual argumentlar: `F(1, 2, 3, 4)`\n- Bitta array: `F(new[]{1, 2, 3, 4})`",
         "options": [
             {
                 "id": "A",
-                "option": "Bitta massiv `[1,2,3,4]` uzatiladi.",
-                "explanation_uz": "Individual qiymatlar va arraylarni aralashtirib bo'lmaydi"
+                "option": "Barcha argumentlar **combine** bo'lib, bitta `[1,2,3,4]` array yaratiladi"
             },
             {
                 "id": "B",
-                "option": "Uch argument uzatiladi: `1`, `2`, va `int[]` massiv.",
-                "explanation_uz": "Arrayni int params ga individual element sifatida berib bo'lmaydi"
+                "option": "**Uch argument** uzatiladi: `1`, `2` va `int[]` array object"
             },
             {
                 "id": "C",
-                "option": "Kompilyatsiya xatosi - `int[]` ni `int` ga convert qilib bo'lmaydi.",
-                "explanation_uz": "To'g'ri - int[] ni int ga convert qilib bo'lmaydi params parametr uchun"
+                "option": "**Compilation error** - individual values va array ni aralashtirib bo'lmaydi"
             },
             {
                 "id": "D",
-                "option": "Runtime exception - noto'g'ri argument tipi.",
-                "explanation_uz": "Bu runtime emas, compile-time xatosi bo'ladi"
+                "option": "**Runtime exception** - argument type conversion muammosi"
             }
         ],
         "answer": [
             "C"
         ],
-        "explanation": "When using params, you can either pass individual values OR a single array, but not mix them. Here, mixing individual ints (1, 2) with an array (new[]{3,4}) causes a compilation error.",
-        "explanation_uz": "params ishlatilganda yoki individual qiymatlar YOKI bitta array berish mumkin, lekin ularni aralashtirib bo'lmaydi. Bu yerda individual int-lar (1, 2) va array (new[]{3,4}) aralashtirilgani uchun kompilyatsiya xatosi paydo bo'ladi."
+        "explanation": "params parameter bilan faqat ikki variant mumkin: yoki faqat individual values (F(1,2,3,4)) yoki faqat bitta array (F(new[]{1,2,3,4})). Individual values (1,2) va array (new[]{3,4}) ni aralashtirib bo'lmaydi - compilation error beradi."
     },
     {
         "id": 6,
@@ -191,36 +171,31 @@
             "category": "tip-tizimi-oop",
             "subcategory": "generics-constraints"
         },
-        "codeBefore": "```csharp\npublic static TResult Combine<TSource, TResult>(TSource a, TSource b)\n    where TSource : ________, IComparable<TSource>\n    where TResult : TSource, new()\n{\n    // arifmetik operatorlar ishlatiladi: +, -, *, /\n}\n```",
+        "codeBefore": "```csharp\npublic static TResult Combine<TSource, TResult>(TSource a, TSource b)\n    where TSource : ________, IComparable<TSource>\n    where TResult : TSource, new()\n{\n    // Arifmetik operatorlar ishlatiladi: +, -, *, /\n    return new TResult();\n}\n```",
         "codeAfter": "",
-        "prompt": "C# 12 da `TSource` uchun arifmetik operatorlardan foydalanish uchun qaysi generic constraint kerak?",
+        "prompt": "**Generic math** (.NET 7+) da `TSource` type uchun **arifmetik operatorlar** (`+`, `-`, `*`, `/`) ishlatish uchun qaysi **generic constraint** kerak?\n\n**Eslatma:** C# 11+ da static abstract interface memberlar orqali operator overloading mumkin.",
         "options": [
             {
                 "id": "A",
-                "option": "`INumber<TSource>` - generic math interface",
-                "explanation_uz": "INumber<T> .NET 7+ da arifmetik operatorlarni ta'minlaydi"
+                "option": "`INumber<TSource>` - .NET 7+ generic math interface"
             },
             {
                 "id": "B",
-                "option": "`struct` - value type constraint",
-                "explanation_uz": "struct cheklovi arifmetik operatorlarni bermaydi"
+                "option": "`struct` - value type constraint"
             },
             {
                 "id": "C",
-                "option": "`IArithmetic<TSource>` - bunday interface yo'q",
-                "explanation_uz": "Bunday interfeys .NET da mavjud emas"
+                "option": "`IArithmetic<TSource>` - custom arithmetic interface"
             },
             {
                 "id": "D",
-                "option": "`class` - reference type constraint",
-                "explanation_uz": "class cheklovi arifmetik operatorlarni bermaydi"
+                "option": "`class` - reference type constraint"
             }
         ],
         "answer": [
             "A"
         ],
-        "explanation": "INumber<T> is the primary interface for generic math operations in .NET 7+, providing arithmetic operators like +, -, *, / through static abstract interface members.",
-        "explanation_uz": "INumber<T> .NET 7+ da generic matematik operatsiyalar uchun asosiy interfeys bo'lib, static abstract interfeys a'zolari orqali +, -, *, / kabi arifmetik operatorlarni ta'minlaydi."
+        "explanation": "INumber<T> .NET 7+ da arifmetik operatorlar uchun asosiy interface. Static abstract interface memberlar orqali +, -, *, / operatorlarini ta'minlaydi. B: struct constraint arifmetik operator bermaydi ✗, C: IArithmetic<T> mavjud emas ✗, D: class constraint arifmetik operator bermaydi ✗."
     },
     {
         "id": 7,
