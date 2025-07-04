@@ -338,10 +338,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "File-scoped namespace (`namespace MyApp;`) faqat kodni tashkillashtirish uchun ishlatiladi va access modifierlar yoki ko'rinuvchanlikka ta'sir qilmaydi.",
+        "prompt": "**File-scoped namespace** (`namespace MyApp;`) faqat kodni **tashkillashtirish** uchun ishlatiladi va **access modifierlar** yoki **visibility** ga ta'sir qilmaydi.\n\n**Eslatma:** File-scoped namespace C# 10+ da kiritilgan feature bo'lib, traditional namespace syntaxni soddalashtiradi.",
         "answer": "true",
-        "explanation": "File-scoped namespaces are purely for code organization and don't affect access modifiers or visibility rules.",
-        "explanation_uz": "Fayl doirasidagi namespace-lar faqat kodni tashkil qilish uchun bo'lib, access modifierlar yoki ko'rinuvchanlik qoidalariga ta'sir qilmaydi."
+        "explanation": "File-scoped namespace faqat code organization uchun. Access modifierlar (public, private, internal) va visibility rules bir xil qoladi. Faqat indentation va braces kamayadi. Traditional namespace: { } blok kerak, file-scoped: semicolon (;) yetarli."
     },
     {
         "id": 12,
@@ -352,10 +351,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "C# 10+ da `record struct` uchun foydalanuvchi tomonidan yaratilgan parametrsiz konstruktor e'lon qilish mumkin.",
+        "prompt": "**C# 10+** da `record struct` uchun foydalanuvchi tomonidan yaratilgan **parametersiz constructor** e'lon qilish mumkin.\n\n**Eslatma:** Oldingi versiyalarda struct va record structlarda faqat parametrli constructorlar ruxsat etilgan edi.",
         "answer": "true",
-        "explanation": "C# 10+ allows parameterless constructors in record structs, unlike earlier versions where this was restricted.",
-        "explanation_uz": "C# 10+ da record struct-larda parametrsiz konstruktor e'lon qilish mumkin, oldingi versiyalardan farqli o'laroq bu cheklangan edi."
+        "explanation": "C# 10+ da record struct uchun parametersiz constructor e'lon qilish mumkin. Bu C# 9 da cheklangan edi. Parametersiz constructor explicit yozish mumkin va default initialization logic ni override qilish mumkin."
     },
     {
         "id": 13,
@@ -366,10 +364,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "Expression-bodied member (`=>`) ichida exception throw qilish va kompleks mantiq yozish mumkin.",
+        "prompt": "**Expression-bodied member** (`=>`) ichida **exception throw** qilish va **kompleks mantiq** yozish mumkin.\n\n**Masalan:** `string GetValue() => condition ? \"value\" : throw new Exception(\"Error\");`\n\n**Eslatma:** Expression-bodied memberlar faqat single expression bilan cheklangan.",
         "answer": "true",
-        "explanation": "Expression-bodied members can contain complex logic, including throwing exceptions, conditional expressions, and method calls.",
-        "explanation_uz": "Expression-bodied a'zolarda murakkab mantiq, jumladan exception tashlaish, shartli expressionlar va metod chaqiruvlari bo'lishi mumkin."
+        "explanation": "Expression-bodied memberlar single expression bilan cheklangan, lekin bu expression kompleks bo'lishi mumkin. Exception throw, conditional expressions (?:), method calls, va boshqa expressionlar mumkin. Faqat statements (if, for, while) mumkin emas."
     },
     {
         "id": 14,
@@ -380,10 +377,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "C# switch patternlari bir case ichida tip tekshirish va qo'shimcha shart birga yozilishi mumkin, masalan: `case string s when s.Length > 0:`.",
+        "prompt": "**C# switch pattern** da bir **case** ichida **type pattern** va **qo'shimcha shart** birga yozilishi mumkin.\n\n**Masalan:** `case string s when s.Length > 0:`\n\n**Pattern guard (when clause)** orqali type patternni boolean condition bilan birlashtirish.",
         "answer": "true",
-        "explanation": "Pattern guards (when clauses) allow combining type patterns with additional boolean conditions in the same case.",
-        "explanation_uz": "Pattern guardlar (when clause-lar) tip patternlarni qo'shimcha boolean shartlar bilan bitta case da birlashtirish imkonini beradi."
+        "explanation": "Pattern guard (when clause) orqali type pattern va boolean condition birgalikda ishlatiladi. `case string s when s.Length > 0:` - bu s ni string sifatida cast qiladi va s.Length > 0 shartini tekshiradi. Ikki shart ham true bo'lishi kerak."
     },
     {
         "id": 15,
@@ -394,10 +390,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "C# 10+ da struct uchun parametrsiz konstruktor e'lon qilish va default xatti-harakatni o'zgartirish mumkin.",
+        "prompt": "**C# 10+** da `struct` uchun **parametersiz constructor** e'lon qilish va **default initialization** xatti-harakatni o'zgartirish mumkin.\n\n**Eslatma:** Oldingi versiyalarda struct uchun faqat parametrli constructorlar ruxsat etilgan edi.\n\n**Masalan:** `public MyStruct() { Value = 42; }`",
         "answer": "true",
-        "explanation": "C# 10+ allows declaring parameterless constructors in structs, enabling custom initialization logic beyond the default behavior.",
-        "explanation_uz": "C# 10+ da struct-larda parametrsiz konstruktor e'lon qilish mumkin, bu default xatti-harakatdan tashqari maxsus initialization mantiqini yoqish imkonini beradi."
+        "explanation": "C# 10+ da struct uchun parametersiz constructor e'lon qilish mumkin. Bu default initialization logic ni override qilish imkonini beradi. Oldingi versiyalarda bu cheklangan edi - faqat parametrli constructorlar ruxsat etilgan edi."
     },
     {
         "id": 16,
