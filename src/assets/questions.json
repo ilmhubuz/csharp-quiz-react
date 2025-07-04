@@ -778,7 +778,7 @@
         },
         "codeBefore": "```csharp\nvar list = new List<int> { 1, 2, 3, 4, 5 };\nvar queue = new Queue<int>(list);\nvar result = queue.Dequeue();\n```",
         "codeAfter": "",
-        "prompt": "`Queue<T>` FIFO tartibda ishlaydi. Yuqoridagi kodda `result` ning qiymati nima bo'ladi?",
+        "prompt": "**Queue<T>** FIFO (First In, First Out) tartibda ishlaydi.\n\n**Kod tahlili:**\n- `List<int> {1, 2, 3, 4, 5}` dan queue yaratildi\n- `Dequeue()` birinchi elementni olib tashlaydi va qaytaradi\n\n**Savol:** `result` ning qiymati nima?",
         "options": [
             {
                 "id": "A",
@@ -800,7 +800,7 @@
         "answer": [
             "A"
         ],
-        "explanation": "Queue<T> FIFO (First In, First Out) kolleksiya. List dan yaratilganda elementlar tartib saqlanadi va Dequeue() birinchi element (1) ni qaytaradi."
+        "explanation": "✓ **Queue<T> FIFO qoidasi:** Birinchi kiritilgan element birinchi chiqadi\n\n✓ **Queue yaratilishi:** `List<int> {1, 2, 3, 4, 5}` dan queue yaratilganda elementlar tartib saqlanadi\n\n✓ **Dequeue() ishlashi:** Birinchi element (1) ni qaytaradi va queue dan olib tashlaydi\n\n✓ **Natija:** `result = 1`"
     },
     {
         "id": 47,
@@ -811,7 +811,7 @@
         },
         "codeBefore": "```csharp\nvar dict = new Dictionary<string, int>\n{\n    [\"apple\"] = 5,\n    [\"banana\"] = 3\n};\ndict.TryAdd(\"apple\", 10);\nConsole.WriteLine(dict[\"apple\"]);\n```",
         "codeAfter": "",
-        "prompt": "`Dictionary<TKey, TValue>` da `TryAdd` metodining xususiyati nimada? Natija nima bo'ladi?",
+        "prompt": "**Dictionary<TKey, TValue>** da **TryAdd** metodining xususiyati nimada?\n\n**Kod tahlili:**\n- Dictionary da `\"apple\": 5` mavjud\n- `TryAdd(\"apple\", 10)` chaqirilmoqda\n- `dict[\"apple\"]` qiymati chiqarilmoqda\n\n**Savol:** Console ga qanday qiymat chiqadi?",
         "options": [
             {
                 "id": "A",
@@ -833,7 +833,7 @@
         "answer": [
             "B"
         ],
-        "explanation": "TryAdd metodi mavjud key uchun hech narsa qilmaydi va false qaytaradi. 'apple' key allaqachon mavjud bo'lgani uchun qiymati 5 bo'lib qoladi."
+        "explanation": "✓ **TryAdd metodining xususiyati:** Mavjud key uchun hech narsa qilmaydi\n\n✓ **TryAdd vs Add farqi:**\n- `Add()` - mavjud key uchun exception\n- `TryAdd()` - mavjud key uchun `false` qaytaradi, qiymat o'zgarmaydi\n\n✓ **Natija:** `\"apple\"` key allaqachon mavjud, shuning uchun qiymati `5` bo'lib qoladi"
     },
     {
         "id": 48,
@@ -844,7 +844,7 @@
         },
         "codeBefore": "```csharp\nvar numbers = new int[] { 1, 2, 3, 4, 5 };\nvar lastTwo = numbers[^2..];\nConsole.WriteLine(string.Join(\", \", lastTwo));\n```",
         "codeAfter": "",
-        "prompt": "Index (`^`) va Range (`..`) operatorlaridan foydalanilgan kodda natija qanday bo'ladi?",
+        "prompt": "**Index (`^`) va Range (`..`) operatorlari** (C# 8+) qanday ishlaydi?\n\n**Kod tahlili:**\n- Array: `{1, 2, 3, 4, 5}`\n- `^2` - oxirdan 2-chi element (index 3)\n- `[^2..]` - oxirdan 2-chi elementdan boshlab oxirigacha\n\n**Savol:** `string.Join(\", \", lastTwo)` natijasi?",
         "options": [
             {
                 "id": "A",
@@ -866,7 +866,7 @@
         "answer": [
             "A"
         ],
-        "explanation": "^2 degani oxirdan 2 ta oldin (index 3, qiymat 4), .. degani oxirigacha. Natijada oxirgi 2 ta element: 4, 5."
+        "explanation": "✓ **Index operator (`^`):** Oxirdan sanash\n- `^1` - oxirgi element\n- `^2` - oxirdan 2-chi element (index 3, qiymat 4)\n\n✓ **Range operator (`..`):** Slice operatori\n- `[^2..]` - oxirdan 2-chi elementdan boshlab oxirigacha\n\n✓ **Natija:** `[3..5]` → `{4, 5}` → `\"4, 5\"`"
     },
     {
         "id": 49,
@@ -877,7 +877,7 @@
         },
         "codeBefore": "```csharp\nspan<int> span = stackalloc int[3] { 1, 2, 3 };\nReadOnlySpan<int> readOnlySpan = span;\nvar memory = span.ToArray().AsMemory();\n```",
         "codeAfter": "",
-        "prompt": "`Span<T>` va `Memory<T>` haqida qaysi fikr **to'g'ri**?",
+        "prompt": "**Span<T>** va **Memory<T>** (C# 7.2+) haqida qaysi fikr **to'g'ri**?\n\n**Kod tahlili:**\n- `stackalloc` - stack da memory allocation\n- `Span<T>` - ref struct, stack-only\n- `ReadOnlySpan<T>` - immutable span\n- `Memory<T>` - heap va stack, async-safe\n\n**Savol:** Qaysi statement to'g'ri?",
         "options": [
             {
                 "id": "A",
@@ -899,7 +899,7 @@
         "answer": [
             "B"
         ],
-        "explanation": "Memory<T> heap va stack ikkalasida ham ishlaydi va async metodlarda ishlatish mumkin, Span<T>dan farqli o'laroq u ref struct emas."
+        "explanation": "✓ **Memory<T> xususiyatlari:** Heap va stack ikkalasida ham ishlaydi\n\n✓ **Span<T> vs Memory<T>:**\n- `Span<T>` - ref struct, stack-only, async da ishlatib bo'lmaydi\n- `Memory<T>` - regular struct, heap/stack, async-safe\n\n✓ **Noto'g'ri variantlar:**\n- A: `Span<T>` heap da ham ishlaydi\n- C: ReadOnly dan mutable ga cast mumkin emas\n- D: `Memory<T>` ref struct emas"
     },
     {
         "id": 50,
@@ -910,7 +910,7 @@
         },
         "codeBefore": "```csharp\nvar hashSet = new HashSet<int> { 1, 2, 3 };\nvar list = new List<int> { 2, 3, 4, 5 };\nhashSet.IntersectWith(list);\n```",
         "codeAfter": "",
-        "prompt": "`HashSet<T>.IntersectWith()` operatsiyasidan keyin `hashSet` da qanday elementlar qoladi?",
+        "prompt": "**HashSet<T>.IntersectWith()** set intersection operatsiyasi qanday ishlaydi?\n\n**Kod tahlili:**\n- `hashSet = {1, 2, 3}`\n- `list = {2, 3, 4, 5}`\n- `IntersectWith()` - intersection (kesishma) operatsiyasi\n\n**Savol:** `hashSet` da qanday elementlar qoladi?",
         "options": [
             {
                 "id": "A",
@@ -932,7 +932,7 @@
         "answer": [
             "B"
         ],
-        "explanation": "IntersectWith matematik intersection operatsiyasi - faqat ikkala to'plamda ham mavjud elementlar qoladi: 2 va 3."
+        "explanation": "✓ **IntersectWith operatsiyasi:** Matematik intersection (kesishma)\n\n✓ **Set operatsiyasi:**\n- `hashSet = {1, 2, 3}`\n- `list = {2, 3, 4, 5}`\n- Intersection = faqat ikkala to'plamda ham mavjud elementlar\n\n✓ **Natija:** `{2, 3}` - faqat umumiy elementlar qoladi"
     },
     {
         "id": 51,
