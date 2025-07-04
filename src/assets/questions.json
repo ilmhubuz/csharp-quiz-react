@@ -647,9 +647,9 @@
             "subcategory": "method hiding"
         },
         "snippet": "class A\n{\n    public virtual string F() => \"A\";\n}\nclass B : A\n{\n    public override string F() => base.F() + \"B\";  // \"AB\"\n}\nclass C : B\n{\n    public new string F() => base.F() + \"C\";  // \"ABC\" lekin virtual dispatch yo'q\n}\n\nA obj = new C();\nConsole.WriteLine(obj.F());  // A reference orqali chaqirilmoqda",
-        "prompt": "`new` keyword virtual dispatch ni to'xtatadi. `obj.F()` natijasi?",
+        "prompt": "**Method hiding** vs **virtual dispatch** farqi nima?\n\n**Kod tahlili:**\n- `A.F()` - virtual method \n- `B.F()` - override (virtual dispatch continues)\n- `C.F()` - **new** keyword (virtual dispatch breaks)\n- `obj` - `A` reference, `C` instance\n\n**Savol:** `obj.F()` chaqirilganda qanday natija chiqadi?",
         "answer": "AB",
-        "explanation": "C.F() metodi 'new' bilan hide qilingan, shuning uchun A reference orqali B.F() chaqiriladi, natija 'AB'."
+        "explanation": "✓ **Virtual dispatch qoidasi:** `new` keyword virtual dispatch ni to'xtatadi\n\n✓ **Method resolution:**\n- `A` reference orqali chaqirilmoqda\n- `C.F()` da `new` keyword ishlatilgan\n- Virtual chain: `A.F()` → `B.F()` (override)\n- `C.F()` virtual chain dan tashqarida\n\n✓ **Natija:** `B.F()` chaqiriladi → `base.F()` + \"B\" → \"A\" + \"B\" = \"AB\""
     },
     {
         "id": 37,
@@ -659,9 +659,9 @@
             "subcategory": "default interface implementation"
         },
         "snippet": "interface ILog\n{\n    void Log(string msg) => Console.Write(\"DefaultLog:\");  // Default implementation\n}\nclass Logger : ILog { }  // O'z implementatsiyasi yo'q\n\nvar logger = new Logger();\n((ILog)logger).Log(\"Hello\");",
-        "prompt": "Logger class Log metodini override qilmagan. Default interface implementation ishlatiladi.",
+        "prompt": "**Default interface implementation** (C# 8+) qanday ishlaydi?\n\n**Kod tahlili:**\n- `ILog` interface da default implementation bor\n- `Logger` class hech qanday implementation bermagan\n- `((ILog)logger).Log()` - interface cast orqali chaqirilmoqda\n\n**Savol:** Console ga qanday matn chiqadi?",
         "answer": "DefaultLog:",
-        "explanation": "Logger class Log metodini implement qilmagan, shuning uchun interface cast orqali default implementation chaqiriladi."
+        "explanation": "✓ **Default interface implementation qoidasi:** Class o'z implementation bermasa, default implementation ishlatiladi\n\n✓ **Interface cast:**\n- `Logger` class `Log` metodini implement qilmagan\n- `((ILog)logger)` - interface reference ga cast\n- Interface ning default implementation chaqiriladi\n\n✓ **Natija:** `Console.Write(\"DefaultLog:\")` ishga tushadi"
     },
     {
         "id": 38,
@@ -671,9 +671,9 @@
             "subcategory": "method resolution"
         },
         "snippet": "class Base\n{\n    public void Show() => Console.Write(\"Base\");  // Virtual emas\n    public virtual void Display() => Console.Write(\"BaseDisplay\");\n}\nclass Derived : Base\n{\n    public new void Show() => Console.Write(\"Derived\");  // Hiding\n    public override void Display() => Console.Write(\"DerivedDisplay\");  // Override\n}\n\nBase b = new Derived();\nb.Show();     // Base reference -> Base.Show()\nb.Display();  // Virtual dispatch -> Derived.Display()",
-        "prompt": "`new` vs `override` farqi. Natija qanday?",
+        "prompt": "**Method hiding** (`new`) vs **method overriding** (`override`) farqini ko'rsatuvchi misol.\n\n**Kod tahlili:**\n- `Show()` - non-virtual, `new` bilan hide qilingan\n- `Display()` - virtual, `override` qilingan\n- `b` - `Base` reference, `Derived` instance\n\n**Savol:** `b.Show()` va `b.Display()` ning birga chiqishi qanday?",
         "answer": "BaseDerivedDisplay",
-        "explanation": "Show() non-virtual va 'new' bilan hide qilingan, shuning uchun Base.Show() chaqiriladi. Display() virtual va override qilingan, shuning uchun DerivedDisplay chaqiriladi."
+        "explanation": "✓ **Method hiding vs Override:**\n- `Show()` non-virtual → `new` hiding → `Base.Show()` chaqiriladi\n- `Display()` virtual → `override` → `Derived.Display()` chaqiriladi\n\n✓ **Method resolution:**\n- `b.Show()` → \"Base\" (hiding)\n- `b.Display()` → \"DerivedDisplay\" (virtual dispatch)\n\n✓ **Natija:** \"Base\" + \"DerivedDisplay\" = \"BaseDerivedDisplay\""
     },
     {
         "id": 39,
@@ -683,9 +683,9 @@
             "subcategory": "ref readonly"
         },
         "snippet": "var numbers = new[] { 1, 2, 3 };\nint sum = 0;\nforeach (ref readonly var n in numbers)  // Reference by readonly\n{\n    sum += n;  // 1+2+3\n}\nConsole.WriteLine(sum);",
-        "prompt": "`ref readonly` faqat performance uchun, hisoblash bir xil. Yig'indi nima?",
+        "prompt": "**Ref readonly** (C# 7.2+) performance optimization qanday ishlaydi?\n\n**Kod tahlili:**\n- `foreach (ref readonly var n in numbers)` - copy o'rniga reference\n- `sum += n` - oddiy hisoblash\n- `numbers` = `[1, 2, 3]`\n\n**Savol:** `Console.WriteLine(sum)` natijasi nima?",
         "answer": "6",
-        "explanation": "ref readonly faqat performance optimization, mantiq o'zgarmaydi. 1+2+3=6."
+        "explanation": "✓ **Ref readonly xususiyati:** Performance optimization, mantiq o'zgarmaydi\n\n✓ **Hisoblash jarayoni:**\n- `n` har bir element uchun readonly reference\n- `sum += 1` → sum = 1\n- `sum += 2` → sum = 3  \n- `sum += 3` → sum = 6\n\n✓ **Afzallik:** Katta struct lar uchun copy overhead kamaytiradi"
     },
     {
         "id": 40,
@@ -695,9 +695,9 @@
             "subcategory": "records"
         },
         "snippet": "record R(int X)\n{\n    public override string ToString() => $\"R:{X}\";  // Custom ToString\n}\n\nvar r1 = new R(5);\nvar r2 = r1 with { X = 7 };  // Copy with modification\nConsole.WriteLine(r1);\nConsole.WriteLine(r2);",
-        "prompt": "Record da custom ToString va `with` expression. Ikki qator natija?",
+        "prompt": "**Record** da **custom ToString** va **with expression** qanday ishlaydi?\n\n**Kod tahlili:**\n- `record R(int X)` - positional record\n- `ToString()` custom implementation\n- `r1 = new R(5)` - original record\n- `r2 = r1 with { X = 7 }` - copy with modification\n\n**Savol:** Ikki `Console.WriteLine` ning natijasi qanday?",
         "answer": "R:5\nR:7",
-        "explanation": "with expression yangi copy yaratadi. r1 o'zgarishsiz qoladi (R:5), r2 yangi qiymat bilan yaratiladi (R:7)."
+        "explanation": "✓ **With expression immutability:** Original record o'zgarishsiz qoladi\n\n✓ **Custom ToString ishlashi:**\n- `r1.ToString()` → `$\"R:{X}\"` → `\"R:5\"`\n- `r2.ToString()` → `$\"R:{X}\"` → `\"R:7\"`\n\n✓ **Record copy semantics:** `with` expression yangi instance yaratadi, original o'zgarmaydi"
     },
     {
         "id": 41,
