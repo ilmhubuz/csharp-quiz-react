@@ -7,25 +7,15 @@ import {
   Paper,
   Fab,
   Zoom,
-  Card,
-  CardContent,
-  Chip,
-  Collapse,
-  IconButton,
-  Tooltip,
   AppBar,
-  Toolbar
+  Toolbar,
+  IconButton
 } from '@mui/material';
 import { 
   ArrowForward, 
   ArrowBack, 
   CheckCircle, 
-  Home as HomeIcon,
-  ExpandMore,
-  ExpandLess,
-  Info,
-  Category,
-  Quiz
+  Home as HomeIcon
 } from '@mui/icons-material';
 import type { 
   Question, 
@@ -40,7 +30,6 @@ import { QuizResults } from './QuizResults';
 import { HomePage } from './HomePage';
 import { progressStorage } from '../services/progressStorage';
 import { answerStorage } from '../services/answerStorage';
-import { CATEGORY_INFO, TYPE_INFO } from '../constants/categories';
 import questionsData from '../assets/questions.json';
 
 interface QuizState {
@@ -61,7 +50,6 @@ export const EnhancedQuizApp: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [answers, setAnswers] = useState<QuizState>({});
-  const [showMetadata, setShowMetadata] = useState(false);
   const [homeRefreshKey, setHomeRefreshKey] = useState(0);
 
   const currentQuestion = filteredQuestions[currentQuestionIndex];
@@ -196,11 +184,9 @@ export const EnhancedQuizApp: React.FC = () => {
     if (!quizConfig) return '';
     
     if (quizConfig.mode === 'category' && quizConfig.categories) {
-      const categoryNames = quizConfig.categories.map(cat => CATEGORY_INFO[cat].nameUz);
-      return categoryNames.join(', ');
+      return quizConfig.categories.join(', ');
     } else if (quizConfig.mode === 'type' && quizConfig.types) {
-      const typeNames = quizConfig.types.map(type => TYPE_INFO[type].nameUz);
-      return typeNames.join(', ');
+      return quizConfig.types.join(', ');
     }
     
     return 'Quiz';
@@ -311,53 +297,10 @@ export const EnhancedQuizApp: React.FC = () => {
               Question {currentQuestionIndex + 1} of {filteredQuestions.length}
             </Typography>
           </Box>
-          <Tooltip title="Show question metadata">
-            <IconButton
-              color="inherit"
-              onClick={() => setShowMetadata(!showMetadata)}
-            >
-              <Info />
-            </IconButton>
-          </Tooltip>
         </Toolbar>
       </AppBar>
 
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        {/* Question Metadata Card */}
-        <Collapse in={showMetadata}>
-          <Card elevation={2} sx={{ mb: 3, backgroundColor: 'background.default' }}>
-            <CardContent>
-              <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-                <Typography variant="h6" color="primary" display="flex" alignItems="center" gap={1}>
-                  <Info />
-                  Question Information
-                </Typography>
-                <IconButton
-                  size="small"
-                  onClick={() => setShowMetadata(false)}
-                >
-                  <ExpandLess />
-                </IconButton>
-              </Box>
-
-              <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
-                <Chip
-                  icon={<Category />}
-                  label={CATEGORY_INFO[currentQuestion.metadata.category].nameUz}
-                  color="primary"
-                  size="small"
-                />
-                <Chip
-                  icon={<Quiz />}
-                  label={TYPE_INFO[currentQuestion.type].nameUz}
-                  color="secondary"
-                  size="small"
-                />
-              </Box>
-            </CardContent>
-          </Card>
-        </Collapse>
-
         {/* Question Card */}
         <Box 
           display="flex" 
@@ -455,22 +398,6 @@ export const EnhancedQuizApp: React.FC = () => {
           onClick={handleShowResults}
         >
           <CheckCircle />
-        </Fab>
-      </Zoom>
-
-      {/* Metadata Toggle FAB */}
-      <Zoom in={!showMetadata}>
-        <Fab
-          color="info"
-          size="medium"
-          sx={{
-            position: 'fixed',
-            bottom: 150,
-            right: 24,
-          }}
-          onClick={() => setShowMetadata(true)}
-        >
-          <ExpandMore />
         </Fab>
       </Zoom>
     </Box>

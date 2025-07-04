@@ -11,60 +11,14 @@ export type TopicCategory =
   | 'ilg\'or-mavzular'
   | 'exception-handling';
 
-export type ConceptTag = 
-  // Core Language Features
-  | 'pattern-matching' | 'switch-expressions' | 'property-patterns' | 'guard-clauses'
-  | 'records' | 'record-structs' | 'positional-records' | 'with-expressions'
-  | 'nullable-reference-types' | 'null-annotations' | 'null-forgiveness'
-  | 'file-scoped-types' | 'file-scoped-namespaces'
-  | 'expression-bodied-members' | 'local-functions' | 'top-level-statements'
-  
-  // Type System & OOP
-  | 'inheritance' | 'polymorphism' | 'virtual-override' | 'abstract-sealed'
-  | 'interfaces' | 'explicit-implementation' | 'default-implementation'
-  | 'generics' | 'constraints' | 'generic-math' | 'variance' | 'covariance' | 'contravariance'
-  | 'access-modifiers' | 'visibility' | 'encapsulation'
-  
-  // Method Features
-  | 'parameters' | 'in-parameters' | 'out-parameters' | 'ref-parameters' | 'params-arrays'
-  | 'optional-parameters' | 'named-arguments' | 'method-overloading'
-  | 'extension-methods' | 'static-classes'
-  
-  // Collections & Data Structures
-  | 'basic-collections' | 'list' | 'dictionary' | 'hashset' | 'queue' | 'stack'
-  | 'specialized-collections' | 'sorted-dictionary' | 'priority-queue' | 'lookup'
-  | 'memory-types' | 'span' | 'memory' | 'readonly-span' | 'stackalloc'
-  | 'indexing-slicing' | 'index-operator' | 'range-operator' | 'collection-expressions'
-  | 'set-operations' | 'collection-manipulation'
-  
-  // LINQ & Functional Programming
-  | 'basic-linq' | 'where' | 'select' | 'first' | 'count' | 'take' | 'skip'
-  | 'aggregation' | 'groupby' | 'sum' | 'average' | 'aggregate' | 'min' | 'max'
-  | 'set-linq' | 'union' | 'intersect' | 'except' | 'distinct'
-  | 'joining' | 'join' | 'group-join' | 'selectmany' | 'zip'
-  | 'quantifiers' | 'any' | 'all' | 'contains'
-  | 'query-syntax' | 'method-syntax' | 'let-clause'
-  | 'deferred-execution' | 'immediate-execution' | 'materialization'
-  
-  // Exception Handling
-  | 'try-catch' | 'finally-blocks' | 'custom-exceptions' | 'exception-filtering' | 'when-clauses'
-  | 're-throwing' | 'exception-propagation' | 'exception-best-practices' | 'exception-types'
-  
-  // Advanced Topics
-  | 'performance' | 'memory-allocation' | 'ref-returns' | 'ref-structs'
-  | 'error-handling' | 'exceptions' | 'validation'
-  | 'code-analysis' | 'debugging' | 'best-practices';
-
 export interface QuestionMetadata {
   category: TopicCategory;
   subcategory: string;
-  concepts: ConceptTag[];
 }
 
 export interface MCQOption {
 	id: string;
 	option: string;
-	explanation?: string;
 }
 
 export interface MCQQuestion {
@@ -151,13 +105,11 @@ export interface StudySession {
 	description: string;
 	questions: number[];
 	estimatedDurationMinutes: number;
-	focusedConcepts?: ConceptTag[];
 }
 
 export interface QuizSettings {
 	questionCount?: number;
 	categories?: TopicCategory[];
-	concepts?: ConceptTag[];
 	excludeIds?: number[];
 	randomizeOrder?: boolean;
 	timeLimit?: number;

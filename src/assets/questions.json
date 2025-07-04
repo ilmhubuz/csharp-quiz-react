@@ -4,13 +4,7 @@
         "type": "mcq",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "pattern matching",
-            "concepts": [
-                "pattern-matching",
-                "switch-expressions",
-                "property-patterns",
-                "guard-clauses"
-            ]
+            "subcategory": "pattern matching"
         },
         "codeBefore": "```csharp\nbool IsLong(string? s) => s switch\n{\n    null                  => false,\n    { Length: > 5 and < 10 } => true,\n    _                     => false\n};\n```",
         "codeAfter": "",
@@ -18,23 +12,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`IsLong(\"123456\")` - uzunlik 6",
-                "explanation": "Uzunlik 6 bo'lsa > 5 va < 10 shartiga mos keladi"
+                "option": "`IsLong(\"123456\")` - uzunlik 6"
             },
             {
                 "id": "B",
-                "option": "`IsLong(\"1234567890\")` - uzunlik 10",
-                "explanation": "Uzunlik 10 bo'lsa < 10 shartiga mos kelmaydi"
+                "option": "`IsLong(\"1234567890\")` - uzunlik 10"
             },
             {
                 "id": "C",
-                "option": "`IsLong(null!)` - null qiymat",
-                "explanation": "Null birinchi patternга mos keladi va false qaytaradi"
+                "option": "`IsLong(null!)` - null qiymat"
             },
             {
                 "id": "D",
-                "option": "`IsLong(\"abcd\")` - uzunlik 4",
-                "explanation": "Uzunlik 4 bo'lsa > 5 shartiga mos kelmaydi"
+                "option": "`IsLong(\"abcd\")` - uzunlik 4"
             }
         ],
         "answer": [
@@ -47,12 +37,7 @@
         "type": "mcq",
         "metadata": {
             "category": "metod-xususiyatlari",
-            "subcategory": "parametrlar",
-            "concepts": [
-                "in-parameters",
-                "out-parameters",
-                "params-arrays"
-            ]
+            "subcategory": "parametrlar"
         },
         "codeBefore": "```csharp\nvoid M(in int x, out int y, params object[] rest) { }\n```",
         "codeAfter": "",
@@ -61,25 +46,21 @@
             {
                 "id": "A",
                 "option": "`M(5, out var y)` - literal `in` parametrga berilmoqda",
-                "explanation": "Literals can be passed to in parameters",
                 "explanation_uz": "Literallarni in parametrlarga berish mumkin"
             },
             {
                 "id": "B",
                 "option": "`int a = 1; M(a, out a)` - bir xil o'zgaruvchi `in` va `out` uchun",
-                "explanation": "Same variable cannot be used for both in and out parameters",
                 "explanation_uz": "Bir xil o'zgaruvchini in va out parametrlarda ishlatib bo'lmaydi"
             },
             {
                 "id": "C",
                 "option": "`M(in 5, out _, 1, 2)` - `in` kalit so'zi bilan",
-                "explanation": "Explicit in keyword is allowed",
                 "explanation_uz": "Aniq in kalit so'zini ishlatish mumkin"
             },
             {
                 "id": "D",
                 "option": "`M(5, out var y, \"x\", 3)` - params bilan qo'shimcha argumentlar",
-                "explanation": "Additional arguments for params are allowed",
                 "explanation_uz": "params uchun qo'shimcha argumentlar ruxsat etilgan"
             }
         ],
@@ -94,12 +75,7 @@
         "type": "mcq",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "records",
-            "concepts": [
-                "records",
-                "positional-records",
-                "with-expressions"
-            ]
+            "subcategory": "records"
         },
         "codeBefore": "```csharp\npublic record Point(int X, int Y);\nvar p = new Point(1,2) with { Y = 3 };\n```",
         "codeAfter": "",
@@ -108,25 +84,21 @@
             {
                 "id": "A",
                 "option": "Agar `Point` obyektlarining `X` va `Y` qiymatlari bir xil bo'lsa, ular teng deb hisoblanadi.",
-                "explanation": "Records have value-based equality",
                 "explanation_uz": "Recordlar qiymatga asoslangan tenglikka ega"
             },
             {
                 "id": "B",
                 "option": "`record` tipida `ToString()` metodini override qilish mumkin.",
-                "explanation": "ToString() can be overridden in records",
                 "explanation_uz": "Recordlarda ToString() metodini override qilish mumkin"
             },
             {
                 "id": "C",
                 "option": "`with` operatori mavjud obyektdan yangi obyekt yaratadi.",
-                "explanation": "with expression creates new instances",
                 "explanation_uz": "with expression yangi instanslar yaratadi"
             },
             {
                 "id": "D",
                 "option": "Positional record uchun qo'shimcha parametrsiz konstruktor qo'shish mumkin.",
-                "explanation": "Positional records cannot have additional parameterless constructors",
                 "explanation_uz": "Positional recordlarga qo'shimcha parametrsiz konstruktor qo'shib bo'lmaydi"
             }
         ],
@@ -141,11 +113,7 @@
         "type": "mcq",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "file-scoped-types",
-            "concepts": [
-                "file-scoped-types",
-                "access-modifiers"
-            ]
+            "subcategory": "file-scoped-types"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -154,25 +122,21 @@
             {
                 "id": "A",
                 "option": "`partial class` bir nechta fayl bo'ylab bo'linishi mumkin.",
-                "explanation": "Partial classes can span multiple files",
                 "explanation_uz": "Partial klasslar bir nechta faylda bo'linishi mumkin"
             },
             {
                 "id": "B",
                 "option": "`file struct` ni boshqa fayldan chaqirish mumkin.",
-                "explanation": "File types are only visible within the same file",
                 "explanation_uz": "File turlari faqat o'sha fayl ichida ko'rinadi"
             },
             {
                 "id": "C",
                 "option": "Bir tipni bir vaqtning o'zida `partial` va `file` deb e'lon qilish mumkin.",
-                "explanation": "Cannot combine file and partial modifiers",
                 "explanation_uz": "file va partial modifikatorlarni birga ishlatib bo'lmaydi"
             },
             {
                 "id": "D",
                 "option": "`file class` da `private protected` a'zolar bo'lishi mumkin.",
-                "explanation": "File classes cannot have private protected members",
                 "explanation_uz": "File klasslarda private protected a'zolar bo'lishi mumkin emas"
             }
         ],
@@ -187,11 +151,7 @@
         "type": "mcq",
         "metadata": {
             "category": "metod-xususiyatlari",
-            "subcategory": "params-arrays",
-            "concepts": [
-                "params-arrays",
-                "method-overloading"
-            ]
+            "subcategory": "params-arrays"
         },
         "codeBefore": "```csharp\nvoid F(params int[] nums) { }\n```",
         "codeAfter": "",
@@ -200,25 +160,21 @@
             {
                 "id": "A",
                 "option": "Bitta massiv `[1,2,3,4]` uzatiladi.",
-                "explanation": "Cannot mix individual values with arrays",
                 "explanation_uz": "Individual qiymatlar va arraylarni aralashtirib bo'lmaydi"
             },
             {
                 "id": "B",
                 "option": "Uch argument uzatiladi: `1`, `2`, va `int[]` massiv.",
-                "explanation": "Cannot pass array as individual element to int params",
                 "explanation_uz": "Arrayni int params ga individual element sifatida berib bo'lmaydi"
             },
             {
                 "id": "C",
                 "option": "Kompilyatsiya xatosi - `int[]` ni `int` ga convert qilib bo'lmaydi.",
-                "explanation": "Correct - cannot convert int[] to int for params parameter",
                 "explanation_uz": "To'g'ri - int[] ni int ga convert qilib bo'lmaydi params parametr uchun"
             },
             {
                 "id": "D",
                 "option": "Runtime exception - noto'g'ri argument tipi.",
-                "explanation": "This would be a compile-time error, not runtime",
                 "explanation_uz": "Bu runtime emas, compile-time xatosi bo'ladi"
             }
         ],
@@ -233,12 +189,7 @@
         "type": "mcq",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "generics-constraints",
-            "concepts": [
-                "generics",
-                "constraints",
-                "generic-math"
-            ]
+            "subcategory": "generics-constraints"
         },
         "codeBefore": "```csharp\npublic static TResult Combine<TSource, TResult>(TSource a, TSource b)\n    where TSource : ________, IComparable<TSource>\n    where TResult : TSource, new()\n{\n    // arifmetik operatorlar ishlatiladi: +, -, *, /\n}\n```",
         "codeAfter": "",
@@ -247,25 +198,21 @@
             {
                 "id": "A",
                 "option": "`INumber<TSource>` - generic math interface",
-                "explanation": "INumber<T> provides arithmetic operators in .NET 7+",
                 "explanation_uz": "INumber<T> .NET 7+ da arifmetik operatorlarni ta'minlaydi"
             },
             {
                 "id": "B",
                 "option": "`struct` - value type constraint",
-                "explanation": "struct constraint doesn't provide arithmetic operators",
                 "explanation_uz": "struct cheklovi arifmetik operatorlarni bermaydi"
             },
             {
                 "id": "C",
                 "option": "`IArithmetic<TSource>` - bunday interface yo'q",
-                "explanation": "This interface doesn't exist in .NET",
                 "explanation_uz": "Bunday interfeys .NET da mavjud emas"
             },
             {
                 "id": "D",
                 "option": "`class` - reference type constraint",
-                "explanation": "class constraint doesn't provide arithmetic operators",
                 "explanation_uz": "class cheklovi arifmetik operatorlarni bermaydi"
             }
         ],
@@ -280,11 +227,7 @@
         "type": "mcq",
         "metadata": {
             "category": "metod-xususiyatlari",
-            "subcategory": "extension-methods",
-            "concepts": [
-                "extension-methods",
-                "static-classes"
-            ]
+            "subcategory": "extension-methods"
         },
         "codeBefore": "```csharp\npublic static class Extensions\n{\n    public static bool IsEven(this int number)\n    {\n        return (number % 2) == 0;\n    }\n\n    public bool IsOdd(int number)\n    {\n        return (number % 2) != 0;\n    }\n}\n```",
         "codeAfter": "",
@@ -293,25 +236,21 @@
             {
                 "id": "A",
                 "option": "`IsEven` extension method, `IsOdd` esa oddiy instance method.",
-                "explanation": "IsOdd is not an instance method, it's missing static keyword",
                 "explanation_uz": "IsOdd instance metod emas, static kalit so'z etishmayapti"
             },
             {
                 "id": "B",
                 "option": "`IsEven` va `IsOdd` ikkalasi ham extension method bo'lishi mumkin.",
-                "explanation": "Both could be extension methods if IsOdd had proper syntax",
                 "explanation_uz": "Agar IsOdd to'g'ri sintaksisga ega bo'lsa, ikkalasi ham extension metod bo'lishi mumkin"
             },
             {
                 "id": "C",
                 "option": "`IsOdd` ni kompilyatsiya uchun `static` qilish kerak.",
-                "explanation": "Correct - all methods in static class must be static",
                 "explanation_uz": "To'g'ri - static klassdagi barcha metodlar static bo'lishi kerak"
             },
             {
                 "id": "D",
                 "option": "`this int` kalit so'zi extension methodda kerak emas.",
-                "explanation": "'this' keyword is required for extension methods",
                 "explanation_uz": "'this' kalit so'z extension metodlar uchun kerak"
             }
         ],
@@ -326,11 +265,7 @@
         "type": "mcq",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "file-scoped-types",
-            "concepts": [
-                "file-scoped-types",
-                "interfaces"
-            ]
+            "subcategory": "file-scoped-types"
         },
         "codeBefore": "```csharp\nfile interface IHelper\n{\n    void Help();\n}\n\n// In another file\n// class HelperImpl : IHelper { ... }\n```",
         "codeAfter": "",
@@ -339,25 +274,21 @@
             {
                 "id": "A",
                 "option": "`IHelper` faqat shu faylda ko'rinadi va implementatsiya qilinishi mumkin.",
-                "explanation": "Correct - file types are only visible within the same file",
                 "explanation_uz": "To'g'ri - file turlari faqat o'sha fayl ichida ko'rinadi"
             },
             {
                 "id": "B",
                 "option": "`IHelper` butun assembly bo'ylab `public` hisoblanadi.",
-                "explanation": "file modifier limits visibility to current file only",
                 "explanation_uz": "file modifikatori ko'rinuvchanlikni faqat joriy fayl bilan cheklaydi"
             },
             {
                 "id": "C",
                 "option": "`IHelper` ni bir nechta faylda implementatsiya qilish mumkin.",
-                "explanation": "Cannot access file-scoped interface from other files",
                 "explanation_uz": "Fayl doirasidagi interfeyslarga boshqa fayllardan kira olmaydi"
             },
             {
                 "id": "D",
                 "option": "`file interface` noto'g'ri sintaksis.",
-                "explanation": "file interface is valid syntax in C# 11+",
                 "explanation_uz": "file interface C# 11+ da to'g'ri sintaksis"
             }
         ],
@@ -372,12 +303,7 @@
         "type": "mcq",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "value-types",
-            "concepts": [
-                "structs",
-                "value-semantics",
-                "readonly"
-            ]
+            "subcategory": "value-types"
         },
         "codeBefore": "```csharp\npublic struct DataPoint\n{\n    public readonly int X;\n    public readonly int Y;\n    public DataPoint(int x, int y) => (X, Y) = (x, y);\n}\n\nvar d1 = new DataPoint(1,2);\nvar d2 = d1;  // struct copy\n\nd2 = new DataPoint(3,4);\nConsole.WriteLine(d1.X + \",\" + d1.Y);\n```",
         "codeAfter": "",
@@ -386,25 +312,21 @@
             {
                 "id": "A",
                 "option": "`1,2` – chunki struct value type, d2 ni o'zgartirish d1 ga ta'sir qilmaydi.",
-                "explanation": "Correct - structs have value semantics, d1 and d2 are independent",
                 "explanation_uz": "To'g'ri - structlar qiymat semantikasiga ega, d1 va d2 mustaqil"
             },
             {
                 "id": "B",
                 "option": "`3,4` – chunki d2 o'zgartirilsa, d1 ham o'zgaradi.",
-                "explanation": "This would be true for reference types, not value types",
                 "explanation_uz": "Bu reference turlar uchun to'g'ri bo'lardi, qiymat turlari uchun emas"
             },
             {
                 "id": "C",
                 "option": "`1,2` – chunki readonly fieldlar o'zgarmaydi.",
-                "explanation": "While readonly is a factor, the main reason is value semantics",
                 "explanation_uz": "readonly omil bo'lsa-da, asosiy sabab qiymat semantikasidir"
             },
             {
                 "id": "D",
                 "option": "Kompilyatsiya xatosi, chunki DataPoint readonly.",
-                "explanation": "No compilation error - readonly fields, not readonly struct",
                 "explanation_uz": "Kompilyatsiya xatosi yo'q - readonly fieldlar, readonly struct emas"
             }
         ],
@@ -419,11 +341,7 @@
         "type": "mcq",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "pattern-matching",
-            "concepts": [
-                "switch-expressions",
-                "pattern-matching"
-            ]
+            "subcategory": "pattern-matching"
         },
         "codeBefore": "```csharp\nint Classify(int x) => x switch\n{\n    < 0 => -1,  // manfiy\n    > 0 => 1,   // musbat\n    _   => 0    // nol\n};\n\nvar result = Classify(0);\n```",
         "codeAfter": "",
@@ -432,25 +350,21 @@
             {
                 "id": "A",
                 "option": "`-1` - chunki < 0",
-                "explanation": "0 is not < 0, so this pattern doesn't match",
                 "explanation_uz": "0 < 0 emas, shuning uchun bu pattern mos kelmaydi"
             },
             {
                 "id": "B",
                 "option": "`0` - chunki `_` (default) case",
-                "explanation": "Correct - 0 matches neither < 0 nor > 0, so falls to default _",
                 "explanation_uz": "To'g'ri - 0 na < 0 na > 0 ga mos kelmaydi, shuning uchun default _ ga tushadi"
             },
             {
                 "id": "C",
                 "option": "`1` - chunki > 0",
-                "explanation": "0 is not > 0, so this pattern doesn't match",
                 "explanation_uz": "0 > 0 emas, shuning uchun bu pattern mos kelmaydi"
             },
             {
                 "id": "D",
                 "option": "Kompilyatsiya xatosi",
-                "explanation": "No compilation error - the switch is exhaustive with _ pattern",
                 "explanation_uz": "Kompilyatsiya xatosi yo'q - switch _ pattern bilan to'liq"
             }
         ],
@@ -465,10 +379,7 @@
         "type": "true_false",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "file-scoped-namespaces",
-            "concepts": [
-                "file-scoped-namespaces"
-            ]
+            "subcategory": "file-scoped-namespaces"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -482,11 +393,7 @@
         "type": "true_false",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "record-structs",
-            "concepts": [
-                "record-structs",
-                "structs"
-            ]
+            "subcategory": "record-structs"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -500,10 +407,7 @@
         "type": "true_false",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "expression-bodied-members",
-            "concepts": [
-                "expression-bodied-members"
-            ]
+            "subcategory": "expression-bodied-members"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -517,11 +421,7 @@
         "type": "true_false",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "pattern-matching",
-            "concepts": [
-                "pattern-matching",
-                "guard-clauses"
-            ]
+            "subcategory": "pattern-matching"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -535,10 +435,7 @@
         "type": "true_false",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "structs",
-            "concepts": [
-                "structs"
-            ]
+            "subcategory": "structs"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -552,11 +449,7 @@
         "type": "true_false",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "switch expressions",
-            "concepts": [
-                "switch-expressions",
-                "pattern-matching"
-            ]
+            "subcategory": "switch expressions"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -569,11 +462,7 @@
         "type": "true_false",
         "metadata": {
             "category": "metod-xususiyatlari",
-            "subcategory": "extension metodlar",
-            "concepts": [
-                "extension-methods",
-                "static-classes"
-            ]
+            "subcategory": "extension metodlar"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -586,11 +475,7 @@
         "type": "true_false",
         "metadata": {
             "category": "metod-xususiyatlari",
-            "subcategory": "named arguments",
-            "concepts": [
-                "named-arguments",
-                "optional-parameters"
-            ]
+            "subcategory": "named arguments"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -603,10 +488,7 @@
         "type": "true_false",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "record class",
-            "concepts": [
-                "records"
-            ]
+            "subcategory": "record class"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -619,11 +501,7 @@
         "type": "true_false",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "inheritance",
-            "concepts": [
-                "virtual-override",
-                "abstract-sealed"
-            ]
+            "subcategory": "inheritance"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -636,12 +514,7 @@
         "type": "fill",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "generic math",
-            "concepts": [
-                "generics",
-                "constraints",
-                "generic-math"
-            ]
+            "subcategory": "generic math"
         },
         "codeWithBlank": "public static T AddAll<T>(T[] values)\n    where T : ________, ________\n{\n    T sum = default!;\n    foreach (var v in values)\n    {\n        sum += v;\n    }\n    return sum;\n}",
         "prompt": "`T` uchun `+` operatori va `default` literalini ishlatish imkonini beruvchi .NET 7+ generic math interfeyslarini ikki bo'sh joyga yozing.",
@@ -653,12 +526,7 @@
         "type": "fill",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "file-scoped types",
-            "concepts": [
-                "file-scoped-types",
-                "positional-records",
-                "deconstruction"
-            ]
+            "subcategory": "file-scoped types"
         },
         "codeWithBlank": "file struct Point(int X, int Y)\n{\n    public void Deconstruct(out int x, out int y) => (x, y) = (______, ______);\n}",
         "prompt": "File-scoped positional struct da Deconstruct metodi primary constructor parametrlarini qaytarishi uchun bo'sh joylarni to'ldiring.",
@@ -670,11 +538,7 @@
         "type": "fill",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "interfaces",
-            "concepts": [
-                "interfaces",
-                "explicit-implementation"
-            ]
+            "subcategory": "interfaces"
         },
         "codeWithBlank": "public interface IRepository<T>\n{\n    void Add(T item);\n    T? Get(int id);\n}\n\npublic class Repo<T> : ______\n{\n    void IRepository<T>.Add(T item) { /*...*/ }\n    T? IRepository<T>.Get(int id) { /*...*/ }\n}",
         "prompt": "Explicit interface implementation qilish uchun inheritance qismini to'ldiring (metodlar public emas, faqat interface orqali accessible).",
@@ -686,11 +550,7 @@
         "type": "fill",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "default implementation",
-            "concepts": [
-                "interfaces",
-                "default-implementation"
-            ]
+            "subcategory": "default implementation"
         },
         "codeWithBlank": "public interface ILogger\n{\n    void Log(string message);\n    void LogError(Exception ex) => ______;\n}",
         "prompt": "Default interface implementation: `LogError` metodi exception ni string formatda `Log` metodiga uzatsin.",
@@ -702,12 +562,7 @@
         "type": "fill",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "pattern matching",
-            "concepts": [
-                "pattern-matching",
-                "guard-clauses",
-                "type-patterns"
-            ]
+            "subcategory": "pattern matching"
         },
         "codeWithBlank": "int Classify(object o) => o switch\n{\n    string s when ______ => 1,\n    int i when i % 2 == 0 => 2,\n    null                  => 0,\n    _                     => 3\n};",
         "prompt": "Pattern matching da bo'sh bo'lmagan (non-empty) stringni tekshiruvchi shart yozing.",
@@ -719,12 +574,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "generic math",
-            "concepts": [
-                "generics",
-                "constraints",
-                "generic-math"
-            ]
+            "subcategory": "generic math"
         },
         "codeWithError": "public class Calculator\n{\n    public static T Subtract<T>(T a, T b) where T : IComparable<T>\n    {\n        return a - b;  // Bu yerda xato\n    }\n}",
         "prompt": "Generic subtraction operatori uchun noto'g'ri constraint ishlatilgan. To'g'ri generic math interface bilen tuzating.",
@@ -736,11 +586,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "interfaces",
-            "concepts": [
-                "interfaces",
-                "interface-implementation"
-            ]
+            "subcategory": "interfaces"
         },
         "codeWithError": "interface IShape\n{\n    double Area();  // Capital A\n}\n\npublic class Circle : IShape\n{\n    private readonly double radius;\n    public Circle(double radius) => this.radius = radius;\n    public double area() => Math.PI * radius * radius;  // kichik a\n}",
         "prompt": "Interface implementationida method name case sensitivity xatosi bor. Tuzating.",
@@ -752,11 +598,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "structs",
-            "concepts": [
-                "structs",
-                "struct-constructors"
-            ]
+            "subcategory": "structs"
         },
         "codeWithError": "public struct Rectangle\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public Rectangle(int width, int height)\n    {\n        Width = width;\n        // Height initsializatsiya qilinmagan!\n    }\n}",
         "prompt": "Struct konstruktorida barcha fieldlar/propertylar initsializatsiya qilinishi kerak. Tuzating.",
@@ -768,11 +610,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "records",
-            "concepts": [
-                "records",
-                "positional-records"
-            ]
+            "subcategory": "records"
         },
         "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public string FullName => FirstName + \" \" + LastName;\n    public Person() {}  // Primary constructor chaqirilmagan\n}",
         "prompt": "Positional record uchun parametrsiz konstruktor primary constructor ni chaqirishi kerak. Tuzating.",
@@ -784,11 +622,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "nullable reference types",
-            "concepts": [
-                "nullable-reference-types",
-                "null-annotations"
-            ]
+            "subcategory": "nullable reference types"
         },
         "codeWithError": "public class Utils\n{\n    public static void LogMessage(string? msg!)  // ? va ! birga ishlatilgan\n    {\n        Console.WriteLine(msg);\n    }\n}",
         "prompt": "Nullable annotation sintaksisida xato bor. Bir parametrda `?` va `!` birga ishlatilmaydi.",
@@ -800,11 +634,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "inheritance",
-            "concepts": [
-                "abstract-sealed",
-                "virtual-override"
-            ]
+            "subcategory": "inheritance"
         },
         "codeWithError": "public abstract class Base\n{\n    public abstract void Save(string data);\n}\n\npublic class FileSaver : Base\n{\n    public void Save(string data)  // override kalit so'zi yo'q\n    {\n        File.WriteAllText(\"out.txt\", data);\n    }\n}",
         "prompt": "Abstract metodini implement qilishda `override` kalit so'zi kerak. Tuzating.",
@@ -816,10 +646,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "init properties",
-            "concepts": [
-                "init-only-properties"
-            ]
+            "subcategory": "init properties"
         },
         "codeWithError": "struct Configuration\n{\n    public string Url { get; init; }\n    public Configuration() { Url = \"\"; }  // C# 11+ da ruxsat etilgan, lekin init-only property bilan muammo\n}",
         "prompt": "Init-only property ni konstruktor ichida to'g'ridan-to'g'ri initialize qilish o'rniga, property initializer ishlatish yaxshiroq. Tuzating.",
@@ -831,12 +658,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "generic constraints",
-            "concepts": [
-                "generics",
-                "constraints",
-                "generic-math"
-            ]
+            "subcategory": "generic constraints"
         },
         "codeWithError": "public interface ICalc<T>\n{\n    T Add(T a, T b);\n}\n\npublic class Calculator : ICalc<int>  // Konkret tip bilan cheklangan\n{\n    public int Add(int a, int b)\n    {\n        return a + b;\n    }\n}",
         "prompt": "Generic interface ni generic class bilan implement qiling va arifmetik operatorlar uchun constraint qo'shing.",
@@ -848,11 +670,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "metod-xususiyatlari",
-            "subcategory": "extension methods",
-            "concepts": [
-                "extension-methods",
-                "static-classes"
-            ]
+            "subcategory": "extension methods"
         },
         "codeWithError": "public static class StringUtils\n{\n    public static bool IsPalindrome(string s)\n    {\n        return s == new string(s.Reverse().ToArray());\n    }\n\n    public bool IsAnagram(this string s, string t)  // static emas\n    {\n        return s.OrderBy(c => c).SequenceEqual(t.OrderBy(c => c));\n    }\n}",
         "prompt": "Extension method `static` bo'lishi kerak. Tuzating.",
@@ -864,11 +682,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "records",
-            "concepts": [
-                "records",
-                "positional-records"
-            ]
+            "subcategory": "records"
         },
         "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public Person() { }  // Primary constructor chaqirilmagan\n}",
         "prompt": "Positional record da parametrsiz konstruktor primary constructor ni chaqirishi kerak.",
@@ -880,11 +694,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "method hiding",
-            "concepts": [
-                "virtual-override",
-                "method-hiding"
-            ]
+            "subcategory": "method hiding"
         },
         "snippet": "class A\n{\n    public virtual string F() => \"A\";\n}\nclass B : A\n{\n    public override string F() => base.F() + \"B\";  // \"AB\"\n}\nclass C : B\n{\n    public new string F() => base.F() + \"C\";  // \"ABC\" lekin virtual dispatch yo'q\n}\n\nA obj = new C();\nConsole.WriteLine(obj.F());  // A reference orqali chaqirilmoqda",
         "prompt": "`new` keyword virtual dispatch ni to'xtatadi. `obj.F()` natijasi?",
@@ -896,11 +706,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "default interface implementation",
-            "concepts": [
-                "interfaces",
-                "default-implementation"
-            ]
+            "subcategory": "default interface implementation"
         },
         "snippet": "interface ILog\n{\n    void Log(string msg) => Console.Write(\"DefaultLog:\");  // Default implementation\n}\nclass Logger : ILog { }  // O'z implementatsiyasi yo'q\n\nvar logger = new Logger();\n((ILog)logger).Log(\"Hello\");",
         "prompt": "Logger class Log metodini override qilmagan. Default interface implementation ishlatiladi.",
@@ -912,11 +718,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "method resolution",
-            "concepts": [
-                "virtual-override",
-                "method-hiding"
-            ]
+            "subcategory": "method resolution"
         },
         "snippet": "class Base\n{\n    public void Show() => Console.Write(\"Base\");  // Virtual emas\n    public virtual void Display() => Console.Write(\"BaseDisplay\");\n}\nclass Derived : Base\n{\n    public new void Show() => Console.Write(\"Derived\");  // Hiding\n    public override void Display() => Console.Write(\"DerivedDisplay\");  // Override\n}\n\nBase b = new Derived();\nb.Show();     // Base reference -> Base.Show()\nb.Display();  // Virtual dispatch -> Derived.Display()",
         "prompt": "`new` vs `override` farqi. Natija qanday?",
@@ -928,11 +730,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "ref readonly",
-            "concepts": [
-                "ref-parameters",
-                "readonly"
-            ]
+            "subcategory": "ref readonly"
         },
         "snippet": "var numbers = new[] { 1, 2, 3 };\nint sum = 0;\nforeach (ref readonly var n in numbers)  // Reference by readonly\n{\n    sum += n;  // 1+2+3\n}\nConsole.WriteLine(sum);",
         "prompt": "`ref readonly` faqat performance uchun, hisoblash bir xil. Yig'indi nima?",
@@ -944,11 +742,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "records",
-            "concepts": [
-                "records",
-                "with-expressions"
-            ]
+            "subcategory": "records"
         },
         "snippet": "record R(int X)\n{\n    public override string ToString() => $\"R:{X}\";  // Custom ToString\n}\n\nvar r1 = new R(5);\nvar r2 = r1 with { X = 7 };  // Copy with modification\nConsole.WriteLine(r1);\nConsole.WriteLine(r2);",
         "prompt": "Record da custom ToString va `with` expression. Ikki qator natija?",
@@ -960,11 +754,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "konsol dasturlari",
-            "concepts": [
-                "records",
-                "switch-expressions"
-            ]
+            "subcategory": "konsol dasturlari"
         },
         "prompt": "### 1. Kontaktlar kitobi konsol dasturi\n\nFoydalanuvchi kontakt qo'shishi va ro'yxatini ko'rishi mumkin bo'lgan konsol dasturini yarating.\n\nHar bir kontaktning `Name`, `PhoneNumber` va `Email` maydonlari bo'ladi. Kontaktlar uchun `record` tipidan foydalaning.\n\nDastur quyidagilarni qo'llab-quvvatlashi kerak:\n- Yangi kontakt qo'shish (`add`)\n- Barcha kontaktlarni ko'rish (`list`)\n- Dasturdan chiqish (`exit`)\n\nKontaktlar ro'yxatini xotirada `List<Contact>` orqali saqlang. Buyruqlarni tanlash uchun sikl va `switch` expression ishlating.",
         "examples": [
@@ -976,12 +766,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "tip-tizimi-oop",
-            "subcategory": "polimorfizm",
-            "concepts": [
-                "abstract-sealed",
-                "virtual-override",
-                "polymorphism"
-            ]
+            "subcategory": "polimorfizm"
         },
         "prompt": "### 2. Polimorfizm yordamida shakllar yuzasini hisoblash\n\nTurli shakllarning yuzasini hisoblaydigan konsol dasturini yozing.\n\nTalablar:\n- `Shape` nomli abstract class yarating va unda abstract `double GetArea()` metodini e'lon qiling\n- `Circle` va `Rectangle` voris classlarini yarating\n- `GetArea()` metodini har bir classda `override` qiling\n- Foydalanuvchidan shakl turini tanlashni so'rang\n- `switch` expression va polimorfizmdan foydalaning",
         "examples": [
@@ -994,11 +779,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "metod-xususiyatlari",
-            "subcategory": "extension methods",
-            "concepts": [
-                "extension-methods",
-                "static-classes"
-            ]
+            "subcategory": "extension methods"
         },
         "prompt": "### 3. Extension method yordamida telefon raqamini tekshirish\n\n`IsValidUzPhone(this string phone)` extension metodini yarating:\n\nQoidalar:\n- Satr `998` bilan boshlanishi kerak\n- Aniq 12 ta raqamdan iborat bo'lishi kerak\n- Faqat raqamlar bo'lishi kerak\n\nKonsol dasturida foydalanuvchidan raqam kiritishni so'rab, natijani `Valid` yoki `Invalid` deb chiqaring.\n\nExtension metodni `static` classda joylashtiring.",
         "examples": [
@@ -1012,12 +793,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "asosiy-til-xususiyatlari",
-            "subcategory": "record structs",
-            "concepts": [
-                "record-structs",
-                "pattern-matching",
-                "switch-expressions"
-            ]
+            "subcategory": "record structs"
         },
         "prompt": "### 4. `record struct` yordamida koordinata tahlili\n\n`Point` nomli `record struct` yarating, unda `X` va `Y` property bo'lsin.\n\n`Classify(Point p)` metodini yozing:\n- Agar X va Y ikkalasi ham 0: `\"Origin\"`\n- Agar faqat Y 0: `\"X-axis\"`\n- Agar faqat X 0: `\"Y-axis\"`\n- Boshqa holatlarda: `\"Quadrant\"`\n\nPattern matching va switch expressionlardan foydalaning.\n\nFoydalanuvchidan koordinatalarni kiritishni so'rang va natijani chiqaring.",
         "examples": [
@@ -1031,11 +807,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "metod-xususiyatlari",
-            "subcategory": "params arrays",
-            "concepts": [
-                "params-arrays",
-                "switch-expressions"
-            ]
+            "subcategory": "params arrays"
         },
         "prompt": "### 5. `params` va `switch` yordamida oddiy kalkulyator\n\n`Calculate(string operation, params double[] values)` metodini yarating:\n\nQo'llab-quvvatlanadigan operatsiyalar:\n- `\"sum\"` - barcha qiymatlarni qo'shish\n- `\"average\"` - o'rtacha qiymat\n- `\"max\"` - eng katta qiymat\n- `\"min\"` - eng kichik qiymat\n\n`switch` expressiondan foydalaning va edge caselarni handle qiling (bo'sh array, noto'g'ri operatsiya).\n\nKonsol dasturida foydalanuvchidan operatsiya va sonlarni kiritishni so'rang.",
         "examples": [
@@ -1048,11 +820,7 @@
         "type": "mcq",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "queue",
-            "concepts": [
-                "basic-collections",
-                "queue"
-            ]
+            "subcategory": "queue"
         },
         "codeBefore": "```csharp\nvar list = new List<int> { 1, 2, 3, 4, 5 };\nvar queue = new Queue<int>(list);\nvar result = queue.Dequeue();\n```",
         "codeAfter": "",
@@ -1060,23 +828,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`1`",
-                "explanation": "Queue FIFO bo'lgani uchun birinchi kiritilgan 1 birinchi chiqadi"
+                "option": "`1`"
             },
             {
                 "id": "B",
-                "option": "`5`",
-                "explanation": "Bu Stack (LIFO) uchun to'g'ri bo'lardi"
+                "option": "`5`"
             },
             {
                 "id": "C",
-                "option": "`0`",
-                "explanation": "Queue bo'sh emas, shuning uchun 0 emas"
+                "option": "`0`"
             },
             {
                 "id": "D",
-                "option": "Exception",
-                "explanation": "Queue da elementlar bor, exception bo'lmaydi"
+                "option": "Exception"
             }
         ],
         "answer": [
@@ -1089,11 +853,7 @@
         "type": "mcq",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "dictionary",
-            "concepts": [
-                "basic-collections",
-                "dictionary"
-            ]
+            "subcategory": "dictionary"
         },
         "codeBefore": "```csharp\nvar dict = new Dictionary<string, int>\n{\n    [\"apple\"] = 5,\n    [\"banana\"] = 3\n};\ndict.TryAdd(\"apple\", 10);\nConsole.WriteLine(dict[\"apple\"]);\n```",
         "codeAfter": "",
@@ -1101,23 +861,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`10` - chunki yangi qiymat qo'shiladi",
-                "explanation": "TryAdd mavjud key ni update qilmaydi"
+                "option": "`10` - chunki yangi qiymat qo'shiladi"
             },
             {
                 "id": "B",
-                "option": "`5` - chunki mavjud key ni update qilmaydi",
-                "explanation": "To'g'ri. TryAdd mavjud key uchun false qaytaradi va qiymatni o'zgartirmaydi"
+                "option": "`5` - chunki mavjud key ni update qilmaydi"
             },
             {
                 "id": "C",
-                "option": "Exception - chunki duplicate key",
-                "explanation": "TryAdd exception bermasdan false qaytaradi"
+                "option": "Exception - chunki duplicate key"
             },
             {
                 "id": "D",
-                "option": "`15` - chunki qiymatlar qo'shiladi",
-                "explanation": "TryAdd qiymatlarni qo'shmaydi, faqat yangi key qo'shadi"
+                "option": "`15` - chunki qiymatlar qo'shiladi"
             }
         ],
         "answer": [
@@ -1130,12 +886,7 @@
         "type": "mcq",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "indexing slicing",
-            "concepts": [
-                "indexing-slicing",
-                "index-operator",
-                "range-operator"
-            ]
+            "subcategory": "indexing slicing"
         },
         "codeBefore": "```csharp\nvar numbers = new int[] { 1, 2, 3, 4, 5 };\nvar lastTwo = numbers[^2..];\nConsole.WriteLine(string.Join(\", \", lastTwo));\n```",
         "codeAfter": "",
@@ -1143,23 +894,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`4, 5`",
-                "explanation": "To'g'ri. ^2 oxirdan 2ta oldin (index 3), .. oxirigacha"
+                "option": "`4, 5`"
             },
             {
                 "id": "B",
-                "option": "`3, 4`",
-                "explanation": "Bu ^3.. bo'lgan holat uchun to'g'ri bo'lardi"
+                "option": "`3, 4`"
             },
             {
                 "id": "C",
-                "option": "`2, 3, 4, 5`",
-                "explanation": "Bu [1..] bo'lgan holat uchun to'g'ri bo'lardi"
+                "option": "`2, 3, 4, 5`"
             },
             {
                 "id": "D",
-                "option": "`5`",
-                "explanation": "Bu [^1] bo'lgan holat uchun to'g'ri bo'lardi"
+                "option": "`5`"
             }
         ],
         "answer": [
@@ -1172,13 +919,7 @@
         "type": "mcq",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "span",
-                "memory",
-                "readonly-span"
-            ]
+            "subcategory": "memory types"
         },
         "codeBefore": "```csharp\nspan<int> span = stackalloc int[3] { 1, 2, 3 };\nReadOnlySpan<int> readOnlySpan = span;\nvar memory = span.ToArray().AsMemory();\n```",
         "codeAfter": "",
@@ -1186,23 +927,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`Span<T>` faqat stack da ishlaydi",
-                "explanation": "Noto'g'ri. Span<T> heap arraylar bilan ham ishlaydi"
+                "option": "`Span<T>` faqat stack da ishlaydi"
             },
             {
                 "id": "B",
-                "option": "`Memory<T>` heap va stack ikkalasida ham ishlaydi",
-                "explanation": "To'g'ri. Memory<T> universal va async-safe"
+                "option": "`Memory<T>` heap va stack ikkalasida ham ishlaydi"
             },
             {
                 "id": "C",
-                "option": "`ReadOnlySpan<T>` dan `Span<T>` ga implicit cast mumkin",
-                "explanation": "Noto'g'ri. ReadOnlySpan immutable, Span mutable"
+                "option": "`ReadOnlySpan<T>` dan `Span<T>` ga implicit cast mumkin"
             },
             {
                 "id": "D",
-                "option": "`Memory<T>` ref struct hisoblanadi",
-                "explanation": "Noto'g'ri. Memory<T> oddiy struct, Span<T> ref struct"
+                "option": "`Memory<T>` ref struct hisoblanadi"
             }
         ],
         "answer": [
@@ -1215,12 +952,7 @@
         "type": "mcq",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "set operations",
-            "concepts": [
-                "basic-collections",
-                "hashset",
-                "set-operations"
-            ]
+            "subcategory": "set operations"
         },
         "codeBefore": "```csharp\nvar hashSet = new HashSet<int> { 1, 2, 3 };\nvar list = new List<int> { 2, 3, 4, 5 };\nhashSet.IntersectWith(list);\n```",
         "codeAfter": "",
@@ -1228,23 +960,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`{ 1, 2, 3, 4, 5 }`",
-                "explanation": "Bu UnionWith natijasi bo'lardi"
+                "option": "`{ 1, 2, 3, 4, 5 }`"
             },
             {
                 "id": "B",
-                "option": "`{ 2, 3 }`",
-                "explanation": "To'g'ri. Intersection - umumiy elementlar"
+                "option": "`{ 2, 3 }`"
             },
             {
                 "id": "C",
-                "option": "`{ 1 }`",
-                "explanation": "Bu ExceptWith natijasi bo'lardi"
+                "option": "`{ 1 }`"
             },
             {
                 "id": "D",
-                "option": "`{ 4, 5 }`",
-                "explanation": "Bu list ning unique elementlari"
+                "option": "`{ 4, 5 }`"
             }
         ],
         "answer": [
@@ -1257,11 +985,7 @@
         "type": "mcq",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "stack",
-            "concepts": [
-                "basic-collections",
-                "stack"
-            ]
+            "subcategory": "stack"
         },
         "codeBefore": "```csharp\nvar stack = new Stack<string>();\nstack.Push(\"first\");\nstack.Push(\"second\");\nvar result = stack.Peek();\nstack.Pop();\nConsole.WriteLine($\"{result}, {stack.Count}\");\n```",
         "codeAfter": "",
@@ -1269,23 +993,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`first, 1`",
-                "explanation": "Peek() 'second' ni qaytaradi, chunki LIFO"
+                "option": "`first, 1`"
             },
             {
                 "id": "B",
-                "option": "`second, 1`",
-                "explanation": "To'g'ri. Peek() oxirgi elementni ko'rsatadi, Pop() uni olib tashlaydi"
+                "option": "`second, 1`"
             },
             {
                 "id": "C",
-                "option": "`second, 0`",
-                "explanation": "Count 1 bo'ladi, chunki bitta element qoladi"
+                "option": "`second, 0`"
             },
             {
                 "id": "D",
-                "option": "`first, 0`",
-                "explanation": "Peek() oxirgi element 'second' ni qaytaradi"
+                "option": "`first, 0`"
             }
         ],
         "answer": [
@@ -1298,11 +1018,7 @@
         "type": "mcq",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "indexing slicing",
-            "concepts": [
-                "indexing-slicing",
-                "range-operator"
-            ]
+            "subcategory": "indexing slicing"
         },
         "codeBefore": "```csharp\nvar numbers = new int[] { 10, 20, 30, 40, 50 };\nvar range = 1..^1;\nvar slice = numbers[range];\n```",
         "codeAfter": "",
@@ -1310,23 +1026,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "1-indexdan oxirgi elementgacha: `{ 20, 30, 40, 50 }`",
-                "explanation": "Range end boundary exclusive, oxirgi element kiritilmaydi"
+                "option": "1-indexdan oxirgi elementgacha: `{ 20, 30, 40, 50 }`"
             },
             {
                 "id": "B",
-                "option": "1-indexdan oxirgi elementni hisobga olmaganda: `{ 20, 30, 40 }`",
-                "explanation": "To'g'ri. 1..^1 = index 1 dan oxirgi element exclusive"
+                "option": "1-indexdan oxirgi elementni hisobga olmaganda: `{ 20, 30, 40 }`"
             },
             {
                 "id": "C",
-                "option": "Faqat 1-index: `{ 20 }`",
-                "explanation": "Bu 1..2 bo'lgan holat uchun to'g'ri bo'lardi"
+                "option": "Faqat 1-index: `{ 20 }`"
             },
             {
                 "id": "D",
-                "option": "Kompilyatsiya xatosi",
-                "explanation": "Range syntax to'g'ri, xato yo'q"
+                "option": "Kompilyatsiya xatosi"
             }
         ],
         "answer": [
@@ -1339,12 +1051,7 @@
         "type": "mcq",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "lookup",
-            "concepts": [
-                "advanced-collections",
-                "lookup",
-                "grouping"
-            ]
+            "subcategory": "lookup"
         },
         "codeBefore": "```csharp\nvar lookup = new string[] { \"a\", \"bb\", \"ccc\", \"a\", \"bb\" }\n    .ToLookup(x => x.Length);\nvar result = lookup[2].Count();\n```",
         "codeAfter": "",
@@ -1352,23 +1059,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "Lookup bir key uchun bitta value saqlaydi, result = 1",
-                "explanation": "Noto'g'ri. Lookup one-to-many mapping"
+                "option": "Lookup bir key uchun bitta value saqlaydi, result = 1"
             },
             {
                 "id": "B",
-                "option": "Lookup bir key uchun ko'p value saqlaydi, result = 2",
-                "explanation": "To'g'ri. Key=2 uchun 'bb' va 'bb' - 2 ta element"
+                "option": "Lookup bir key uchun ko'p value saqlaydi, result = 2"
             },
             {
                 "id": "C",
-                "option": "Lookup faqat unique valuelar saqlaydi, result = 1",
-                "explanation": "Noto'g'ri. Lookup duplicate valuelarni saqlaydi"
+                "option": "Lookup faqat unique valuelar saqlaydi, result = 1"
             },
             {
                 "id": "D",
-                "option": "Exception - key topilmadi",
-                "explanation": "Lookup mavjud bo'lmagan key uchun bo'sh collection qaytaradi"
+                "option": "Exception - key topilmadi"
             }
         ],
         "answer": [
@@ -1381,13 +1084,7 @@
         "type": "mcq",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "span",
-                "memory",
-                "slicing"
-            ]
+            "subcategory": "memory types"
         },
         "codeBefore": "```csharp\nSpan<byte> buffer = stackalloc byte[1024];\nvar memory = new Memory<byte>(new byte[1024]);\nvar span1 = buffer.Slice(10, 100);\nvar span2 = memory.Span.Slice(10, 100);\n```",
         "codeAfter": "",
@@ -1395,23 +1092,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`Slice()` yangi Span yaratadi, copy emas",
-                "explanation": "To'g'ri. Slice() view yaratadi, data copy qilmaydi"
+                "option": "`Slice()` yangi Span yaratadi, copy emas"
             },
             {
                 "id": "B",
-                "option": "`Memory<T>.Span` property orqali Span olish mumkin",
-                "explanation": "To'g'ri. Memory dan Span ga conversion mumkin"
+                "option": "`Memory<T>.Span` property orqali Span olish mumkin"
             },
             {
                 "id": "C",
-                "option": "`span1` stack da, `span2` heap da joylashgan",
-                "explanation": "To'g'ri. stackalloc stack, new byte[] heap"
+                "option": "`span1` stack da, `span2` heap da joylashgan"
             },
             {
                 "id": "D",
-                "option": "`Slice()` operatsiyasi xotira allocate qiladi",
-                "explanation": "Noto'g'ri! Slice() faqat view yaratadi, allocate qilmaydi"
+                "option": "`Slice()` operatsiyasi xotira allocate qiladi"
             }
         ],
         "answer": [
@@ -1424,12 +1117,7 @@
         "type": "mcq",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "priority queue",
-            "concepts": [
-                "advanced-collections",
-                "priority-queue",
-                "heap-structure"
-            ]
+            "subcategory": "priority queue"
         },
         "codeBefore": "```csharp\nvar priorityQueue = new PriorityQueue<string, int>();\npriorityQueue.Enqueue(\"task1\", 3);\npriorityQueue.Enqueue(\"task2\", 1);\npriorityQueue.Enqueue(\"task3\", 2);\nvar result = priorityQueue.Dequeue();\n```",
         "codeAfter": "",
@@ -1437,23 +1125,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`task1`",
-                "explanation": "task1 ning priority si 3 - eng katta"
+                "option": "`task1`"
             },
             {
                 "id": "B",
-                "option": "`task2`",
-                "explanation": "To'g'ri. task2 ning priority si 1 - eng kichik"
+                "option": "`task2`"
             },
             {
                 "id": "C",
-                "option": "`task3`",
-                "explanation": "task3 ning priority si 2 - o'rta"
+                "option": "`task3`"
             },
             {
                 "id": "D",
-                "option": "Exception",
-                "explanation": "Queue bo'sh emas, exception bo'lmaydi"
+                "option": "Exception"
             }
         ],
         "answer": [
@@ -1466,12 +1150,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "dictionary",
-            "concepts": [
-                "basic-collections",
-                "dictionary",
-                "nullable-types"
-            ]
+            "subcategory": "dictionary"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1484,12 +1163,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "set operations",
-            "concepts": [
-                "basic-collections",
-                "hashset",
-                "set-properties"
-            ]
+            "subcategory": "set operations"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1502,11 +1176,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "indexing slicing",
-            "concepts": [
-                "indexing-slicing",
-                "index-operator"
-            ]
+            "subcategory": "indexing slicing"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1519,11 +1189,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "indexing slicing",
-            "concepts": [
-                "indexing-slicing",
-                "range-operator"
-            ]
+            "subcategory": "indexing slicing"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1536,12 +1202,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "span",
-                "ref-structs"
-            ]
+            "subcategory": "memory types"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1554,13 +1215,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "span",
-                "memory",
-                "async-support"
-            ]
+            "subcategory": "memory types"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1573,12 +1228,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "thread safety",
-            "concepts": [
-                "basic-collections",
-                "thread-safety",
-                "concurrency"
-            ]
+            "subcategory": "thread safety"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1591,12 +1241,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "sorted collections",
-            "concepts": [
-                "advanced-collections",
-                "sorted-dictionary",
-                "ordered-collections"
-            ]
+            "subcategory": "sorted collections"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1609,11 +1254,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "indexing slicing",
-            "concepts": [
-                "indexing-slicing",
-                "range-operator"
-            ]
+            "subcategory": "indexing slicing"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1626,12 +1267,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "list types",
-            "concepts": [
-                "basic-collections",
-                "linkedlist",
-                "indexing-slicing"
-            ]
+            "subcategory": "list types"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1644,12 +1280,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "span",
-                "readonly-span"
-            ]
+            "subcategory": "memory types"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1662,12 +1293,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "span",
-                "collections-marshal"
-            ]
+            "subcategory": "memory types"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1680,11 +1306,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "collection expressions",
-            "concepts": [
-                "collection-expressions",
-                "spread-operator"
-            ]
+            "subcategory": "collection expressions"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1697,12 +1319,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "thread safety",
-            "concepts": [
-                "advanced-collections",
-                "concurrent-dictionary",
-                "thread-safety"
-            ]
+            "subcategory": "thread safety"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1715,13 +1332,7 @@
         "type": "true_false",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "memory",
-                "readonly-memory",
-                "ref-structs"
-            ]
+            "subcategory": "memory types"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -1734,12 +1345,7 @@
         "type": "fill",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "list operations",
-            "concepts": [
-                "basic-collections",
-                "list",
-                "slicing"
-            ]
+            "subcategory": "list operations"
         },
         "codeWithBlank": "var numbers = new List<int> { 1, 2, 3, 4, 5 };\nvar result = numbers.GetRange(______, ______);\n// result should be { 2, 3, 4 }",
         "prompt": "`List<T>.GetRange(int index, int count)` metodida bo'sh joylarni to'ldiring, shunda natija `{ 2, 3, 4 }` bo'lsin.",
@@ -1751,12 +1357,7 @@
         "type": "fill",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "dictionary",
-            "concepts": [
-                "basic-collections",
-                "dictionary",
-                "safe-operations"
-            ]
+            "subcategory": "dictionary"
         },
         "codeWithBlank": "var dict = new Dictionary<string, int> { [\"a\"] = 1, [\"b\"] = 2 };\nvar success = dict.________(\"c\", ______);\n// Agar key mavjud bo'lmasa, default qiymat qaytarsin",
         "prompt": "`Dictionary<TKey, TValue>` da key mavjud bo'lmasa default qiymat qaytaradigan metod va qiymatni yozing.",
@@ -1768,12 +1369,7 @@
         "type": "fill",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "indexing slicing",
-            "concepts": [
-                "indexing-slicing",
-                "range-operator",
-                "string-slicing"
-            ]
+            "subcategory": "indexing slicing"
         },
         "codeWithBlank": "var text = \"Hello World\";\nvar slice = text[______];\n// slice should be \"World\"",
         "prompt": "String dan \"World\" so'zini olish uchun Range operatorini yozing.",
@@ -1785,12 +1381,7 @@
         "type": "fill",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "span",
-                "span-operations"
-            ]
+            "subcategory": "memory types"
         },
         "codeWithBlank": "Span<int> span = stackalloc int[5];\nspan.Fill(________);\nvar slice = span.Slice(______, ______);\n// Fill with 42, then get middle 3 elements",
         "prompt": "`Span<T>` ni 42 bilan to'ldiring va o'rtadagi 3 ta elementni oling.",
@@ -1802,12 +1393,7 @@
         "type": "fill",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "priority queue",
-            "concepts": [
-                "advanced-collections",
-                "priority-queue",
-                "min-heap"
-            ]
+            "subcategory": "priority queue"
         },
         "codeWithBlank": "var queue = new PriorityQueue<string, int>();\nqueue.Enqueue(\"low\", ______);\nqueue.Enqueue(\"high\", ______);\n// \"high\" should be dequeued first",
         "prompt": "`PriorityQueue` da \"high\" birinchi chiqishi uchun priority qiymatlarini yozing.",
@@ -1819,12 +1405,7 @@
         "type": "fill",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "set operations",
-            "concepts": [
-                "basic-collections",
-                "hashset",
-                "set-operations"
-            ]
+            "subcategory": "set operations"
         },
         "codeWithBlank": "var hashSet1 = new HashSet<int> { 1, 2, 3 };\nvar hashSet2 = new HashSet<int> { 3, 4, 5 };\nhashSet1.________(hashSet2);\n// Result: { 1, 2, 3, 4, 5 }",
         "prompt": "Ikki `HashSet` ni birlashtirib, barcha unique elementlarni olish uchun metod nomini yozing.",
@@ -1836,11 +1417,7 @@
         "type": "fill",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "collection expressions",
-            "concepts": [
-                "collection-expressions",
-                "spread-operator"
-            ]
+            "subcategory": "collection expressions"
         },
         "codeWithBlank": "var list1 = new List<int> { 1, 2 };\nvar list2 = new List<int> { 3, 4 };\nvar combined = [______];\n// Use collection expression with spread",
         "prompt": "C# 12 collection expression da spread operator yordamida ikki listni birlashtiring.",
@@ -1852,12 +1429,7 @@
         "type": "fill",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "memory",
-                "slicing"
-            ]
+            "subcategory": "memory types"
         },
         "codeWithBlank": "var numbers = new int[] { 1, 2, 3, 4, 5 };\nvar memory = numbers.AsMemory();\nvar slice = memory.Slice(______, ______);\n// Get elements 2, 3, 4",
         "prompt": "`Memory<T>` dan elementlar 2, 3, 4 ni olish uchun `Slice` parametrlarini yozing.",
@@ -1869,12 +1441,7 @@
         "type": "fill",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "sorted collections",
-            "concepts": [
-                "advanced-collections",
-                "sorted-dictionary",
-                "linq"
-            ]
+            "subcategory": "sorted collections"
         },
         "codeWithBlank": "var sortedDict = new SortedDictionary<int, string>();\nsortedDict.Add(3, \"three\");\nsortedDict.Add(1, \"one\");\nsortedDict.Add(2, \"two\");\nvar firstKey = sortedDict.________.________;\n// Get the first key",
         "prompt": "`SortedDictionary` da birinchi key ni olish uchun property chain ni yozing.",
@@ -1886,12 +1453,7 @@
         "type": "fill",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "readonly-span",
-                "search-operations"
-            ]
+            "subcategory": "memory types"
         },
         "codeWithBlank": "ReadOnlySpan<char> text = \"Hello\";\nvar index = text.IndexOf(________);\nif (index >= 0)\n{\n    var found = text[index];\n}",
         "prompt": "`ReadOnlySpan<char>` da 'l' harfini qidirish uchun parametrni yozing.",
@@ -1903,13 +1465,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "span",
-                "list-operations",
-                "memory-safety"
-            ]
+            "subcategory": "memory types"
         },
         "codeWithError": "var list = new List<int> { 1, 2, 3, 4, 5 };\nvar span = list.AsSpan();\nlist.Add(6);\nConsole.WriteLine(span.Length);",
         "prompt": "`List<T>` ga element qo'shgandan so'ng `Span<T>` ishlatishda xatolik bor. Xatoni toping va tushuntiring.",
@@ -1921,13 +1477,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "dictionary",
-            "concepts": [
-                "basic-collections",
-                "dictionary",
-                "nullable-types",
-                "duplicate-keys"
-            ]
+            "subcategory": "dictionary"
         },
         "codeWithError": "var dict = new Dictionary<string?, int>();\ndict.Add(null, 1);\ndict.Add(null, 2);\nConsole.WriteLine(dict.Count);",
         "prompt": "`Dictionary` da `null` key bilan bog'liq xatolikni toping va to'g'rilang.",
@@ -1939,12 +1489,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "indexing slicing",
-            "concepts": [
-                "indexing-slicing",
-                "range-operator",
-                "index-operator"
-            ]
+            "subcategory": "indexing slicing"
         },
         "codeWithError": "var numbers = new int[] { 1, 2, 3, 4, 5 };\nvar range = 2..^0;\nvar slice = numbers[range];\nConsole.WriteLine(slice.Length);",
         "prompt": "Range operatorida xatolik bor. `^0` nima anglatadi va qanday to'g'rilash kerak?",
@@ -1956,12 +1501,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "span",
-                "async-support"
-            ]
+            "subcategory": "memory types"
         },
         "codeWithError": "async Task ProcessAsync()\n{\n    Span<byte> buffer = stackalloc byte[1024];\n    await SomeAsyncMethod(buffer);\n}",
         "prompt": "`Span<T>` ni async metod ichida ishlatishdagi xatolikni toping va to'g'rilang.",
@@ -1973,12 +1513,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "queue",
-            "concepts": [
-                "basic-collections",
-                "queue",
-                "exception-handling"
-            ]
+            "subcategory": "queue"
         },
         "codeWithError": "var queue = new Queue<int>();\nqueue.Enqueue(1);\nqueue.Enqueue(2);\nvar result = queue.Peek();\nqueue.Clear();\nvar next = queue.Peek();",
         "prompt": "Bo'sh `Queue` dan element olishdagi xatolikni toping va to'g'rilang.",
@@ -1990,11 +1525,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "collection expressions",
-            "concepts": [
-                "collection-expressions",
-                "spread-operator"
-            ]
+            "subcategory": "collection expressions"
         },
         "codeWithError": "var numbers = new List<int> { 1, 2, 3 };\nvar combined = [numbers, 4, 5];\nConsole.WriteLine(combined.Count);",
         "prompt": "Collection expression da spread operatorisiz ishlatishdagi xatolikni toping.",
@@ -2006,12 +1537,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "readonly-span",
-                "immutability"
-            ]
+            "subcategory": "memory types"
         },
         "codeWithError": "ReadOnlySpan<int> span = new int[] { 1, 2, 3 };\nspan[0] = 10;\nConsole.WriteLine(span[0]);",
         "prompt": "`ReadOnlySpan<T>` da elementni o'zgartirishdagi xatolikni toping.",
@@ -2023,12 +1549,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "stack",
-            "concepts": [
-                "basic-collections",
-                "stack",
-                "lifo-ordering"
-            ]
+            "subcategory": "stack"
         },
         "codeWithError": "var stack = new Stack<string>();\nstack.Push(\"first\");\nstack.Push(\"second\");\nvar items = stack.ToArray();\nConsole.WriteLine(items[0]);",
         "prompt": "`Stack<T>.ToArray()` metodining natijasida elementlar tartibini to'g'ri tushuntiring.",
@@ -2040,12 +1561,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "indexing slicing",
-            "concepts": [
-                "indexing-slicing",
-                "range-operator",
-                "string-slicing"
-            ]
+            "subcategory": "indexing slicing"
         },
         "codeWithError": "var text = \"Hello World\";\nvar slice = text[5..^5];\nConsole.WriteLine(slice);",
         "prompt": "String slicing da index va range xatoligini toping va to'g'rilang.",
@@ -2057,12 +1573,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "memory",
-                "initialization"
-            ]
+            "subcategory": "memory types"
         },
         "codeWithError": "var memory = new Memory<int>();\nvar span = memory.Span;\nspan[0] = 42;\nConsole.WriteLine(span[0]);",
         "prompt": "Bo'sh `Memory<T>` dan `Span<T>` olish va ishlatishdagi xatolikni toping.",
@@ -2074,12 +1585,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "dictionary",
-            "concepts": [
-                "basic-collections",
-                "dictionary",
-                "safe-operations"
-            ]
+            "subcategory": "dictionary"
         },
         "snippet": "var dict = new Dictionary<int, string> { [1] = \"one\", [2] = \"two\" };\ndict.TryAdd(1, \"ONE\");\ndict.TryAdd(3, \"three\");\nConsole.WriteLine($\"{dict[1]}, {dict.Count}\");",
         "prompt": "`Dictionary.TryAdd()` metodi mavjud key uchun qanday ishlaydi?",
@@ -2091,11 +1597,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "indexing slicing",
-            "concepts": [
-                "indexing-slicing",
-                "range-operator"
-            ]
+            "subcategory": "indexing slicing"
         },
         "snippet": "var numbers = new int[] { 10, 20, 30, 40, 50 };\nvar slice1 = numbers[1..4];\nvar slice2 = numbers[^3..^1];\nConsole.WriteLine($\"{slice1.Length}, {slice2.Length}\");",
         "prompt": "Range operatorlari bilan slice olishda uzunliklar qanday bo'ladi?",
@@ -2107,12 +1609,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "set operations",
-            "concepts": [
-                "basic-collections",
-                "hashset",
-                "list"
-            ]
+            "subcategory": "set operations"
         },
         "snippet": "var hashSet = new HashSet<int> { 1, 2, 3, 1, 2 };\nConsole.WriteLine(hashSet.Count);\nvar list = new List<int> { 1, 2, 3, 1, 2 };\nConsole.WriteLine(list.Count);",
         "prompt": "`HashSet` va `List` da duplicate elementlar qanday ishlanadi?",
@@ -2124,12 +1621,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "span",
-                "span-operations"
-            ]
+            "subcategory": "memory types"
         },
         "snippet": "Span<int> span = stackalloc int[3] { 1, 2, 3 };\nspan.Reverse();\nvar array = span.ToArray();\nConsole.WriteLine(string.Join(\", \", array));",
         "prompt": "`Span<T>.Reverse()` metodining natijasi qanday bo'ladi?",
@@ -2141,12 +1633,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "queue",
-            "concepts": [
-                "basic-collections",
-                "queue",
-                "fifo-ordering"
-            ]
+            "subcategory": "queue"
         },
         "snippet": "var queue = new Queue<char>();\nforeach (char c in \"ABC\")\n    queue.Enqueue(c);\nwhile (queue.Count > 0)\n    Console.Write(queue.Dequeue());",
         "prompt": "`Queue<T>` FIFO tartibda elementlarni qanday chiqaradi?",
@@ -2158,12 +1645,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "stack",
-            "concepts": [
-                "basic-collections",
-                "stack",
-                "lifo-ordering"
-            ]
+            "subcategory": "stack"
         },
         "snippet": "var stack = new Stack<char>();\nforeach (char c in \"ABC\")\n    stack.Push(c);\nwhile (stack.Count > 0)\n    Console.Write(stack.Pop());",
         "prompt": "`Stack<T>` LIFO tartibda elementlarni qanday chiqaradi?",
@@ -2175,11 +1657,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "collection expressions",
-            "concepts": [
-                "collection-expressions",
-                "spread-operator"
-            ]
+            "subcategory": "collection expressions"
         },
         "snippet": "var list1 = new List<int> { 1, 2 };\nvar list2 = new List<int> { 3, 4 };\nvar combined = [..list1, 5, ..list2];\nConsole.WriteLine(string.Join(\", \", combined));",
         "prompt": "Collection expression da spread operator qanday ishlaydi?",
@@ -2191,12 +1669,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "priority queue",
-            "concepts": [
-                "advanced-collections",
-                "priority-queue",
-                "min-heap"
-            ]
+            "subcategory": "priority queue"
         },
         "snippet": "var priorityQueue = new PriorityQueue<string, int>();\npriorityQueue.Enqueue(\"C\", 3);\npriorityQueue.Enqueue(\"A\", 1);\npriorityQueue.Enqueue(\"B\", 2);\nConsole.WriteLine(priorityQueue.Dequeue());",
         "prompt": "`PriorityQueue` eng kichik priority ni birinchi chiqaradi. Natija nima?",
@@ -2208,12 +1681,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "readonly-span",
-                "search-operations"
-            ]
+            "subcategory": "memory types"
         },
         "snippet": "ReadOnlySpan<char> text = \"Hello World\";\nvar index = text.LastIndexOf('l');\nConsole.WriteLine($\"{index}, {text[index]}\");",
         "prompt": "`ReadOnlySpan<char>` da oxirgi 'l' harfining indexi va qiymati?",
@@ -2225,13 +1693,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory types",
-            "concepts": [
-                "memory-types",
-                "memory",
-                "span",
-                "string-slicing"
-            ]
+            "subcategory": "memory types"
         },
         "snippet": "var memory = \"Hello\".AsMemory();\nvar span = memory.Span;\nvar slice = span[1..^1];\nConsole.WriteLine(slice.ToString());",
         "prompt": "String dan `Memory<T>` va `Span<T>` orqali slice olishda natija?",
@@ -2243,12 +1705,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "system design",
-            "concepts": [
-                "generic-programming",
-                "multi-collection-management",
-                "constraints"
-            ]
+            "subcategory": "system design"
         },
         "prompt": "### Generic Collection Manager\n\n`CollectionManager<T>` generic klassi yarating. Bu klass quyidagi collectionlarni boshqarsin:\n- `List<T>` - asosiy saqlash uchun\n- `HashSet<T>` - unique elementlar uchun\n- `Queue<T>` - FIFO operatsiyalar uchun\n\nMetodlar:\n- `AddItem(T item)` - barcha collectionlarga qo'shadi\n- `RemoveItem(T item)` - barcha collectionlardan olib tashlaydi\n- `GetUniqueCount()` - unique elementlar sonini qaytaradi\n- `GetNextInQueue()` - queue dan keyingi elementni oladi\n\n`where T : IEquatable<T>` constraint ishlating.",
         "examples": [
@@ -2260,13 +1717,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "array operations",
-            "concepts": [
-                "indexing-slicing",
-                "range-operator",
-                "index-operator",
-                "array-processing"
-            ]
+            "subcategory": "array operations"
         },
         "prompt": "### Array Slicer with Range/Index\n\n`ArraySlicer` static klassi yarating. Quyidagi metodlarni implement qiling:\n- `GetSlice<T>(T[] array, Range range)` - Range operatori bilan slice oladi\n- `GetFromEnd<T>(T[] array, Index index)` - Oxiridan sanab index oladi\n- `GetMiddle<T>(T[] array)` - O'rtadagi elementlar (1/4 dan 3/4 gacha)\n- `SplitArray<T>(T[] array, int parts)` - Arrayni teng qismlarga bo'ladi\n\nHar bir metod appropriate range/index operatorlarini ishlating.",
         "examples": [
@@ -2278,13 +1729,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "memory management",
-            "concepts": [
-                "memory-types",
-                "span",
-                "memory",
-                "performance-optimization"
-            ]
+            "subcategory": "memory management"
         },
         "prompt": "### Memory-Efficient Buffer Processor\n\n`BufferProcessor` klassi yarating. Katta massivlar bilan ishlash uchun `Memory<T>` va `Span<T>` dan foydalaning:\n\n- `ProcessChunks<T>(Memory<T> memory, int chunkSize, Action<Span<T>> processor)`\n- `FindPattern<T>(ReadOnlyMemory<T> memory, ReadOnlySpan<T> pattern) where T : IEquatable<T>`\n- `ReverseInPlace<T>(Memory<T> memory)`\n- `CopyWithTransform<T>(ReadOnlyMemory<T> source, Memory<T> destination, Func<T, T> transform)`\n\nStackalloc va heap allocation ni optimal tarzda ishlating.",
         "examples": [
@@ -2296,13 +1741,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "data storage systems",
-            "concepts": [
-                "advanced-collections",
-                "multi-storage",
-                "temporal-data",
-                "priority-processing"
-            ]
+            "subcategory": "data storage systems"
         },
         "prompt": "### Multi-Collection Data Store\n\n`DataStore<T>` klassi yarating, quyidagilarni implement qiling:\n- `Dictionary<string, T>` - key-value storage\n- `SortedDictionary<DateTime, T>` - chronological storage\n- `PriorityQueue<T, int>` - priority-based processing\n\nMetodlar:\n- `Store(string key, T value, int priority = 0)`\n- `GetByKey(string key)` - dictionary dan\n- `GetByTimeRange(DateTime start, DateTime end)` - time range bo'yicha\n- `ProcessNext()` - priority queue dan\n- `GetStatistics()` - har bir collection bo'yicha ma'lumot\n\nTurli collection typelarining xususiyatlarini to'g'ri ishlating.",
         "examples": [
@@ -2314,12 +1753,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "kolleksiyalar-ma'lumot-tuzilmalari",
-            "subcategory": "modern collection features",
-            "concepts": [
-                "collection-expressions",
-                "spread-operator",
-                "performance-optimization"
-            ]
+            "subcategory": "modern collection features"
         },
         "prompt": "### Collection Expression Builder\n\nC# 12 collection expressions va spread operator ishlatib `CollectionBuilder` static klassi yarating:\n\n- `Combine<T>(params IEnumerable<T>[] collections)` - spread bilan birlashtirishc\n- `Interleave<T>(IEnumerable<T> first, IEnumerable<T> second)` - elementlarni navbatma-navbat\n- `CreateRange(int start, int count, int step = 1)` - arithmetic progression\n- `FilterAndCombine<T>(Func<T, bool> predicate, params IEnumerable<T>[] collections)`\n\nCollection expressions `[..]` sintaksisini ishlatib, performance optimized bo'lsin.",
         "examples": [
@@ -2331,13 +1765,7 @@
         "type": "mcq",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "basic linq operations",
-            "concepts": [
-                "linq-chains",
-                "where",
-                "select",
-                "sum"
-            ]
+            "subcategory": "basic linq operations"
         },
         "codeBefore": "```csharp\nvar numbers = new[] { 1, 2, 3, 4, 5, 6 };\nvar result = numbers\n    .Where(x => x % 2 == 0)\n    .Select(x => x * x)\n    .Sum();\n```",
         "codeAfter": "",
@@ -2345,23 +1773,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`56` - (2² + 4² + 6² = 4 + 16 + 36)",
-                "explanation": "To'g'ri! Even numbers: 2,4,6 → squares: 4,16,36 → sum: 56"
+                "option": "`56` - (2² + 4² + 6² = 4 + 16 + 36)"
             },
             {
                 "id": "B",
-                "option": "`36` - faqat 6²",
-                "explanation": "Noto'g'ri! Faqat bitta element emas, barcha juft sonlar"
+                "option": "`36` - faqat 6²"
             },
             {
                 "id": "C",
-                "option": "`91` - barcha sonlarning kvadrati yig'indisi",
-                "explanation": "Noto'g'ri! Where() filtering qo'llangan, faqat juft sonlar"
+                "option": "`91` - barcha sonlarning kvadrati yig'indisi"
             },
             {
                 "id": "D",
-                "option": "`12` - juft sonlar yig'indisi",
-                "explanation": "Noto'g'ri! Select() kvadratga ko'tarib, keyin Sum()"
+                "option": "`12` - juft sonlar yig'indisi"
             }
         ],
         "answer": [
@@ -2374,12 +1798,7 @@
         "type": "mcq",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "grouping operations",
-            "concepts": [
-                "groupby",
-                "todictionary",
-                "anonymous-types"
-            ]
+            "subcategory": "grouping operations"
         },
         "codeBefore": "```csharp\nvar students = new[]\n{\n    new { Name = \"Ali\", Grade = 85 },\n    new { Name = \"Bobur\", Grade = 92 },\n    new { Name = \"Zara\", Grade = 78 }\n};\nvar result = students\n    .GroupBy(s => s.Grade >= 80 ? \"High\" : \"Low\")\n    .ToDictionary(g => g.Key, g => g.Count());\n```",
         "codeAfter": "",
@@ -2387,23 +1806,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`{ \"High\": 2, \"Low\": 1 }` - 80+ va 80- bo'yicha guruhlash",
-                "explanation": "To'g'ri! Ali(85)≥80, Bobur(92)≥80 → High:2, Zara(78)<80 → Low:1"
+                "option": "`{ \"High\": 2, \"Low\": 1 }` - 80+ va 80- bo'yicha guruhlash"
             },
             {
                 "id": "B",
-                "option": "`{ \"High\": 1, \"Low\": 2 }` - teskari hisoblash",
-                "explanation": "Noto'g'ri! Grade calculation yoki counting logic xatosi"
+                "option": "`{ \"High\": 1, \"Low\": 2 }` - teskari hisoblash"
             },
             {
                 "id": "C",
-                "option": "`{ \"85\": 1, \"92\": 1, \"78\": 1 }` - har grade bo'yicha",
-                "explanation": "Noto'g'ri! Grouping key \"High\"/\"Low\" string, grade value emas"
+                "option": "`{ \"85\": 1, \"92\": 1, \"78\": 1 }` - har grade bo'yicha"
             },
             {
                 "id": "D",
-                "option": "Exception - anonymous type bilan muammo",
-                "explanation": "Noto'g'ri! Anonymous type va LINQ to'g'ri ishlaydi"
+                "option": "Exception - anonymous type bilan muammo"
             }
         ],
         "answer": [
@@ -2416,13 +1831,7 @@
         "type": "mcq",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "set operations",
-            "concepts": [
-                "union",
-                "intersect",
-                "set-theory",
-                "orderby"
-            ]
+            "subcategory": "set operations"
         },
         "codeBefore": "```csharp\nvar list1 = new[] { 1, 2, 3, 4 };\nvar list2 = new[] { 3, 4, 5, 6 };\nvar union = list1.Union(list2).OrderBy(x => x);\nvar intersect = list1.Intersect(list2);\nConsole.WriteLine($\"{union.Count()}, {intersect.Count()}\");\n```",
         "codeAfter": "",
@@ -2430,23 +1839,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`6, 2` - union: {1,2,3,4,5,6}, intersect: {3,4}",
-                "explanation": "To'g'ri! Union unique: 6 ta, Intersect common: 2 ta (3,4)"
+                "option": "`6, 2` - union: {1,2,3,4,5,6}, intersect: {3,4}"
             },
             {
                 "id": "B",
-                "option": "`8, 4` - barcha elementlar va duplicate",
-                "explanation": "Noto'g'ri! Union duplicate larni olib tashlaydi"
+                "option": "`8, 4` - barcha elementlar va duplicate"
             },
             {
                 "id": "C",
-                "option": "`4, 2` - faqat birinchi array",
-                "explanation": "Noto'g'ri! Union ikkala array dan elementlar oladi"
+                "option": "`4, 2` - faqat birinchi array"
             },
             {
                 "id": "D",
-                "option": "`6, 0` - intersection yo'q",
-                "explanation": "Noto'g'ri! 3 va 4 umumiy elementlar"
+                "option": "`6, 0` - intersection yo'q"
             }
         ],
         "answer": [
@@ -2459,13 +1864,7 @@
         "type": "mcq",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "sorting operations",
-            "concepts": [
-                "multi-level-sorting",
-                "orderbydescending",
-                "thenby",
-                "first"
-            ]
+            "subcategory": "sorting operations"
         },
         "codeBefore": "```csharp\nvar data = new[] { \"apple\", \"banana\", \"apricot\", \"cherry\" };\nvar result = data\n    .Where(x => x.StartsWith(\"a\"))\n    .OrderByDescending(x => x.Length)\n    .ThenBy(x => x)\n    .First();\n```",
         "codeAfter": "",
@@ -2473,23 +1872,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`\"apricot\"` - eng uzun 'a' bilan boshlanuvchi",
-                "explanation": "To'g'ri! 'a' words: apple(5), apricot(7) → by length desc: apricot first"
+                "option": "`\"apricot\"` - eng uzun 'a' bilan boshlanuvchi"
             },
             {
                 "id": "B",
-                "option": "`\"apple\"` - alfabetik jihatdan birinchi",
-                "explanation": "Noto'g'ri! Primary sort - length desc, apricot(7) > apple(5)"
+                "option": "`\"apple\"` - alfabetik jihatdan birinchi"
             },
             {
                 "id": "C",
-                "option": "`\"banana\"` - eng uzun",
-                "explanation": "Noto'g'ri! banana 'a' bilan boshlanmaydi, Where() da filter"
+                "option": "`\"banana\"` - eng uzun"
             },
             {
                 "id": "D",
-                "option": "Exception - 'a' bilan boshlanuvchi yo'q",
-                "explanation": "Noto'g'ri! apple va apricot 'a' bilan boshlanadi"
+                "option": "Exception - 'a' bilan boshlanuvchi yo'q"
             }
         ],
         "answer": [
@@ -2502,13 +1897,7 @@
         "type": "mcq",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "query syntax",
-            "concepts": [
-                "query-syntax",
-                "let-keyword",
-                "deferred-execution",
-                "take"
-            ]
+            "subcategory": "query syntax"
         },
         "codeBefore": "```csharp\nvar query = from n in Enumerable.Range(1, 10)\n            let square = n * n\n            where square % 2 == 0\n            select new { Number = n, Square = square };\nvar result = query.Take(3).Sum(x => x.Square);\n```",
         "codeAfter": "",
@@ -2516,23 +1905,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "`56` - (4 + 16 + 36 from 2², 4², 6²)",
-                "explanation": "To'g'ri! Even squares: 4(2²), 16(4²), 36(6²) → Take(3) → Sum: 56"
+                "option": "`56` - (4 + 16 + 36 from 2², 4², 6²)"
             },
             {
                 "id": "B",
-                "option": "`30` - (1² + 2² + 3² ning jufti)",
-                "explanation": "Noto'g'ri! Birinchi 3 ta raqam emas, birinchi 3 ta juft kvadrat"
+                "option": "`30` - (1² + 2² + 3² ning jufti)"
             },
             {
                 "id": "C",
-                "option": "`20` - (2 + 4 + 6)²",
-                "explanation": "Noto'g'ri! Square sum emas, sum of squares"
+                "option": "`20` - (2 + 4 + 6)²"
             },
             {
                 "id": "D",
-                "option": "`84` - barcha juft kvadratlar",
-                "explanation": "Noto'g'ri! Take(3) faqat birinchi 3 ta elementni oladi"
+                "option": "`84` - barcha juft kvadratlar"
             }
         ],
         "answer": [
@@ -2545,13 +1930,7 @@
         "type": "true_false",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "operation semantics",
-            "concepts": [
-                "operation-order",
-                "where",
-                "select",
-                "performance"
-            ]
+            "subcategory": "operation semantics"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -2564,12 +1943,7 @@
         "type": "true_false",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "execution behavior",
-            "concepts": [
-                "deferred-execution",
-                "ienumerable",
-                "lazy-evaluation"
-            ]
+            "subcategory": "execution behavior"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -2582,12 +1956,7 @@
         "type": "true_false",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "grouping operations",
-            "concepts": [
-                "groupby",
-                "igrouping",
-                "return-types"
-            ]
+            "subcategory": "grouping operations"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -2600,12 +1969,7 @@
         "type": "true_false",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "element selection",
-            "concepts": [
-                "first",
-                "firstordefault",
-                "exception-handling"
-            ]
+            "subcategory": "element selection"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -2618,13 +1982,7 @@
         "type": "true_false",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "provider support",
-            "concepts": [
-                "query-syntax",
-                "ienumerable",
-                "iqueryable",
-                "provider-support"
-            ]
+            "subcategory": "provider support"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -2637,13 +1995,7 @@
         "type": "fill",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "basic linq chain",
-            "concepts": [
-                "where",
-                "select",
-                "toarray",
-                "method-chain"
-            ]
+            "subcategory": "basic linq chain"
         },
         "codeWithBlank": "var numbers = new[] { 1, 2, 3, 4, 5 };\nvar result = numbers\n    .________(x => x > 2)\n    .________(x => x * 2)\n    .________();\n// Result should be [6, 8, 10]",
         "prompt": "LINQ chain: 2 dan katta sonlarni filterlash, 2 ga ko'paytirish, array ga aylantirish.",
@@ -2655,13 +2007,7 @@
         "type": "fill",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "grouping and aggregation",
-            "concepts": [
-                "groupby",
-                "todictionary",
-                "count",
-                "aggregation"
-            ]
+            "subcategory": "grouping and aggregation"
         },
         "codeWithBlank": "var words = new[] { \"hello\", \"world\", \"linq\", \"query\" };\nvar grouped = words\n    .________(w => w.Length)\n    .________(g => g.Key, g => g.______());\n// Group by length, then create dictionary with counts",
         "prompt": "So'zlarni uzunlik bo'yicha guruhlab, har guruhda nechta element borligini dictionary sifatida qaytaring.",
@@ -2673,14 +2019,7 @@
         "type": "fill",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "pagination and filtering",
-            "concepts": [
-                "skip",
-                "take",
-                "where",
-                "sum",
-                "pagination"
-            ]
+            "subcategory": "pagination and filtering"
         },
         "codeWithBlank": "var source = Enumerable.Range(1, 100);\nvar result = source\n    .________(10)        // Skip first 10\n    .________(5)         // Take next 5\n    .________(x => x % 2 == 1)  // Only odd numbers\n    .Sum();",
         "prompt": "Pagination va filtering: birinchi 10 tani o'tkazib yuborish, keyingi 5 tani olish, faqat toqlarini yig'ish.",
@@ -2692,13 +2031,7 @@
         "type": "fill",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "quantifier methods",
-            "concepts": [
-                "any",
-                "all",
-                "quantifiers",
-                "boolean-logic"
-            ]
+            "subcategory": "quantifier methods"
         },
         "codeWithBlank": "var people = new[]\n{\n    new { Name = \"Ali\", Age = 25 },\n    new { Name = \"Sara\", Age = 30 }\n};\nvar result = people\n    .________(p => p.Age > 20)\n    .________(p => ________);\n// Check if any person older than 20, then check if all are older than 18",
         "prompt": "Quantifier methods: biror kishi 20 yoshdan katta bo'lsa, barcha kishilar 18 dan katta ekanligini tekshiring.",
@@ -2710,13 +2043,7 @@
         "type": "fill",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "join operations",
-            "concepts": [
-                "groupjoin",
-                "left-join",
-                "count",
-                "anonymous-types"
-            ]
+            "subcategory": "join operations"
         },
         "codeWithBlank": "var customers = new[] { \"Alice\", \"Bob\", \"Charlie\" };\nvar orders = new[] { \"Alice\", \"Alice\", \"Bob\", \"David\" };\nvar result = customers\n    .________(orders, c => c, o => o, (c, orderGroup) => \n        new { Customer = c, OrderCount = orderGroup.________ });\n// Group join to count orders per customer",
         "prompt": "Group join: har bir customer uchun order sonini hisoblash. Ba'zi customerlarning orderi yo'q bo'lishi mumkin.",
@@ -2728,12 +2055,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "deferred execution",
-            "concepts": [
-                "deferred-execution",
-                "lazy-evaluation",
-                "query-semantics"
-            ]
+            "subcategory": "deferred execution"
         },
         "codeWithError": "var numbers = new[] { 1, 2, 3, 4, 5 };\nvar query = numbers.Where(x => x > 2);\nnumbers[0] = 10;\nvar result = query.ToList();\nConsole.WriteLine(result.Count);",
         "prompt": "Deferred execution muammosi: query yaratilgandan keyin source data o'zgardi. Natija qanday bo'ladi?",
@@ -2745,13 +2067,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "pipeline correctness",
-            "concepts": [
-                "select",
-                "where",
-                "first",
-                "pipeline-validation"
-            ]
+            "subcategory": "pipeline correctness"
         },
         "codeWithError": "var data = new[] { 1, 2, 3 };\nvar result = data\n    .Select(x => x * 2)\n    .Where(x => x > 3)\n    .First();\n// Should get first element > 3 after doubling",
         "prompt": "LINQ chain mantiqan to'g'ri, lekin qiymatlarni tekshirib ko'ring. 4 dan katta birinchi element topiladi?",
@@ -2763,12 +2079,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "enumeration safety",
-            "concepts": [
-                "collection-modification",
-                "enumeration",
-                "concurrency-issues"
-            ]
+            "subcategory": "enumeration safety"
         },
         "codeWithError": "var items = new List<int> { 1, 2, 3, 4, 5 };\nforeach (var item in items.Where(x => x % 2 == 0))\n{\n    items.Remove(item);\n}\nConsole.WriteLine(items.Count);",
         "prompt": "Collection modification during enumeration xatosi. LINQ query execute bo'layotganda source collection o'zgartirilmoqda.",
@@ -2780,13 +2091,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "element selection",
-            "concepts": [
-                "single",
-                "groupby",
-                "cardinality",
-                "exception-handling"
-            ]
+            "subcategory": "element selection"
         },
         "codeWithError": "var numbers = new[] { 1, 2, 3 };\nvar result = numbers\n    .GroupBy(x => x % 2)\n    .Select(g => g.Sum())\n    .Single();",
         "prompt": "`Single()` method faqat bitta element bo'lgan collection uchun ishlatiladi. Bu yerda nechta group bor?",
@@ -2798,13 +2103,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "null safety",
-            "concepts": [
-                "null-safety",
-                "null-reference",
-                "where",
-                "safe-navigation"
-            ]
+            "subcategory": "null safety"
         },
         "codeWithError": "var words = new[] { \"apple\", \"banana\", null, \"cherry\" };\nvar result = words\n    .Where(w => w.Length > 5)\n    .Count();",
         "prompt": "Null reference exception: array da `null` element bor va `Length` property access qilinmoqda.",
@@ -2816,13 +2115,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "selectmany operations",
-            "concepts": [
-                "selectmany",
-                "enumerable-repeat",
-                "flattening",
-                "sum"
-            ]
+            "subcategory": "selectmany operations"
         },
         "snippet": "var numbers = new[] { 1, 2, 3, 4, 5 };\nvar result = numbers\n    .SelectMany(x => Enumerable.Repeat(x, x))\n    .Sum();\nConsole.WriteLine(result);",
         "prompt": "`SelectMany` har raqamni o'sha raqam marta takrorlaydi. Masalan, 3 ni 3 marta: [3,3,3]. Yig'indi?",
@@ -2834,14 +2127,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "character analysis",
-            "concepts": [
-                "where",
-                "groupby",
-                "orderbydescending",
-                "first",
-                "char-operations"
-            ]
+            "subcategory": "character analysis"
         },
         "snippet": "var data = \"hello world\";\nvar result = data\n    .Where(c => char.IsLetter(c))\n    .GroupBy(c => c)\n    .OrderByDescending(g => g.Count())\n    .First()\n    .Key;\nConsole.WriteLine(result);",
         "prompt": "String dagi eng ko'p uchraydigan harfni topish. `hello world` da qaysi harf eng ko'p?",
@@ -2853,13 +2139,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "zip operations",
-            "concepts": [
-                "zip",
-                "element-pairing",
-                "lambda-operations",
-                "string-join"
-            ]
+            "subcategory": "zip operations"
         },
         "snippet": "var list1 = new[] { 1, 2, 3 };\nvar list2 = new[] { 2, 3, 4 };\nvar result = list1.Zip(list2, (a, b) => a + b).ToArray();\nConsole.WriteLine(string.Join(\", \", result));",
         "prompt": "`Zip` method ikki collection elementlarini juftlab birlashtiradi. Har juftikning yig'indisi?",
@@ -2871,13 +2151,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "conditional operations",
-            "concepts": [
-                "takewhile",
-                "skipwhile",
-                "skip",
-                "concat"
-            ]
+            "subcategory": "conditional operations"
         },
         "snippet": "var numbers = new[] { 5, 2, 8, 1, 9 };\nvar result = numbers\n    .TakeWhile(x => x != 8)\n    .Concat(numbers.SkipWhile(x => x != 8).Skip(1))\n    .ToArray();\nConsole.WriteLine(string.Join(\", \", result));",
         "prompt": "8 raqamini olib tashlash: 8 gacha olib, 8 dan keyingilarni olib, birlashtirish. Natija?",
@@ -2889,13 +2163,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "nested flattening",
-            "concepts": [
-                "selectmany",
-                "enumerable-range",
-                "flattening",
-                "sum"
-            ]
+            "subcategory": "nested flattening"
         },
         "snippet": "var ranges = new[] { \n    Enumerable.Range(1, 3), \n    Enumerable.Range(4, 2) \n};\nvar flattened = ranges.SelectMany(r => r).Sum();\nConsole.WriteLine(flattened);",
         "prompt": "`SelectMany` nested IEnumerable larni flatten qiladi. Range(1,3)=[1,2,3], Range(4,2)=[4,5]. Yig'indi?",
@@ -2907,14 +2175,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "data analysis projects",
-            "concepts": [
-                "records",
-                "grouping",
-                "aggregation",
-                "sorting",
-                "data-analysis"
-            ]
+            "subcategory": "data analysis projects"
         },
         "prompt": "### LINQ ma'lumotlar tahlili dasturi\n\nStudent ma'lumotlari bilan ishlaydigan konsol dasturini yozing.\n\n`Student` record yarating: `Name`, `Age`, `Grade`, `Subject` maydonlari bilan.\n\nQuyidagi LINQ operatsiyalarini implement qiling:\n- Barcha studentlarni grade bo'yicha guruhlab, har guruhda nechta student borligini chiqarish\n- Eng yosh va eng katta yoshdagi studentlarni topib chiqarish\n- Ma'lum subject bo'yicha o'rtacha grade ni hisoblash\n- Grade 80+ bo'lgan studentlarni name bo'yicha tartiblash\n\nDeferred execution va immediate execution farqini ko'rsating.",
         "examples": [
@@ -2926,14 +2187,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "text analysis projects",
-            "concepts": [
-                "string-processing",
-                "selectmany",
-                "groupby",
-                "palindromes",
-                "text-analysis"
-            ]
+            "subcategory": "text analysis projects"
         },
         "prompt": "### LINQ bilan matn tahlili\n\nMatn faylini tahlil qiladigan dastur yozing (yoki hardcoded string ishlating).\n\nQuyidagi funksiyalarni LINQ bilan implement qiling:\n- Eng uzun so'zni topish\n- Har harfning necha marta uchrashini hisoblash\n- Palindrom so'zlarni topish  \n- So'zlarni uzunlik bo'yicha guruhlab, har guruhdan eng kichik alfabetik tartibdagisini olish\n\nQuery syntax va method syntax ikkalasidan ham foydalaning.\n\n`SelectMany`, `GroupBy`, `OrderBy`, `Where` metodlarini ishlating.",
         "examples": [
@@ -2945,14 +2199,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "business logic projects",
-            "concepts": [
-                "joins",
-                "groupjoin",
-                "aggregate",
-                "business-logic",
-                "e-commerce"
-            ]
+            "subcategory": "business logic projects"
         },
         "prompt": "### LINQ bilan e-commerce ma'lumotlari\n\n`Product`, `Order`, `Customer` recordlarini yarating.\n\nQuyidagi business logikani LINQ bilan yozing:\n- Eng ko'p sotilgan 5 ta mahsulot\n- Har bir customer ning jami xarid summasi\n- Oylik sotuvlar statistikasi (group by month)\n- Hech narsa sotib olmagan customerlar ro'yxati\n\n`Join`, `GroupJoin`, `Aggregate`, `Sum` metodlaridan foydalaning.\n\nNull safety va edge caselarni handle qiling (bo'sh collections, null values).",
         "examples": [
@@ -2964,14 +2211,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "performance optimization",
-            "concepts": [
-                "performance",
-                "benchmarking",
-                "stopwatch",
-                "optimization",
-                "deferred-execution"
-            ]
+            "subcategory": "performance optimization"
         },
         "prompt": "### LINQ Performance Comparison\n\nKatta collection lar bilan ishlash uchun performance test dasturini yozing.\n\nQuyidagilarni taqqoslang:\n- `Where().Count()` vs `Count(predicate)`\n- `Where().First()` vs `First(predicate)`  \n- `ToList().Where()` vs `Where().ToList()`\n- Deferred vs Immediate execution\n\n`Stopwatch` ishlatib, execution time ni o'lchang.\n\n1 million elementli `List<int>` yarating va turli LINQ operatsiyalarini test qiling.\n\nNatijalarni console ga formatted holda chiqaring.",
         "examples": [
@@ -2983,13 +2223,7 @@
         "type": "code_writing",
         "metadata": {
             "category": "linq-funksional-dasturlash",
-            "subcategory": "extension methods",
-            "concepts": [
-                "extension-methods",
-                "yield-return",
-                "generic-programming",
-                "deferred-execution"
-            ]
+            "subcategory": "extension methods"
         },
         "prompt": "### Custom LINQ Extension Methods\n\nO'zingizning LINQ extension methodlarini yarating:\n\n- `Batch<T>(this IEnumerable<T> source, int size)` - elementlarni chunk larga bo'lish\n- `DistinctBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector)` - key bo'yicha unique\n- `ForEach<T>(this IEnumerable<T> source, Action<T> action)` - har elementga action apply qilish\n- `IsEmpty<T>(this IEnumerable<T> source)` - collection bo'sh ekanligini tekshirish\n\nHar bir extension method uchun:\n- Null checking\n- Deferred execution (kerak bo'lsa)\n- `yield return` ishlatish\n- Generic constraints (kerak bo'lsa)\n\nTest kodini ham yozing.",
         "examples": [
@@ -3001,11 +2235,7 @@
         "type": "mcq",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "try-catch basics",
-            "concepts": [
-                "try-catch",
-                "exception-types"
-            ]
+            "subcategory": "try-catch basics"
         },
         "codeBefore": "```csharp\ntry\n{\n    int result = int.Parse(\"abc\");\n    Console.WriteLine(result);\n}\ncatch (FormatException ex)\n{\n    Console.WriteLine(\"Format error\");\n}\ncatch (Exception ex)\n{\n    Console.WriteLine(\"General error\");\n}\n```",
         "codeAfter": "",
@@ -3013,23 +2243,19 @@
         "options": [
             {
                 "id": "A",
-                "option": "FormatException catch block",
-                "explanation": "int.Parse(\"abc\") FormatException tashlay, bu aniq catch qilinadi"
+                "option": "FormatException catch block"
             },
             {
                 "id": "B",
-                "option": "Exception catch block",
-                "explanation": "FormatException aniqroq catch qilingani uchun bu ishlamaydi"
+                "option": "Exception catch block"
             },
             {
                 "id": "C",
-                "option": "Ikkala catch block ham",
-                "explanation": "Faqat birinchi mos kelgan catch block ishlaydi"
+                "option": "Ikkala catch block ham"
             },
             {
                 "id": "D",
-                "option": "Hech qaysi catch block",
-                "explanation": "FormatException aniq handle qilinadi"
+                "option": "Hech qaysi catch block"
             }
         ],
         "answer": [
@@ -3042,11 +2268,7 @@
         "type": "true_false",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "exception best practices",
-            "concepts": [
-                "exception-best-practices",
-                "performance"
-            ]
+            "subcategory": "exception best practices"
         },
         "codeBefore": "",
         "codeAfter": "",
@@ -3059,11 +2281,7 @@
         "type": "fill",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "try-catch syntax",
-            "concepts": [
-                "try-catch",
-                "exception-types"
-            ]
+            "subcategory": "try-catch syntax"
         },
         "codeWithBlank": "try\n{\n    int.Parse(\"invalid\");\n}\n______ (FormatException ex)\n{\n    Console.WriteLine(\"Format error: \" + ex.Message);\n}\n______ (Exception ex)\n{\n    Console.WriteLine(\"General error: \" + ex.Message);\n}",
         "prompt": "Try-catch strukturasini to'ldiring. Exception larni catch qilish uchun kerakli kalit so'zni yozing.",
@@ -3075,11 +2293,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "catch block order",
-            "concepts": [
-                "try-catch",
-                "exception-hierarchy"
-            ]
+            "subcategory": "catch block order"
         },
         "codeWithError": "try\n{\n    int.Parse(\"abc\");\n}\ncatch (Exception ex)  // General exception first\n{\n    Console.WriteLine(\"General error\");\n}\ncatch (FormatException ex)  // Specific exception after - ERROR!\n{\n    Console.WriteLine(\"Format error\");\n}",
         "prompt": "Catch block tartibida xato bor. Compiler error beradi. Tuzating.",
@@ -3091,11 +2305,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "exception flow",
-            "concepts": [
-                "try-catch",
-                "exception-propagation"
-            ]
+            "subcategory": "exception flow"
         },
         "snippet": "try\n{\n    throw new ArgumentNullException(\"param\");\n}\ncatch (ArgumentException ex)\n{\n    Console.Write(\"Argument\");\n}\ncatch (ArgumentNullException ex)\n{\n    Console.Write(\"Null\");\n}\ncatch (Exception ex)\n{\n    Console.Write(\"General\");\n}\nConsole.Write(\"End\");",
         "prompt": "ArgumentNullException inheritance hierarchy: Exception > SystemException > ArgumentException > ArgumentNullException. Qaysi natija?",
@@ -3107,11 +2317,7 @@
         "type": "mcq",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "Custom Exceptions",
-            "concepts": [
-                "custom-exceptions",
-                "exception-types"
-            ]
+            "subcategory": "Custom Exceptions"
         },
         "prompt": "C# da custom exception class yaratganda nima sodir bo'ladi?",
         "options": [
@@ -3142,11 +2348,7 @@
         "type": "true_false",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "Finally Blocks",
-            "concepts": [
-                "finally-blocks",
-                "exception-best-practices"
-            ]
+            "subcategory": "Finally Blocks"
         },
         "prompt": "Finally blok doimo bajariladi, hatto try blokda return statement bo'lsa ham.",
         "answer": "true",
@@ -3157,11 +2359,7 @@
         "type": "fill",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "Exception Filtering",
-            "concepts": [
-                "exception-filtering",
-                "when-clauses"
-            ]
+            "subcategory": "Exception Filtering"
         },
         "codeWithBlank": "try\n{\n    // xavfli operatsiya\n}\ncatch (ArgumentException ex) _____ (ex.ParamName == \"userId\")\n{\n    // maxsus parametr exceptionni boshqarish\n}",
         "prompt": "Exception filtering uchun kerakli kalit so'zni kiriting:",
@@ -3173,11 +2371,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "Exception Re-throwing",
-            "concepts": [
-                "re-throwing",
-                "exception-best-practices"
-            ]
+            "subcategory": "Exception Re-throwing"
         },
         "codeWithError": "try\n{\n    SomeRiskyOperation();\n}\ncatch (Exception ex)\n{\n    LogError(ex);\n    throw ex;\n}",
         "prompt": "Ushbu exception *re-throw* kodida xatoni toping:",
@@ -3189,11 +2383,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "Exception Propagation",
-            "concepts": [
-                "finally-blocks",
-                "exception-propagation"
-            ]
+            "subcategory": "Exception Propagation"
         },
         "snippet": "try\n{\n    try\n    {\n        throw new ArgumentException(\"Inner\");\n    }\n    finally\n    {\n        Console.WriteLine(\"Inner finally\");\n    }\n}\ncatch (Exception ex)\n{\n    Console.WriteLine($\"Caught: {ex.Message}\");\n}\nfinally\n{\n    Console.WriteLine(\"Outer finally\");\n}",
         "prompt": "Ushbu kodning natijasi nima bo'ladi?",
@@ -3205,11 +2395,7 @@
         "type": "mcq",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "Exception Hierarchy",
-            "concepts": [
-                "exception-types",
-                "try-catch"
-            ]
+            "subcategory": "Exception Hierarchy"
         },
         "prompt": "Quyidagi catch bloklardan qaysi biri to'g'ri tartibda joylashgan?",
         "options": [
@@ -3240,11 +2426,7 @@
         "type": "true_false",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "Performance",
-            "concepts": [
-                "exception-best-practices",
-                "performance"
-            ]
+            "subcategory": "Performance"
         },
         "prompt": "Exception'lar performance jihatdan qimmat operatsiyalar bo'lib, ular odatiy flow control uchun ishlatilmasligi kerak.",
         "answer": "true",
@@ -3255,11 +2437,7 @@
         "type": "fill",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "Custom Exception Constructors",
-            "concepts": [
-                "custom-exceptions",
-                "exception-types"
-            ]
+            "subcategory": "Custom Exception Constructors"
         },
         "codeWithBlank": "public class CustomException : Exception\n{\n    public CustomException(string message, Exception innerException)\n        : _____(message, innerException)\n    {\n    }\n}",
         "prompt": "Custom exception constructor'ida base class constructor'ini to'g'ri chaqiring:",
@@ -3271,11 +2449,7 @@
         "type": "error_spotting",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "Exception Filtering Errors",
-            "concepts": [
-                "exception-filtering",
-                "when-clauses"
-            ]
+            "subcategory": "Exception Filtering Errors"
         },
         "codeWithError": "try\n{\n    ProcessData();\n}\ncatch (Exception ex) when (LogException(ex))\n{\n    // handle exception\n}\n\nbool LogException(Exception ex)\n{\n    Console.WriteLine($\"Error: {ex.Message}\");\n    return true;\n}",
         "prompt": "Ushbu exception filtering kodida qanday muammo bor?",
@@ -3287,11 +2461,7 @@
         "type": "output_prediction",
         "metadata": {
             "category": "exception-handling",
-            "subcategory": "Using Statement Exception Handling",
-            "concepts": [
-                "finally-blocks",
-                "exception-propagation"
-            ]
+            "subcategory": "Using Statement Exception Handling"
         },
         "snippet": "public class TestResource : IDisposable\n{\n    public string Name { get; set; }\n    public void Dispose()\n    {\n        Console.WriteLine($\"Disposing {Name}\");\n    }\n}\n\ntry\n{\n    using (var resource = new TestResource { Name = \"Resource1\" })\n    {\n        Console.WriteLine(\"Using resource\");\n        throw new InvalidOperationException(\"Test error\");\n    }\n}\ncatch (Exception ex)\n{\n    Console.WriteLine($\"Caught: {ex.Message}\");\n}",
         "prompt": "Ushbu kodning natijasi nima bo'ladi?",
