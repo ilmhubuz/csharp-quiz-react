@@ -5,7 +5,6 @@ import type {
   QuizSession,
   TopicCategory,
   QuestionType,
-  DifficultyLevel,
   Question
 } from '../types';
 
@@ -32,24 +31,6 @@ const createDefaultProgress = (): UserProgress => ({
 const createCategoryProgress = (category: TopicCategory, questions: Question[]): CategoryProgress => {
   const categoryQuestions = questions.filter(q => q.metadata.category === category);
   
-  // Initialize difficulty breakdown with all possible difficulty levels found in questions
-  const difficultyBreakdown: Record<DifficultyLevel, { total: number; answered: number; correct: number }> = {} as any;
-  
-  // First, initialize all known difficulty levels
-  const knownDifficulties: DifficultyLevel[] = ['boshlang\'ich', 'o\'rta', 'murakkab'];
-  knownDifficulties.forEach(difficulty => {
-    difficultyBreakdown[difficulty] = { total: 0, answered: 0, correct: 0 };
-  });
-
-  // Then count questions for each difficulty, creating entries if they don't exist
-  categoryQuestions.forEach(q => {
-    const difficulty = q.metadata.difficulty;
-    if (!difficultyBreakdown[difficulty]) {
-      difficultyBreakdown[difficulty] = { total: 0, answered: 0, correct: 0 };
-    }
-    difficultyBreakdown[difficulty].total++;
-  });
-
   return {
     category,
     totalQuestions: categoryQuestions.length,
@@ -57,7 +38,6 @@ const createCategoryProgress = (category: TopicCategory, questions: Question[]):
     correctAnswers: 0,
     averageTimePerQuestion: 0,
     successRate: 0,
-    difficultyBreakdown,
   };
 };
 
@@ -117,7 +97,8 @@ class ProgressStorage {
       'metod-xususiyatlari',
       'kolleksiyalar-ma\'lumot-tuzilmalari',
       'linq-funksional-dasturlash',
-      'ilg\'or-mavzular'
+      'ilg\'or-mavzular',
+      'exception-handling'
     ];
 
     categories.forEach(category => {
@@ -179,11 +160,6 @@ class ProgressStorage {
       const cat = category as TopicCategory;
       progress.categoryProgress[cat].answeredQuestions = 0;
       progress.categoryProgress[cat].correctAnswers = 0;
-      Object.keys(progress.categoryProgress[cat].difficultyBreakdown).forEach(diff => {
-        const difficulty = diff as DifficultyLevel;
-        progress.categoryProgress[cat].difficultyBreakdown[difficulty].answered = 0;
-        progress.categoryProgress[cat].difficultyBreakdown[difficulty].correct = 0;
-      });
     });
 
     Object.keys(progress.typeProgress).forEach(type => {
@@ -198,73 +174,56 @@ class ProgressStorage {
 
     Object.values(progress.questionProgress).forEach(qp => {
       if (!qp.isAnswered) return;
-
-      const question = questions.find(q => q.id === qp.questionId);
-      if (!question) return;
-
+      
       totalAnswered++;
       if (qp.isCorrect) totalCorrect++;
-
-      // Update category progress
+      
+      const question = questions.find(q => q.id === qp.questionId);
+      if (!question) return;
+      
       const categoryProg = progress.categoryProgress[question.metadata.category];
+      const typeProg = progress.typeProgress[question.type];
+      
       if (categoryProg) {
         categoryProg.answeredQuestions++;
         if (qp.isCorrect) categoryProg.correctAnswers++;
-        
-        const difficulty = question.metadata.difficulty;
-        // Ensure the difficulty level exists in the breakdown
-        if (!categoryProg.difficultyBreakdown[difficulty]) {
-          categoryProg.difficultyBreakdown[difficulty] = { total: 0, answered: 0, correct: 0 };
-        }
-        
-        const diffBreakdown = categoryProg.difficultyBreakdown[difficulty];
-        diffBreakdown.answered++;
-        if (qp.isCorrect) diffBreakdown.correct++;
       }
-
-      // Update type progress
-      const typeProg = progress.typeProgress[question.type];
+      
       if (typeProg) {
         typeProg.answeredQuestions++;
         if (qp.isCorrect) typeProg.correctAnswers++;
       }
     });
 
-    // Update success rates
+    // Calculate success rates
+    progress.totalQuestionsAnswered = totalAnswered;
     progress.overallSuccessRate = totalAnswered > 0 ? (totalCorrect / totalAnswered) * 100 : 0;
-
-    Object.keys(progress.categoryProgress).forEach(category => {
-      const cat = category as TopicCategory;
-      const catProg = progress.categoryProgress[cat];
-      catProg.successRate = catProg.answeredQuestions > 0 
-        ? (catProg.correctAnswers / catProg.answeredQuestions) * 100 
-        : 0;
+    
+    Object.values(progress.categoryProgress).forEach(cat => {
+      cat.successRate = cat.answeredQuestions > 0 ? (cat.correctAnswers / cat.answeredQuestions) * 100 : 0;
     });
-
-    Object.keys(progress.typeProgress).forEach(type => {
-      const typ = type as QuestionType;
-      const typeProg = progress.typeProgress[typ];
-      typeProg.successRate = typeProg.answeredQuestions > 0 
-        ? (typeProg.correctAnswers / typeProg.answeredQuestions) * 100 
-        : 0;
+    
+    Object.values(progress.typeProgress).forEach(type => {
+      type.successRate = type.answeredQuestions > 0 ? (type.correctAnswers / type.answeredQuestions) * 100 : 0;
     });
 
     this.saveProgress(progress);
   }
 
-  // Create and save a new quiz session
+  // Create a new quiz session
   createSession(
     mode: 'category' | 'type' | 'mixed',
     questions: number[],
     filter: {
       categories?: TopicCategory[];
       types?: QuestionType[];
-      difficulties?: DifficultyLevel[];
     }
   ): QuizSession {
+    const progress = this.loadProgress();
+    
     const session: QuizSession = {
-      id: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      name: `${mode === 'category' ? 'Category' : mode === 'type' ? 'Type' : 'Mixed'} Quiz`,
+      id: Date.now().toString(),
+      name: `Quiz ${new Date().toLocaleDateString()}`,
       mode,
       filter,
       questions,
@@ -274,31 +233,27 @@ class ProgressStorage {
       isCompleted: false,
     };
 
-    const progress = this.loadProgress();
     progress.sessions.push(session);
     this.saveProgress(progress);
-
+    
     return session;
   }
 
   // Update session progress
   updateSession(sessionId: string, updates: Partial<QuizSession>): void {
     const progress = this.loadProgress();
-    const sessionIndex = progress.sessions.findIndex(s => s.id === sessionId);
     
-    if (sessionIndex !== -1) {
-      const currentSession = progress.sessions[sessionIndex];
-      progress.sessions[sessionIndex] = {
-        ...currentSession,
-        ...Object.fromEntries(
-          Object.entries(updates).filter(([_, value]) => value !== undefined)
-        )
+    const sessionIndex = progress.sessions.findIndex(s => s.id === sessionId);
+    if (sessionIndex >= 0) {
+      progress.sessions[sessionIndex] = { 
+        ...progress.sessions[sessionIndex], 
+        ...updates 
       } as QuizSession;
       this.saveProgress(progress);
     }
   }
 
-  // Clear all progress (for reset functionality)
+  // Clear all progress
   clearProgress(): void {
     this.progress = createDefaultProgress();
     localStorage.removeItem(STORAGE_KEY);
@@ -314,21 +269,22 @@ class ProgressStorage {
   } {
     const progress = this.loadProgress();
     
+    const totalQuestions = Object.values(progress.categoryProgress).reduce((sum, cat) => sum + cat.totalQuestions, 0);
+    
     return {
-      totalQuestions: Object.values(progress.categoryProgress).reduce((sum, cat) => sum + cat.totalQuestions, 0),
+      totalQuestions,
       answeredQuestions: progress.totalQuestionsAnswered,
       overallSuccessRate: progress.overallSuccessRate,
-      categoryStats: Object.entries(progress.categoryProgress).map(([category, categoryProgress]) => ({
+      categoryStats: Object.entries(progress.categoryProgress).map(([category, progress]) => ({
         category: category as TopicCategory,
-        progress: categoryProgress,
+        progress
       })),
-      typeStats: Object.entries(progress.typeProgress).map(([type, typeProgress]) => ({
+      typeStats: Object.entries(progress.typeProgress).map(([type, progress]) => ({
         type: type as QuestionType,
-        progress: typeProgress,
-      })),
+        progress
+      }))
     };
   }
 }
 
-// Export singleton instance
 export const progressStorage = new ProgressStorage(); 

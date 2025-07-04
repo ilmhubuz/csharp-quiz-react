@@ -1,7 +1,5 @@
 export type QuestionType = 'mcq' | 'true_false' | 'fill' | 'error_spotting' | 'output_prediction' | 'code_writing';
 
-export type DifficultyLevel = 'boshlang\'ich' | 'o\'rta' | 'murakkab';
-
 export type CSharpVersion = '6.0' | '7.0' | '7.1' | '7.2' | '7.3' | '8.0' | '9.0' | '10.0' | '11.0' | '12.0' | '13.0';
 
 export type TopicCategory = 
@@ -61,14 +59,6 @@ export interface QuestionMetadata {
   category: TopicCategory;
   subcategory: string;
   concepts: ConceptTag[];
-  difficulty: DifficultyLevel;
-  csharpVersion: CSharpVersion;
-  estimatedTimeSeconds: number;
-  prerequisites?: ConceptTag[];
-  learningObjectives: string[];
-  commonMistakes?: string[];
-  relatedQuestions?: number[];
-  tags: string[];
 }
 
 export interface MCQOption {
@@ -119,7 +109,6 @@ export interface ErrorSpotQuestion {
 	prompt: string;
 	answer: string;
 	explanation?: string;
-	errorLocation?: { line: number; column: number };
 }
 
 export interface OutputPredictionQuestion {
@@ -130,7 +119,6 @@ export interface OutputPredictionQuestion {
 	prompt: string;
 	answer: string;
 	explanation?: string;
-	stepByStepExecution?: string[];
 }
 
 export interface CodeWritingQuestion {
@@ -155,7 +143,6 @@ export interface TopicGroup {
 	subcategory: string;
 	questions: Question[];
 	totalQuestions: number;
-	difficultyDistribution: Record<DifficultyLevel, number>;
 }
 
 export interface StudySession {
@@ -164,7 +151,6 @@ export interface StudySession {
 	description: string;
 	questions: number[];
 	estimatedDurationMinutes: number;
-	targetDifficulty?: DifficultyLevel;
 	focusedConcepts?: ConceptTag[];
 }
 
@@ -172,8 +158,6 @@ export interface QuizSettings {
 	questionCount?: number;
 	categories?: TopicCategory[];
 	concepts?: ConceptTag[];
-	difficulty?: DifficultyLevel[];
-	csharpVersions?: CSharpVersion[];
 	excludeIds?: number[];
 	randomizeOrder?: boolean;
 	timeLimit?: number;
@@ -198,11 +182,6 @@ export interface CategoryProgress {
   averageTimePerQuestion?: number;
   lastAnsweredAt?: string;
   successRate: number; // percentage
-  difficultyBreakdown: Record<DifficultyLevel, {
-    total: number;
-    answered: number;
-    correct: number;
-  }>;
 }
 
 export interface TypeProgress {
@@ -222,7 +201,6 @@ export interface QuizSession {
   filter: {
     categories?: TopicCategory[];
     types?: QuestionType[];
-    difficulties?: DifficultyLevel[];
   };
   questions: number[];
   currentQuestionIndex: number;
@@ -254,14 +232,12 @@ export type ViewMode = 'home' | 'quiz' | 'results';
 export interface FilterOptions {
   categories: TopicCategory[];
   types: QuestionType[];
-  difficulties: DifficultyLevel[];
 }
 
 export interface QuizConfig {
   mode: 'category' | 'type' | 'mixed';
   selectedCategories?: TopicCategory[];
   selectedTypes?: QuestionType[];
-  selectedDifficulties?: DifficultyLevel[];
   randomizeOrder?: boolean;
   questionLimit?: number;
 }

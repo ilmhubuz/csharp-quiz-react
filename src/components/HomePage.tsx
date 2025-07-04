@@ -59,8 +59,7 @@ export const HomePage: React.FC<HomePageProps> = ({ questions, onStartQuiz }) =>
           totalQuestions: cat.totalQuestions,
           answeredQuestions: cat.answeredQuestions,
           correctAnswers: cat.correctAnswers,
-          successRate: cat.successRate,
-          difficultyBreakdown: {} // Keep structure but not used in display
+          successRate: cat.successRate
         } as CategoryProgress
       })),
       typeStats: typeStats.map(type => ({
@@ -118,8 +117,7 @@ export const HomePage: React.FC<HomePageProps> = ({ questions, onStartQuiz }) =>
             totalQuestions: cat.totalQuestions,
             answeredQuestions: cat.answeredQuestions,
             correctAnswers: cat.correctAnswers,
-            successRate: cat.successRate,
-            difficultyBreakdown: {}
+            successRate: cat.successRate
           } as CategoryProgress
         })),
         typeStats: typeStats.map(type => ({

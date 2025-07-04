@@ -13,7 +13,6 @@ import {
   Collapse,
   IconButton,
   Tooltip,
-  Alert,
   AppBar,
   Toolbar
 } from '@mui/material';
@@ -25,7 +24,6 @@ import {
   ExpandMore,
   ExpandLess,
   Info,
-  Lightbulb,
   Category,
   Quiz
 } from '@mui/icons-material';
@@ -42,7 +40,7 @@ import { QuizResults } from './QuizResults';
 import { HomePage } from './HomePage';
 import { progressStorage } from '../services/progressStorage';
 import { answerStorage } from '../services/answerStorage';
-import { CATEGORY_INFO, TYPE_INFO, DIFFICULTY_INFO } from '../constants/categories';
+import { CATEGORY_INFO, TYPE_INFO } from '../constants/categories';
 import questionsData from '../assets/questions.json';
 
 interface QuizState {
@@ -355,56 +353,7 @@ export const EnhancedQuizApp: React.FC = () => {
                   color="secondary"
                   size="small"
                 />
-                <Chip
-                  label={DIFFICULTY_INFO[currentQuestion.metadata.difficulty].nameUz}
-                  size="small"
-                  sx={{
-                    backgroundColor: DIFFICULTY_INFO[currentQuestion.metadata.difficulty].color,
-                    color: 'white'
-                  }}
-                />
-                <Chip
-                  label={`C# ${currentQuestion.metadata.csharpVersion}`}
-                  variant="outlined"
-                  size="small"
-                />
-                <Chip
-                  label={`${Math.ceil(currentQuestion.metadata.estimatedTimeSeconds / 60)} min`}
-                  variant="outlined"
-                  size="small"
-                />
               </Box>
-
-              {currentQuestion.metadata.learningObjectives && currentQuestion.metadata.learningObjectives.length > 0 && (
-                <Box mb={2}>
-                  <Typography variant="subtitle2" color="text.secondary" mb={1} display="flex" alignItems="center" gap={1}>
-                    <Lightbulb fontSize="small" />
-                    Learning Objectives:
-                  </Typography>
-                  <Box component="ul" sx={{ m: 0, pl: 2 }}>
-                    {currentQuestion.metadata.learningObjectives.map((objective, index) => (
-                      <Typography key={index} component="li" variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-                        {objective}
-                      </Typography>
-                    ))}
-                  </Box>
-                </Box>
-              )}
-
-              {currentQuestion.metadata.commonMistakes && currentQuestion.metadata.commonMistakes.length > 0 && (
-                <Alert severity="warning" sx={{ mt: 2 }}>
-                  <Typography variant="subtitle2" fontWeight="bold" mb={1}>
-                    Common Mistakes:
-                  </Typography>
-                  <Box component="ul" sx={{ m: 0, pl: 2 }}>
-                    {currentQuestion.metadata.commonMistakes.map((mistake, index) => (
-                      <Typography key={index} component="li" variant="body2" sx={{ mb: 0.5 }}>
-                        {mistake}
-                      </Typography>
-                    ))}
-                  </Box>
-                </Alert>
-              )}
             </CardContent>
           </Card>
         </Collapse>
