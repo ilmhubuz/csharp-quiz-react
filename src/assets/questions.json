@@ -587,9 +587,9 @@
             "subcategory": "inheritance"
         },
         "codeWithError": "public abstract class Base\n{\n    public abstract void Save(string data);\n}\n\npublic class FileSaver : Base\n{\n    public void Save(string data)  // override kalit so'zi yo'q\n    {\n        File.WriteAllText(\"out.txt\", data);\n    }\n}",
-        "prompt": "Abstract metodini implement qilishda `override` kalit so'zi kerak. Tuzating.",
+        "prompt": "**Abstract method implementation** da **`override` keyword** etishmayapti.\n\n**Muammo:** Derived class da abstract method ni implement qilishda `override` keyword ishlatilmagan.\n\n**Abstract method qoidasi:** Abstract base class dan inherit qilingan method ni implement qilishda `override` keyword majburiy.\n\n**Vazifa:** Etishmayotgan `override` keyword ni qo'shing.",
         "answer": "public abstract class Base\n{\n    public abstract void Save(string data);\n}\n\npublic class FileSaver : Base\n{\n    public override void Save(string data)\n    {\n        File.WriteAllText(\"out.txt\", data);\n    }\n}",
-        "explanation": "Abstract metodini implement qilishda override kalit so'zi shart. Bu abstract contract ni bajarayotganingizni ko'rsatadi."
+        "explanation": "Abstract method ni implement qilishda `override` keyword majburiy. Bu compiler ga abstract contract ni fulfill qilayotganingizni bildiradi. `override` keyword ni ishlatmaslik compilation error ga olib keladi."
     },
     {
         "id": 32,
@@ -599,9 +599,9 @@
             "subcategory": "init properties"
         },
         "codeWithError": "struct Configuration\n{\n    public string Url { get; init; }\n    public Configuration() { Url = \"\"; }  // C# 11+ da ruxsat etilgan, lekin init-only property bilan muammo\n}",
-        "prompt": "Init-only property ni konstruktor ichida to'g'ridan-to'g'ri initialize qilish o'rniga, property initializer ishlatish yaxshiroq. Tuzating.",
+        "prompt": "**Init-only property** ni constructor da initialization qilish o'rniga **property initializer** ishlatish yaxshiroq.\n\n**Muammo:** Constructor ichida init-only property ni set qilish mumkin, lekin property initializer ishlatish idiomatic C# style.\n\n**Property initializer afzalligi:** \n- Ko'proq declarative\n- Property ning default value ini aniq ko'rsatadi\n- Kod qisqaroq va tushunarli\n\n**Vazifa:** Constructor ni olib tashlang va property initializer ishlatib qiymat bering.",
         "answer": "struct Configuration\n{\n    public string Url { get; init; } = string.Empty;\n}",
-        "explanation": "Init-only property uchun property initializer ishlatish yaxshiroq, chunki bu property ning immutable nature ni ta'kidlaydi."
+        "explanation": "Init-only property uchun property initializer ishlatish yaxshiroq. Bu property ning immutable nature ni ta'kidlaydi va default value ni aniq ko'rsatadi. Constructor o'rniga property initializer ishlatish idiomatic C# style hisoblanadi."
     },
     {
         "id": 33,
@@ -611,9 +611,9 @@
             "subcategory": "generic constraints"
         },
         "codeWithError": "public interface ICalc<T>\n{\n    T Add(T a, T b);\n}\n\npublic class Calculator : ICalc<int>  // Konkret tip bilan cheklangan\n{\n    public int Add(int a, int b)\n    {\n        return a + b;\n    }\n}",
-        "prompt": "Generic interface ni generic class bilan implement qiling va arifmetik operatorlar uchun constraint qo'shing.",
+        "prompt": "**Generic interface** ni faqat konkret type bilan implement qilish o'rniga **generic class** ishlatish va **constraint** qo'shish kerak.\n\n**Muammo:** \n- Interface generic, lekin class konkret type bilan implement qilingan\n- Matematik operatorlar uchun constraint yo'q\n\n**Generic math (C# 11+):** `IAdditionOperators<T, T, T>` constraint matematik operatorlarni ta'minlaydi.\n\n**Vazifa:** Class ni generic qiling va matematik constraint qo'shing.",
         "answer": "public interface ICalc<T>\n{\n    T Add(T a, T b);\n}\n\npublic class Calculator<T> : ICalc<T>\n    where T : IAdditionOperators<T, T, T>\n{\n    public T Add(T a, T b)\n    {\n        return a + b;\n    }\n}",
-        "explanation": "Generic interface ni generic class bilan implement qilish type flexibility beradi. IAdditionOperators constraint matematik operatorni ta'minlaydi."
+        "explanation": "Generic interface ni generic class bilan implement qilish type flexibility beradi. `IAdditionOperators<T, T, T>` constraint matematik operatorni ta'minlaydi va compile-time da `+` operatorini ishlatishga imkon beradi."
     },
     {
         "id": 34,
@@ -623,9 +623,9 @@
             "subcategory": "extension methods"
         },
         "codeWithError": "public static class StringUtils\n{\n    public static bool IsPalindrome(string s)\n    {\n        return s == new string(s.Reverse().ToArray());\n    }\n\n    public bool IsAnagram(this string s, string t)  // static emas\n    {\n        return s.OrderBy(c => c).SequenceEqual(t.OrderBy(c => c));\n    }\n}",
-        "prompt": "Extension method `static` bo'lishi kerak. Tuzating.",
+        "prompt": "**Extension method** da **`static` keyword** etishmayapti.\n\n**Muammo:** Static class ichida extension method `static` keyword siz e'lon qilingan.\n\n**Extension method qoidalari:**\n- Faqat static class ichida bo'lishi mumkin\n- Extension method ham `static` bo'lishi kerak\n- Birinchi parameter `this` keyword bilan\n\n**Vazifa:** Extension method ni `static` qiling.",
         "answer": "public static class StringUtils\n{\n    public static bool IsPalindrome(string s)\n    {\n        return s == new string(s.Reverse().ToArray());\n    }\n\n    public static bool IsAnagram(this string s, string t)\n    {\n        return s.OrderBy(c => c).SequenceEqual(t.OrderBy(c => c));\n    }\n}",
-        "explanation": "Static class ichidagi barcha metodlar static bo'lishi kerak. Extension metodlar ham static bo'lishi shart."
+        "explanation": "Extension method static class ichida static method bo'lishi kerak. `IsAnagram` method ni `static` qilish orqali extension method syntax ishlaydi va string instance larida chaqirish mumkin bo'ladi."
     },
     {
         "id": 35,
@@ -635,9 +635,9 @@
             "subcategory": "records"
         },
         "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public Person() { }  // Primary constructor chaqirilmagan\n}",
-        "prompt": "Positional record da parametrsiz konstruktor primary constructor ni chaqirishi kerak.",
+        "prompt": "**Positional record** da qo'shimcha constructor **primary constructor** ni chaqirishi kerak.\n\n**Muammo:** Parametrsiz constructor primary constructor ga chain qilmayapti.\n\n**Record constructor chaining:**\n- Positional record primary constructor bilan keladi\n- Qo'shimcha constructor `: this(...)` syntax bilan chain qilishi kerak\n- Primary constructor parametrlar uchun default value lar berish kerak\n\n**Vazifa:** `: this(...)` syntax bilan primary constructor ni chaqiring.",
         "answer": "public record Person(string FirstName, string LastName)\n{\n    public Person() : this(string.Empty, string.Empty) { }\n}",
-        "explanation": "Positional record da qo'shimcha konstruktor primary constructor ni : this() sintaksis orqali chaqirishi kerak."
+        "explanation": "Positional record da qo'shimcha constructor primary constructor ni `: this()` syntax orqali chaqirishi kerak. Bu record ning positional nature ni saqlaydi va primary constructor orqali property initialization ni ta'minlaydi."
     },
     {
         "id": 36,
