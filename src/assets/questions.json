@@ -206,34 +206,29 @@
         },
         "codeBefore": "```csharp\npublic static class Extensions\n{\n    public static bool IsEven(this int number)\n    {\n        return (number % 2) == 0;\n    }\n\n    public bool IsOdd(int number)\n    {\n        return (number % 2) != 0;\n    }\n}\n```",
         "codeAfter": "",
-        "prompt": "Extension methodlar haqida yuqoridagi kodda qaysi muammo bor?",
+        "prompt": "Yuqoridagi **extension method** kodida qaysi **compilation error** bor?\n\n**Extension method talablari:**\n- Static class ichida bo'lishi kerak\n- Method o'zi ham static bo'lishi kerak\n- Birinchi parameter `this` keyword bilan belgilanadi",
         "options": [
             {
                 "id": "A",
-                "option": "`IsEven` extension method, `IsOdd` esa oddiy instance method.",
-                "explanation_uz": "IsOdd instance metod emas, static kalit so'z etishmayapti"
+                "option": "`IsEven` **extension method**, `IsOdd` esa **instance method** sifatida yaratilgan"
             },
             {
                 "id": "B",
-                "option": "`IsEven` va `IsOdd` ikkalasi ham extension method bo'lishi mumkin.",
-                "explanation_uz": "Agar IsOdd to'g'ri sintaksisga ega bo'lsa, ikkalasi ham extension metod bo'lishi mumkin"
+                "option": "`IsEven` va `IsOdd` ikkalasi ham **extension method** bo'lishi kerak"
             },
             {
                 "id": "C",
-                "option": "`IsOdd` ni kompilyatsiya uchun `static` qilish kerak.",
-                "explanation_uz": "To'g'ri - static klassdagi barcha metodlar static bo'lishi kerak"
+                "option": "`IsOdd` methodida **static** keyword etishmayapti - compilation error"
             },
             {
                 "id": "D",
-                "option": "`this int` kalit so'zi extension methodda kerak emas.",
-                "explanation_uz": "'this' kalit so'z extension metodlar uchun kerak"
+                "option": "`this int` keyword **extension method** uchun majburiy emas"
             }
         ],
         "answer": [
             "C"
         ],
-        "explanation": "In a static class, all methods must be static. IsOdd method is missing the static keyword, which will cause a compilation error.",
-        "explanation_uz": "Static klassda barcha metodlar static bo'lishi kerak. IsOdd metodida static kalit so'z etishmayapti, bu kompilyatsiya xatosiga olib keladi."
+        "explanation": "Static class ichidagi barcha methodlar static bo'lishi majburiy. IsOdd methodida static keyword etishmayapti, bu compilation error ga olib keladi. A: IsOdd instance method emas ✗, B: ikkalasi ham extension bo'lishi shart emas ✗, D: this keyword extension method uchun majburiy ✓."
     },
     {
         "id": 8,
@@ -242,36 +237,31 @@
             "category": "asosiy-til-xususiyatlari",
             "subcategory": "file-scoped-types"
         },
-        "codeBefore": "```csharp\nfile interface IHelper\n{\n    void Help();\n}\n\n// In another file\n// class HelperImpl : IHelper { ... }\n```",
+        "codeBefore": "```csharp\n// File1.cs\nfile interface IHelper\n{\n    void Help();\n}\n\n// File2.cs\nclass HelperImpl : IHelper { ... }  // Bu mumkinmi?\n```",
         "codeAfter": "",
-        "prompt": "`file` modifier bilan e'lon qilingan `IHelper` haqida qaysi fikr **to'g'ri**?",
+        "prompt": "**File-scoped types** (C# 11+) haqida: `file` modifier bilan e'lon qilingan `IHelper` interface ni **boshqa fayldan** ishlatish mumkinmi?\n\n**File-scoped types xususiyatlari:**\n- Faqat e'lon qilingan file ichida ko'rinadi\n- Boshqa filelar uchun invisible\n- Assembly-level visibility yo'q",
         "options": [
             {
                 "id": "A",
-                "option": "`IHelper` faqat shu faylda ko'rinadi va implementatsiya qilinishi mumkin.",
-                "explanation_uz": "To'g'ri - file turlari faqat o'sha fayl ichida ko'rinadi"
+                "option": "**Ha** - `IHelper` faqat shu file ichida ko'rinadi va implement qilish mumkin"
             },
             {
                 "id": "B",
-                "option": "`IHelper` butun assembly bo'ylab `public` hisoblanadi.",
-                "explanation_uz": "file modifikatori ko'rinuvchanlikni faqat joriy fayl bilan cheklaydi"
+                "option": "**Yo'q** - `IHelper` butun assembly bo'ylab `public` hisoblanadi"
             },
             {
                 "id": "C",
-                "option": "`IHelper` ni bir nechta faylda implementatsiya qilish mumkin.",
-                "explanation_uz": "Fayl doirasidagi interfeyslarga boshqa fayllardan kira olmaydi"
+                "option": "**Yo'q** - `IHelper` ni bir nechta filedan implement qilish mumkin"
             },
             {
                 "id": "D",
-                "option": "`file interface` noto'g'ri sintaksis.",
-                "explanation_uz": "file interface C# 11+ da to'g'ri sintaksis"
+                "option": "**Yo'q** - `file interface` noto'g'ri syntax"
             }
         ],
         "answer": [
             "A"
         ],
-        "explanation": "File-scoped types (including interfaces) are only visible within the file where they are declared. They cannot be accessed or implemented from other files.",
-        "explanation_uz": "Fayl doirasidagi turlar (interfeyslarga ham tegishli) faqat e'lon qilingan fayl ichida ko'rinadi. Ularni boshqa fayllardan kirish yoki tatbiq qilib bo'lmaydi."
+        "explanation": "File-scoped types (file interface, file class, file struct) faqat e'lon qilingan file ichida ko'rinadi. Boshqa filelar bu typelarga access qila olmaydi. A: Faqat o'sha file ichida ✓, B: Assembly-level visibility yo'q ✗, C: Boshqa filelardan access yo'q ✗, D: C# 11+ da valid syntax ✓."
     },
     {
         "id": 9,
@@ -280,36 +270,31 @@
             "category": "tip-tizimi-oop",
             "subcategory": "value-types"
         },
-        "codeBefore": "```csharp\npublic struct DataPoint\n{\n    public readonly int X;\n    public readonly int Y;\n    public DataPoint(int x, int y) => (X, Y) = (x, y);\n}\n\nvar d1 = new DataPoint(1,2);\nvar d2 = d1;  // struct copy\n\nd2 = new DataPoint(3,4);\nConsole.WriteLine(d1.X + \",\" + d1.Y);\n```",
+        "codeBefore": "```csharp\npublic struct DataPoint\n{\n    public readonly int X;\n    public readonly int Y;\n    public DataPoint(int x, int y) => (X, Y) = (x, y);\n}\n\nvar d1 = new DataPoint(1, 2);\nvar d2 = d1;  // struct assignment\n\nd2 = new DataPoint(3, 4);  // d2 ga yangi qiymat\nConsole.WriteLine(d1.X + \",\" + d1.Y);\n```",
         "codeAfter": "",
-        "prompt": "Struct value semantics tufayli natija nima bo'ladi?",
+        "prompt": "**Struct value semantics** tufayli `Console.WriteLine` natijasi nima bo'ladi?\n\n**Value type xususiyatlari:**\n- Assignment copy by value yaratadi\n- Har bir variable mustaqil copy\n- Reference semantics yo'q",
         "options": [
             {
                 "id": "A",
-                "option": "`1,2` – chunki struct value type, d2 ni o'zgartirish d1 ga ta'sir qilmaydi.",
-                "explanation_uz": "To'g'ri - structlar qiymat semantikasiga ega, d1 va d2 mustaqil"
+                "option": "**`1,2`** - struct value type, d2 ni o'zgartirish d1 ga ta'sir qilmaydi"
             },
             {
                 "id": "B",
-                "option": "`3,4` – chunki d2 o'zgartirilsa, d1 ham o'zgaradi.",
-                "explanation_uz": "Bu reference turlar uchun to'g'ri bo'lardi, qiymat turlari uchun emas"
+                "option": "**`3,4`** - d2 o'zgartirilsa, d1 ham o'zgaradi (reference semantics)"
             },
             {
                 "id": "C",
-                "option": "`1,2` – chunki readonly fieldlar o'zgarmaydi.",
-                "explanation_uz": "readonly omil bo'lsa-da, asosiy sabab qiymat semantikasidir"
+                "option": "**`1,2`** - readonly fieldlar o'zgarmaydi, assignment bo'lmaydi"
             },
             {
                 "id": "D",
-                "option": "Kompilyatsiya xatosi, chunki DataPoint readonly.",
-                "explanation_uz": "Kompilyatsiya xatosi yo'q - readonly fieldlar, readonly struct emas"
+                "option": "**Compilation error** - readonly struct assignment mumkin emas"
             }
         ],
         "answer": [
             "A"
         ],
-        "explanation": "Structs have value semantics, meaning assignment creates independent copies. When d2 is assigned a new value, d1 remains unchanged because they are separate copies.",
-        "explanation_uz": "Structlar qiymat semantikasiga ega, ya'ni tayinlash mustaqil nusxalar yaratadi. d2 ga yangi qiymat tayinlanganda, d1 o'zgarishsiz qoladi chunki ular alohida nusxalardir."
+        "explanation": "Struct value semantics: assignment copy by value yaratadi. d1 va d2 mustaqil copieslar. d2 ga yangi qiymat berilganda d1 o'zgarishsiz qoladi. A: Value semantics ✓, B: Reference semantics emas ✗, C: readonly field, readonly struct emas ✗, D: Assignment valid ✓."
     },
     {
         "id": 10,
@@ -318,36 +303,31 @@
             "category": "asosiy-til-xususiyatlari",
             "subcategory": "pattern-matching"
         },
-        "codeBefore": "```csharp\nint Classify(int x) => x switch\n{\n    < 0 => -1,  // manfiy\n    > 0 => 1,   // musbat\n    _   => 0    // nol\n};\n\nvar result = Classify(0);\n```",
+        "codeBefore": "```csharp\nint Classify(int x) => x switch\n{\n    < 0 => -1,  // manfiy\n    > 0 => 1,   // musbat\n    _   => 0    // default case\n};\n\nvar result = Classify(0);\n```",
         "codeAfter": "",
-        "prompt": "Switch expression da 0 qiymati qaysi case ga mos keladi?",
+        "prompt": "**Switch expression** da `Classify(0)` qiymatini hisoblash: `0` qiymati qaysi **pattern** ga mos keladi?\n\n**Pattern matching tartibi:**\n- Patterns yuqoridan pastga tekshiriladi\n- Birinchi mos kelgan pattern execute bo'ladi\n- `_` - default pattern (catch-all)",
         "options": [
             {
                 "id": "A",
-                "option": "`-1` - chunki < 0",
-                "explanation_uz": "0 < 0 emas, shuning uchun bu pattern mos kelmaydi"
+                "option": "**`-1`** - chunki `< 0` pattern ga mos keladi"
             },
             {
                 "id": "B",
-                "option": "`0` - chunki `_` (default) case",
-                "explanation_uz": "To'g'ri - 0 na < 0 na > 0 ga mos kelmaydi, shuning uchun default _ ga tushadi"
+                "option": "**`0`** - chunki `_` (default) pattern ga mos keladi"
             },
             {
                 "id": "C",
-                "option": "`1` - chunki > 0",
-                "explanation_uz": "0 > 0 emas, shuning uchun bu pattern mos kelmaydi"
+                "option": "**`1`** - chunki `> 0` pattern ga mos keladi"
             },
             {
                 "id": "D",
-                "option": "Kompilyatsiya xatosi",
-                "explanation_uz": "Kompilyatsiya xatosi yo'q - switch _ pattern bilan to'liq"
+                "option": "**Compilation error** - exhaustive pattern matching yo'q"
             }
         ],
         "answer": [
             "B"
         ],
-        "explanation": "In switch expressions, patterns are evaluated in order. Since 0 is neither < 0 nor > 0, it falls through to the default pattern _ which returns 0.",
-        "explanation_uz": "Switch expressionlarda patternlar tartib bilan baholanadi. 0 na < 0 na > 0 bo'lgani uchun, default pattern _ ga tushadi va 0 qaytaradi."
+        "explanation": "Switch expression da patterns yuqoridan pastga tekshiriladi. 0 qiymat uchun: `< 0` false ✗, `> 0` false ✗, `_` (default) true ✓ - natija 0. A: 0 < 0 emas ✗, B: Default pattern ✓, C: 0 > 0 emas ✗, D: `_` pattern bilan exhaustive ✓."
     },
     {
         "id": 11,
