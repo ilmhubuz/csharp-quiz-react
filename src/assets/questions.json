@@ -467,9 +467,9 @@
             "subcategory": "generic math"
         },
         "codeWithBlank": "public static T AddAll<T>(T[] values)\n    where T : ________, ________\n{\n    T sum = default!;\n    foreach (var v in values)\n    {\n        sum += v;\n    }\n    return sum;\n}",
-        "prompt": "`T` uchun `+` operatori va `default` literalini ishlatish imkonini beruvchi .NET 7+ generic math interfeyslarini ikki bo'sh joyga yozing.",
+        "prompt": "**Generic math** (.NET 7+) da `T` type uchun **`+` operatori** va **`default` literal** ishlatish imkonini beruvchi **ikki interface** ni to'ldiring.\n\n**Eslatma:** \n- Birinchi interface: asosiy numeric type interface\n- Ikkinchi interface: addition operator interface\n\n**Generic math constraint** larni vergul bilan ajrating.",
         "answer": "public static T AddAll<T>(T[] values)\n    where T : INumber<T>, IAdditionOperators<T, T, T>\n{\n    T sum = default!;\n    foreach (var v in values)\n    {\n        sum += v;\n    }\n    return sum;\n}",
-        "explanation": "INumber<T> asosiy raqamli tip interfeysi bo'lib, IAdditionOperators<T, T, T> esa + operatorini ta'minlaydi. Ikkalasi ham .NET 7+ generic math sistemasi qismidir."
+        "explanation": "INumber<T> - .NET 7+ da asosiy numeric type interface, barcha raqamli operatorlar uchun base interface. IAdditionOperators<T, T, T> - + operatorini ta'minlaydi (TLeft + TRight = TResult pattern). Ikkalasi ham static abstract interface memberlar orqali matematik operatorlarni qo'llab-quvvatlaydi."
     },
     {
         "id": 22,
@@ -479,9 +479,9 @@
             "subcategory": "file-scoped types"
         },
         "codeWithBlank": "file struct Point(int X, int Y)\n{\n    public void Deconstruct(out int x, out int y) => (x, y) = (______, ______);\n}",
-        "prompt": "File-scoped positional struct da Deconstruct metodi primary constructor parametrlarini qaytarishi uchun bo'sh joylarni to'ldiring.",
+        "prompt": "**File-scoped positional struct** da **Deconstruct method** primary constructor **parametrlarini qaytarishi** uchun bo'sh joylarni to'ldiring.\n\n**Eslatma:** \n- Primary constructor parametrlari automatically properties sifatida mavjud\n- Deconstruct method tuple deconstruction ni ta'minlaydi\n- `var (x, y) = point;` syntax uchun kerak",
         "answer": "file struct Point(int X, int Y)\n{\n    public void Deconstruct(out int x, out int y) => (x, y) = (X, Y);\n}",
-        "explanation": "Primary constructor parametrlari X va Y sifatida mavjud va ularni Deconstruct metodida to'g'ridan-to'g'ri ishlatish mumkin."
+        "explanation": "Primary constructor parametrlari X va Y automatically properties sifatida mavjud bo'ladi. Deconstruct method da ularni to'g'ridan-to'g'ri ishlatish mumkin. Bu tuple deconstruction syntax ni qo'llab-quvvatlaydi: var (x, y) = point;"
     },
     {
         "id": 23,
@@ -491,9 +491,9 @@
             "subcategory": "interfaces"
         },
         "codeWithBlank": "public interface IRepository<T>\n{\n    void Add(T item);\n    T? Get(int id);\n}\n\npublic class Repo<T> : ______\n{\n    void IRepository<T>.Add(T item) { /*...*/ }\n    T? IRepository<T>.Get(int id) { /*...*/ }\n}",
-        "prompt": "Explicit interface implementation qilish uchun inheritance qismini to'ldiring (metodlar public emas, faqat interface orqali accessible).",
-        "answer": "public class Repo<T> : IRepository<T>\n{\n    void IRepository<T>.Add(T item) { /*...*/ }\n    T? IRepository<T>.Get(int id) { /*...*/ }\n}",
-        "explanation": "Generic interface IRepository<T> ni implement qilish uchun class inheritance da to'liq nom ko'rsatilishi kerak."
+        "prompt": "**Explicit interface implementation** qilish uchun **inheritance** qismini to'ldiring.\n\n**Explicit interface implementation xususiyatlari:**\n- Methodlar public emas\n- Faqat interface orqali accessible\n- Interface name fully qualified bo'ladi\n\n**Generic interface** ni implement qilish syntax ni yozing.",
+        "answer": "public interface IRepository<T>\n{\n    void Add(T item);\n    T? Get(int id);\n}\n\npublic class Repo<T> : IRepository<T>\n{\n    void IRepository<T>.Add(T item) { /*...*/ }\n    T? IRepository<T>.Get(int id) { /*...*/ }\n}",
+        "explanation": "Generic interface IRepository<T> ni implement qilish uchun class inheritance da to'liq nom ko'rsatilishi kerak. Explicit interface implementation da methodlar interface name bilan fully qualified bo'ladi va faqat interface reference orqali accessible."
     },
     {
         "id": 24,
@@ -503,9 +503,9 @@
             "subcategory": "default implementation"
         },
         "codeWithBlank": "public interface ILogger\n{\n    void Log(string message);\n    void LogError(Exception ex) => ______;\n}",
-        "prompt": "Default interface implementation: `LogError` metodi exception ni string formatda `Log` metodiga uzatsin.",
+        "prompt": "**Default interface implementation** (C# 8+): `LogError` method **exception** ni **string format** da `Log` methodiga uzatsin.\n\n**Default interface implementation xususiyatlari:**\n- Interface da method implementation berish\n- Implementing class override qilmasligi mumkin\n- Interface methodlarini ichkaridan call qilish mumkin\n\n**Exception** ni string ga aylantirish method ni yozing.",
         "answer": "public interface ILogger\n{\n    void Log(string message);\n    void LogError(Exception ex) => Log(ex.ToString());\n}",
-        "explanation": "Default implementation da Log metodini chaqirib, exception ni ToString() orqali string formatga aylantirib uzatish mumkin."
+        "explanation": "Default interface implementation da boshqa interface methodlarini chaqirish mumkin. Exception ni ToString() orqali string formatga aylantirib Log() methodiga uzatish. Bu implementing classlar uchun LogError() ni override qilish ixtiyoriy qiladi."
     },
     {
         "id": 25,
@@ -515,9 +515,9 @@
             "subcategory": "pattern matching"
         },
         "codeWithBlank": "int Classify(object o) => o switch\n{\n    string s when ______ => 1,\n    int i when i % 2 == 0 => 2,\n    null                  => 0,\n    _                     => 3\n};",
-        "prompt": "Pattern matching da bo'sh bo'lmagan (non-empty) stringni tekshiruvchi shart yozing.",
+        "prompt": "**Pattern matching** da **bo'sh bo'lmagan** (non-empty) **string** ni tekshiruvchi **when clause** shart yozing.\n\n**Pattern guard (when clause) xususiyatlari:**\n- Type pattern bilan birga ishlatiladi\n- Boolean expression bo'lishi kerak\n- Pattern variable ga access beradi\n\n**String** ning bo'sh emasligini tekshirish condition ni yozing.",
         "answer": "int Classify(object o) => o switch\n{\n    string s when s.Length > 0 => 1,\n    int i when i % 2 == 0 => 2,\n    null                  => 0,\n    _                     => 3\n};",
-        "explanation": "String type pattern da s.Length > 0 sharti bo'sh bo'lmagan stringlarni aniqlaydi. Null holatda already handled bo'lgani uchun null check kerak emas."
+        "explanation": "String type pattern da s variable orqali string ga access qilish mumkin. s.Length > 0 sharti bo'sh bo'lmagan stringlarni aniqlaydi. null case already handled bo'lgani uchun null check kerak emas - type pattern null safety beradi."
     },
     {
         "id": 26,
