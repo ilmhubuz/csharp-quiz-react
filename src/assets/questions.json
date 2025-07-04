@@ -7299,7 +7299,7 @@
                 "best-practices"
             ]
         },
-        "codeWithError": "try\n{\n    SomeRiskyOperation();\n}\ncatch (Exception ex)\n{\n    LogError(ex);\n    throw ex; // Exception ni qayta tashlash\n}",
+        "codeWithError": "try\n{\n    SomeRiskyOperation();\n}\ncatch (Exception ex)\n{\n    LogError(ex);\n    throw ex;\n}",
         "prompt": "Ushbu exception *re-throw* kodida xatoni toping:",
         "answer": "Stack trace ni saqlab qolish uchun 'throw ex;' o'rniga 'throw;' ishlatish kerak",
         "explanation": "'throw ex;' ishlatish stack trace ni qayta o'rnatadi, asl call stack ma'lumotlarini yo'qotadi. Asl stack trace ni saqlab qolish uchun 'throw;' ishlatish kerak.",
