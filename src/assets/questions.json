@@ -403,9 +403,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "C# switch expressionlari barcha mumkin bo'lgan input patternlarni kompilyatsiya vaqtida qamrab olishi shart (default case bo'lmasa ham).",
+        "prompt": "**C# switch expressions** da barcha mumkin bo'lgan **input patterns** ni kompilyatsiya vaqtida qamrab olish shart (**exhaustive** bo'lishi kerak), **default case** (`_`) bo'lmasa ham.\n\n**Eslatma:** Compiler static analysis orqali barcha caseslar qamrab olinganligini tekshiradi.",
         "answer": "false",
-        "explanation": "Switch expressionlar exhaustive bo'lishi kerak, lekin kompilyator ba'zi hollarda barcha mumkin bo'lgan input patternlarni automatic aniqlayolmaydi va default case (_) talab qilishi mumkin."
+        "explanation": "Switch expression exhaustive bo'lishi kerak, lekin compiler ba'zi hollarda barcha mumkin bo'lgan input patterns ni automatic aniqlay olmaydi. Complex types yoki open-ended patterns uchun default case (_) talab qilinadi. Enum kabi finite types uchun compiler barcha values ni track qiladi."
     },
     {
         "id": 17,
@@ -416,9 +416,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "Extension methodlar faqat static class ichida e'lon qilinadi va o'zi ham static bo'lishi kerak.",
+        "prompt": "**Extension methods** faqat **static class** ichida e'lon qilinadi va o'zi ham **static** bo'lishi kerak.\n\n**Extension method talablari:**\n- Static class ichida\n- Method o'zi static\n- Birinchi parameter `this` keyword bilan\n\n**Masalan:** `public static void MyMethod(this string str)`",
         "answer": "true",
-        "explanation": "Extension metodlar faqat static klasslarda e'lon qilinadi va o'zlari ham static bo'lishi kerak. Birinchi parametr 'this' kalit so'zi bilan belgilanadi."
+        "explanation": "Extension methodlar qat'iy qoidalar asosida yaratiladi: 1) Faqat static class ichida, 2) Method o'zi static, 3) Birinchi parameter this keyword bilan. Bu syntactic sugar bo'lib, compiler method call ni static method call ga aylantirishadi."
     },
     {
         "id": 18,
@@ -429,9 +429,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "Named argumentlardan foydalanganda method chaqirishda optional parametrlarni required parametrlardan oldin yozish mumkin.",
+        "prompt": "**Named arguments** dan foydalanganda method chaqirishda **optional parameters** ni **required parameters** dan oldin yozish mumkin.\n\n**Named arguments imkoniyatlari:**\n- Parametrlar tartibini o'zgartirish\n- Optional parametrlarni skip qilish\n- Code readability yaxshilash\n\n**Masalan:** `Method(optional: 10, required: \"text\")`",
         "answer": "true",
-        "explanation": "Named argumentlar ishlatilganda parametrlarning tartibini o'zgartirish mumkin, shu jumladan optional parametrlarni required parametrlardan oldin yozish ham mumkin."
+        "explanation": "Named arguments parametrlar tartibini o'zgartirish imkonini beradi. Optional parametrlarni required parametrlardan oldin yozish, ba'zi parametrlarni skip qilish va code readability ni yaxshilash mumkin. Compiler parametrlarni to'g'ri joylarga assign qiladi."
     },
     {
         "id": 19,
@@ -442,9 +442,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "C# da `record` (record class) default bo'yicha reference type hisoblanadi.",
+        "prompt": "**C#** da `record` (record class) **default** bo'yicha **reference type** hisoblanadi.\n\n**Record types:**\n- `record` = `record class` (reference type)\n- `record struct` (value type)\n\n**Eslatma:** Record class default equality, ToString(), va with expressions ni ta'minlaydi.",
         "answer": "true",
-        "explanation": "C# da 'record' kalit so'zi default bo'yicha record class yaratadi va u reference type hisoblanadi. Value type uchun aniq 'record struct' yozish kerak."
+        "explanation": "C# da `record` keyword default bo'yicha record class yaratadi va u reference type hisoblanadi. Value type uchun aniq `record struct` yozish kerak. Record class heap da saqlanadi, reference semantics, va immutable pattern uchun optimized."
     },
     {
         "id": 20,
@@ -455,9 +455,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`sealed` bilan belgilangan virtual metodni boshqa derived klasslarda override qilib bo'lmaydi.",
+        "prompt": "`sealed` bilan belgilangan **virtual method** ni boshqa **derived classes** da **override** qilib bo'lmaydi.\n\n**Sealed override pattern:**\n- Base class virtual method\n- Derived class override sealed method\n- Further derived classes override qila olmaydi\n\n**Eslatma:** Sealed method override chain ni to'xtatadi.",
         "answer": "true",
-        "explanation": "Sealed virtual metod override zanjirini to'xtatadi. Bu metodni further derived klasslarda override qilib bo'lmaydi, lekin base class implementatsiyasidan foydalanish mumkin."
+        "explanation": "Sealed virtual method override chain ni to'xtatadi. Sealed method ni further derived classes da override qilib bo'lmaydi, lekin base class implementation dan foydalanish mumkin. Bu method ni \"finalize\" qilish uchun ishlatiladi."
     },
     {
         "id": 21,
