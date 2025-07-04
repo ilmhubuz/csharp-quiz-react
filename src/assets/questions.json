@@ -527,9 +527,9 @@
             "subcategory": "generic math"
         },
         "codeWithError": "public class Calculator\n{\n    public static T Subtract<T>(T a, T b) where T : IComparable<T>\n    {\n        return a - b;  // Bu yerda xato\n    }\n}",
-        "prompt": "Generic subtraction operatori uchun noto'g'ri constraint ishlatilgan. To'g'ri generic math interface bilen tuzating.",
+        "prompt": "**Generic math** (.NET 7+) da **subtraction operatori** (`-`) uchun **noto'g'ri constraint** ishlatilgan.\n\n**Muammo:** `IComparable<T>` constraint matematik operatorlarni qo'llab-quvvatlamaydi.\n\n**Vazifa:** To'g'ri **generic math interface** bilan tuzating.",
         "answer": "public class Calculator\n{\n    public static T Subtract<T>(T a, T b)\n        where T : ISubtractionOperators<T, T, T>\n    {\n        return a - b;\n    }\n}",
-        "explanation": "IComparable<T> faqat taqqoslash uchun, matematik operatorlar uchun emas. Subtraction uchun ISubtractionOperators<T, T, T> interfeysi kerak."
+        "explanation": "IComparable<T> faqat comparison uchun, matematik operatorlar uchun emas. Subtraction operatori (-) uchun ISubtractionOperators<T, T, T> interfeysi kerak. Bu .NET 7+ generic math systemining qismi bo'lib, static abstract interface memberlar orqali matematik operatorlarni ta'minlaydi."
     },
     {
         "id": 27,
@@ -539,9 +539,9 @@
             "subcategory": "interfaces"
         },
         "codeWithError": "interface IShape\n{\n    double Area();  // Capital A\n}\n\npublic class Circle : IShape\n{\n    private readonly double radius;\n    public Circle(double radius) => this.radius = radius;\n    public double area() => Math.PI * radius * radius;  // kichik a\n}",
-        "prompt": "Interface implementationida method name case sensitivity xatosi bor. Tuzating.",
+        "prompt": "**Interface implementation** da **method name case sensitivity** xatosi bor.\n\n**Muammo:** Interface da `Area()` (capital A) e'lon qilingan, lekin class da `area()` (lowercase a) implement qilingan.\n\n**Eslatma:** C# **case-sensitive** programming language.\n\n**Vazifa:** Method name ni to'g'ri case bilan tuzating.",
         "answer": "interface IShape\n{\n    double Area();\n}\n\npublic class Circle : IShape\n{\n    private readonly double radius;\n    public Circle(double radius) => this.radius = radius;\n    public double Area() => Math.PI * radius * radius;\n}",
-        "explanation": "C# case-sensitive til. Interface da Area() deb e'lon qilingan metod aynan Area() nomli bo'lishi kerak, area() emas."
+        "explanation": "C# case-sensitive programming language. Interface da Area() (capital A) deb e'lon qilingan method aynan Area() nomli bo'lishi kerak, area() (lowercase a) emas. Method signature exactly match bo'lishi shart."
     },
     {
         "id": 28,
@@ -551,9 +551,9 @@
             "subcategory": "structs"
         },
         "codeWithError": "public struct Rectangle\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public Rectangle(int width, int height)\n    {\n        Width = width;\n        // Height initsializatsiya qilinmagan!\n    }\n}",
-        "prompt": "Struct konstruktorida barcha fieldlar/propertylar initsializatsiya qilinishi kerak. Tuzating.",
+        "prompt": "**Struct constructor** da **barcha fields/properties** **initialization** qilinishi kerak.\n\n**Muammo:** `Height` property initialization qilinmagan.\n\n**Struct constructor qoidasi:** Barcha fields va properties constructor da initialize qilinishi majburiy.\n\n**Vazifa:** Etishmayotgan initialization ni qo'shing.",
         "answer": "public struct Rectangle\n{\n    public int Width { get; set; }\n    public int Height { get; set; }\n    public Rectangle(int width, int height)\n    {\n        Width = width;\n        Height = height;\n    }\n}",
-        "explanation": "Struct konstruktorida barcha fieldlar va propertylar initialize qilinishi kerak. Height property ga qiymat berilmagan."
+        "explanation": "Struct constructor da barcha fields va properties initialize qilinishi majburiy. Compiler struct ning completely initialized bo'lishini talab qiladi. Height property ga height parameter qiymatini assign qilish kerak."
     },
     {
         "id": 29,
@@ -563,9 +563,9 @@
             "subcategory": "records"
         },
         "codeWithError": "public record Person(string FirstName, string LastName)\n{\n    public string FullName => FirstName + \" \" + LastName;\n    public Person() {}  // Primary constructor chaqirilmagan\n}",
-        "prompt": "Positional record uchun parametrsiz konstruktor primary constructor ni chaqirishi kerak. Tuzating.",
+        "prompt": "**Positional record** da **parametersiz constructor** **primary constructor** ni chaqirishi kerak.\n\n**Muammo:** Qo'shimcha constructor primary constructor ni chaqirmayapti.\n\n**Positional record qoidasi:** Barcha constructorlar primary constructor ni `this()` orqali chaqirishi majburiy.\n\n**Vazifa:** Constructor chaining qo'shing.",
         "answer": "public record Person(string FirstName, string LastName)\n{\n    public string FullName => FirstName + \" \" + LastName;\n    public Person() : this(string.Empty, string.Empty) {}\n}",
-        "explanation": "Positional record da qo'shimcha konstruktor primary constructor ni this() orqali chaqirishi kerak."
+        "explanation": "Positional record da qo'shimcha constructor primary constructor ni `: this()` syntax orqali chaqirishi majburiy. Bu record ning positional parameters ni to'g'ri initialize qilish uchun kerak. Primary constructor ning signature ga mos keluvchi argumentlar berish shart."
     },
     {
         "id": 30,
@@ -575,9 +575,9 @@
             "subcategory": "nullable reference types"
         },
         "codeWithError": "public class Utils\n{\n    public static void LogMessage(string? msg!)  // ? va ! birga ishlatilgan\n    {\n        Console.WriteLine(msg);\n    }\n}",
-        "prompt": "Nullable annotation sintaksisida xato bor. Bir parametrda `?` va `!` birga ishlatilmaydi.",
+        "prompt": "**Nullable annotation syntax** da xato bor.\n\n**Muammo:** Parameter declaration da `?` (nullable) va `!` (null-forgiving) operatorlari birga ishlatilgan.\n\n**Nullable annotation qoidalari:**\n- `string?` - nullable reference type\n- `string!` - null-forgiving operator (usage da)\n- Ikkalasini birga ishlatib bo'lmaydi\n\n**Vazifa:** To'g'ri nullable annotation qo'shing.",
         "answer": "public class Utils\n{\n    public static void LogMessage(string? msg)\n    {\n        Console.WriteLine(msg);\n    }\n}",
-        "explanation": "Parametr deklaratsiyasida ? (nullable) va ! (null-forgiving) operatorlari birga ishlatilmaydi. Faqat string? yoki string ishlatish kerak."
+        "explanation": "Parameter declaration da `?` (nullable) va `!` (null-forgiving) operatorlari birga ishlatilmaydi. `?` type declaration uchun, `!` expression da null warning suppress qilish uchun. Parameter uchun faqat `string?` (nullable) yoki `string` (non-nullable) ishlatish mumkin."
     },
     {
         "id": 31,
