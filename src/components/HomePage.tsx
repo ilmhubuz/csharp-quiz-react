@@ -1,378 +1,237 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
   Card,
   CardContent,
+  Box,
   LinearProgress,
-  Paper,
-  Tabs,
-  Tab,
   IconButton,
   Tooltip,
-  Grid
 } from '@mui/material';
 import {
-  Quiz,
-  Assessment,
-  Home,
-  Refresh
+  Refresh,
 } from '@mui/icons-material';
-import type { TopicCategory, QuestionType, Question, CategoryProgress, TypeProgress } from '../types';
-import { progressStorage } from '../services/progressStorage';
-import { calculateOverallStats, calculateCategoryStats, calculateTypeStats } from '../services/answerStorage';
-import { CATEGORY_INFO, TYPE_INFO } from '../constants/categories';
+import { calculateCategoryStats } from '../services/answerStorage';
+import type { CategoryFile } from '../types';
 
-interface HomePageProps {
-  questions: Question[];
-  onStartQuiz: (config: {
-    mode: 'category' | 'type';
-    categories?: TopicCategory[];
-    types?: QuestionType[];
-  }) => void;
+interface CategoryStats {
+  category: string;
+  totalQuestions: number;
+  answeredQuestions: number;
+  correctAnswers: number;
+  successRate: number;
+  completionRate: number;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ questions, onStartQuiz }) => {
-  const [tabValue, setTabValue] = useState(0);
-  const [, setProgress] = useState(progressStorage.loadProgress());
-  const [stats, setStats] = useState<any>(null);
+interface HomePageProps {
+  categories: Array<{ 
+    categoryId: number;
+    id: string; 
+    title: string; 
+    description?: string; 
+    icon?: string;
+  }>;
+  categoryFiles: CategoryFile[];
+  onSelectCategory: (categoryId: string) => void;
+}
+
+export const HomePage: React.FC<HomePageProps> = ({ 
+  categories, 
+  categoryFiles, 
+  onSelectCategory 
+}) => {
+  const [categoryStats, setCategoryStats] = useState<CategoryStats[]>([]);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    // Initialize progress with current questions
-    const initializedProgress = progressStorage.initializeProgress(questions);
-    progressStorage.updateAggregateProgress(questions);
-    setProgress(initializedProgress);
-    
-    // Calculate dynamic stats from localStorage answers
-    const overallStats = calculateOverallStats(questions);
-    const categoryStats = calculateCategoryStats(questions);
-    const typeStats = calculateTypeStats(questions);
-    
-    setStats({
-      totalQuestions: overallStats.totalQuestions,
-      answeredQuestions: overallStats.answeredQuestions,
-      overallSuccessRate: overallStats.overallSuccessRate,
-      categoryStats: categoryStats.map(cat => ({
-        category: cat.category,
-        progress: {
-          category: cat.category,
-          totalQuestions: cat.totalQuestions,
-          answeredQuestions: cat.answeredQuestions,
-          correctAnswers: cat.correctAnswers,
-          successRate: cat.successRate
-        } as CategoryProgress
-      })),
-      typeStats: typeStats.map(type => ({
-        type: type.questionType,
-        progress: {
-          questionType: type.questionType,
-          totalQuestions: type.totalQuestions,
-          answeredQuestions: type.answeredQuestions,
-          correctAnswers: type.correctAnswers,
-          successRate: type.successRate
-        } as TypeProgress
-      }))
-    });
-  }, [questions]);
+    // Calculate stats for each category
+    const stats: CategoryStats[] = categories
+      .sort((a, b) => (a.categoryId || 0) - (b.categoryId || 0)) // Sort by categoryId
+      .map(category => {
+        const categoryFile = categoryFiles.find(cf => cf.metadata.id === category.id);
+        if (!categoryFile) {
+          return {
+            category: category.id,
+            totalQuestions: 0,
+            answeredQuestions: 0,
+            correctAnswers: 0,
+            successRate: 0,
+            completionRate: 0,
+          };
+        }
 
-  const handleTabChange = (_: any, newValue: number) => {
-    setTabValue(newValue);
-  };
+        const allQuestions = categoryFile.questions;
+        const categoryStatsFromService = calculateCategoryStats(allQuestions);
+        const thisCategoryStats = categoryStatsFromService.find(cs => cs.category === category.id);
 
-  const handleCategorySelect = (category: TopicCategory) => {
-    onStartQuiz({
-      mode: 'category',
-      categories: [category]
-    });
-  };
+        if (!thisCategoryStats) {
+          return {
+            category: category.id,
+            totalQuestions: allQuestions.length,
+            answeredQuestions: 0,
+            correctAnswers: 0,
+            successRate: 0,
+            completionRate: 0,
+          };
+        }
 
-  const handleTypeSelect = (type: QuestionType) => {
-    onStartQuiz({
-      mode: 'type',
-      types: [type]
-    });
-  };
-
-  const handleResetProgress = () => {
-    if (window.confirm('Barcha progress ma\'lumotlarini o\'chirmoqchimisiz? Bu amalni bekor qilib bo\'lmaydi.')) {
-      progressStorage.clearProgress();
-      // Also clear answers from localStorage for complete reset
-      localStorage.removeItem('quiz_answers');
-      const newProgress = progressStorage.initializeProgress(questions);
-      setProgress(newProgress);
-      
-      // Recalculate stats after reset
-      const overallStats = calculateOverallStats(questions);
-      const categoryStats = calculateCategoryStats(questions);
-      const typeStats = calculateTypeStats(questions);
-      
-      setStats({
-        totalQuestions: overallStats.totalQuestions,
-        answeredQuestions: overallStats.answeredQuestions,
-        overallSuccessRate: overallStats.overallSuccessRate,
-        categoryStats: categoryStats.map(cat => ({
-          category: cat.category,
-          progress: {
-            category: cat.category,
-            totalQuestions: cat.totalQuestions,
-            answeredQuestions: cat.answeredQuestions,
-            correctAnswers: cat.correctAnswers,
-            successRate: cat.successRate
-          } as CategoryProgress
-        })),
-        typeStats: typeStats.map(type => ({
-          type: type.questionType,
-          progress: {
-            questionType: type.questionType,
-            totalQuestions: type.totalQuestions,
-            answeredQuestions: type.answeredQuestions,
-            correctAnswers: type.correctAnswers,
-            successRate: type.successRate
-          } as TypeProgress
-        }))
+        return {
+          category: category.id,
+          totalQuestions: thisCategoryStats.totalQuestions,
+          answeredQuestions: thisCategoryStats.answeredQuestions,
+          correctAnswers: thisCategoryStats.correctAnswers,
+          successRate: thisCategoryStats.successRate,
+          completionRate: (thisCategoryStats.answeredQuestions / thisCategoryStats.totalQuestions) * 100,
+        };
       });
-    }
+
+    setCategoryStats(stats);
+  }, [categories, categoryFiles, refreshKey]);
+
+  const handleRefresh = () => {
+    setRefreshKey(prev => prev + 1);
   };
 
-  // Show loading if stats not ready
-  if (!stats) {
-    return <LinearProgress />;
-  }
-
-  const CategoryCard: React.FC<{ category: TopicCategory; progress: CategoryProgress }> = ({ category, progress }) => {
-    const info = CATEGORY_INFO[category];
-    const progressPercentage = progress.totalQuestions > 0 ? (progress.answeredQuestions / progress.totalQuestions) * 100 : 0;
-    
-    return (
-      <Card
-        sx={{
-          height: '100%',
-          cursor: 'pointer',
-          transition: 'all 0.3s ease',
-          border: 2,
-          borderColor: 'transparent',
-          '&:hover': {
-            transform: 'translateY(-4px)'
-          }
-        }}
-        onClick={() => handleCategorySelect(category)}
-      >
-        <CardContent sx={{ p: 3 }}>
-          <Grid container spacing={2} alignItems="center" sx={{ mb: 2 }}>
-            <Grid size="auto">
-              <Typography variant="h3">
-                {info.icon}
-              </Typography>
-            </Grid>
-            <Grid size="grow">
-              <Typography variant="h6" fontWeight="bold" color="text.primary">
-                {info.nameUz}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {info.description}
-              </Typography>
-            </Grid>
-          </Grid>
-
-          <Grid container spacing={2} alignItems="center" sx={{ mb: 3 }}>
-            <Grid size="grow">
-              <LinearProgress
-                variant="determinate"
-                value={progressPercentage}
-                sx={{
-                  height: 8,
-                  borderRadius: 4,
-                  backgroundColor: 'action.hover',
-                  '& .MuiLinearProgress-bar': {
-                    borderRadius: 4,
-                    backgroundColor: 'primary.main'
-                  }
-                }}
-              />
-            </Grid>
-            <Grid size="auto">
-              <Typography variant="body2" fontWeight="bold" color="text.primary">
-                {progress.answeredQuestions}/{progress.totalQuestions}
-              </Typography>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-    );
-  };
-
-  const TypeCard: React.FC<{ type: QuestionType; progress: TypeProgress }> = ({ type, progress }) => {
-    const info = TYPE_INFO[type];
-    const progressPercentage = progress.totalQuestions > 0 ? (progress.answeredQuestions / progress.totalQuestions) * 100 : 0;
-    
-    return (
-      <Card
-        sx={{
-          height: '100%',
-          cursor: 'pointer',
-          transition: 'all 0.3s ease',
-          border: 2,
-          borderColor: 'transparent',
-          '&:hover': {
-            transform: 'translateY(-4px)'
-          }
-        }}
-        onClick={() => handleTypeSelect(type)}
-      >
-        <CardContent sx={{ p: 3 }}>
-          <Grid container spacing={2} alignItems="center" sx={{ mb: 2 }}>
-            <Grid size="auto">
-              <Typography variant="h3">
-                {info.icon}
-              </Typography>
-            </Grid>
-            <Grid size="grow">
-              <Typography variant="h6" fontWeight="bold" color="text.primary">
-                {info.nameUz}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {info.description}
-              </Typography>
-            </Grid>
-          </Grid>
-
-          <Grid container spacing={2} alignItems="center" sx={{ mb: 3 }}>
-            <Grid size="grow">
-              <LinearProgress
-                variant="determinate"
-                value={progressPercentage}
-                sx={{
-                  height: 8,
-                  borderRadius: 4,
-                  backgroundColor: 'action.hover',
-                  '& .MuiLinearProgress-bar': {
-                    borderRadius: 4,
-                    backgroundColor: 'primary.main'
-                  }
-                }}
-              />
-            </Grid>
-            <Grid size="auto">
-              <Typography variant="body2" fontWeight="bold" color="text.primary">
-                {progress.answeredQuestions}/{progress.totalQuestions}
-              </Typography>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-    );
+  const getProgressColor = (percentage: number) => {
+    if (percentage >= 80) return 'success';
+    if (percentage >= 60) return 'warning';
+    return 'error';
   };
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
       {/* Header */}
-      <Grid container spacing={2} alignItems="center" sx={{ mb: 4 }}>
-        <Grid size="grow">
-          <Grid container spacing={2} alignItems="center">
-            <Grid size="auto">
-              <Home fontSize="large" color="primary" />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid size="auto">
-          <Tooltip title="Barcha jarayonni qayta boshlash">
-            <IconButton onClick={handleResetProgress} color="error">
-              <Refresh />
-            </IconButton>
-          </Tooltip>
-        </Grid>
-      </Grid>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+        <Box>
+          <Typography variant="h4" component="h1" gutterBottom>
+            C# dasturlash tilida bilimingizni mustahkamlang
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            C# dasturlash tilini o'rganish va bilimingizni sinash uchun turli xil savollar bilan mashq qiling. Har bir kategoriyada o'z darajangizni aniqlang va ko'nikmalaringizni rivojlantiring.
+          </Typography>
+        </Box>
+        <Tooltip title="Refresh Progress">
+          <IconButton onClick={handleRefresh} color="primary">
+            <Refresh />
+          </IconButton>
+        </Tooltip>
+      </Box>
 
-      {/* Overall Stats */}
-      <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }} sx={{ textAlign: 'center', color: 'white' }}>
-            <Typography variant="h3" fontWeight="bold">
-              {stats.totalQuestions}
-            </Typography>
-            <Typography variant="body1">
-              Jami Savollar
-            </Typography>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }} sx={{ textAlign: 'center', color: 'white' }}>
-            <Typography variant="h3" fontWeight="bold">
-              {stats.answeredQuestions}
-            </Typography>
-            <Typography variant="body1">
-              Javob Berilgan
-            </Typography>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }} sx={{ textAlign: 'center', color: 'white' }}>
-            <Typography variant="h3" fontWeight="bold">
-              {Math.round(stats.overallSuccessRate)}%
-            </Typography>
-            <Typography variant="body1">
-              Muvaffaqiyat Darajasi
-            </Typography>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }} sx={{ textAlign: 'center', color: 'white' }}>
-            <Typography variant="h3" fontWeight="bold">
-              {Math.round(((stats.answeredQuestions / stats.totalQuestions) * 100) || 0)}%
-            </Typography>
-            <Typography variant="body1">
-              Tugallanish
-            </Typography>
-          </Grid>
-        </Grid>
-      </Paper>
+      {/* Categories Grid */}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+          },
+          gap: 3,
+        }}
+      >
+        {categories
+          .sort((a, b) => (a.categoryId || 0) - (b.categoryId || 0)) // Sort by categoryId
+          .map((category) => {
+            const stats = categoryStats.find(s => s.category === category.id) || {
+              category: category.id,
+              totalQuestions: 0,
+              answeredQuestions: 0,
+              correctAnswers: 0,
+              successRate: 0,
+              completionRate: 0,
+            };
 
-      {/* Tabs */}
-      <Paper elevation={1} sx={{ mb: 3 }}>
-        <Tabs
-          value={tabValue}
-          onChange={handleTabChange}
-          variant="fullWidth"
-          indicatorColor="primary"
-          textColor="primary"
+            return (
+              <Card
+                key={category.id}
+                onClick={() => onSelectCategory(category.id)}
+                sx={{
+                  cursor: 'pointer',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: 4,
+                  },
+                  '&:active': {
+                    transform: 'translateY(-2px)',
+                  },
+                }}
+              >
+                <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                  {/* Category Header */}
+                  <Box display="flex" alignItems="center" mb={2}>
+                    <Typography variant="h4" sx={{ mr: 1 }}>
+                      {category.icon || '📝'}
+                    </Typography>
+                    <Typography variant="h6" component="h2" fontWeight="600">
+                      {category.title}
+                    </Typography>
+                  </Box>
+
+                  {/* Description */}
+                  {category.description && (
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary" 
+                      sx={{ mb: 3, minHeight: 40 }}
+                    >
+                      {category.description}
+                    </Typography>
+                  )}
+
+                  {/* Stats */}
+                  <Box sx={{ mb: 2 }}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                      <Typography variant="body2" color="text.secondary">
+                        Progress
+                      </Typography>
+                      <Typography variant="body2" fontWeight="600">
+                        {stats.answeredQuestions}/{stats.totalQuestions} questions
+                      </Typography>
+                    </Box>
+                    <LinearProgress
+                      variant="determinate"
+                      value={stats.completionRate}
+                      sx={{
+                        height: 8,
+                        borderRadius: 4,
+                        backgroundColor: 'action.hover',
+                        '& .MuiLinearProgress-bar': {
+                          borderRadius: 4,
+                        },
+                      }}
+                      color={getProgressColor(stats.completionRate)}
+                    />
+                  </Box>
+                </CardContent>
+              </Card>
+            );
+          })}
+      </Box>
+
+      {/* Empty State */}
+      {categories.length === 0 && (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          py={8}
         >
-          <Tab
-            icon={<Assessment />}
-            label="Kategoriyalar"
-            iconPosition="start"
-          />
-          <Tab
-            icon={<Quiz />}
-            label="Savol Turlari"
-            iconPosition="start"
-          />
-        </Tabs>
-      </Paper>
-
-      {/* Categories Tab */}
-      {tabValue === 0 && (
-        <Grid container spacing={3}>
-          <Grid size={12}>
-            <Typography variant="h5" fontWeight="bold" color="text.primary" sx={{ mb: 3 }}>
-              Kategoriyalar bo'yicha
-            </Typography>
-          </Grid>
-          {stats.categoryStats.map(({ category, progress }: { category: TopicCategory; progress: CategoryProgress }) => (
-            <Grid key={category} size={{ xs: 12, sm: 6, lg: 4 }}>
-              <CategoryCard category={category} progress={progress} />
-            </Grid>
-          ))}
-        </Grid>
-      )}
-
-      {/* Question Types Tab */}
-      {tabValue === 1 && (
-        <Grid container spacing={3}>
-          <Grid size={12}>
-            <Typography variant="h5" fontWeight="bold" color="text.primary" sx={{ mb: 3 }}>
-              Savol turi bo'yicha
-            </Typography>
-          </Grid>
-          {stats.typeStats.map(({ type, progress }: { type: QuestionType; progress: TypeProgress }) => (
-            <Grid key={type} size={{ xs: 12, sm: 6, lg: 4 }}>
-              <TypeCard type={type} progress={progress} />
-            </Grid>
-          ))}
-        </Grid>
+          <Typography variant="h1" sx={{ fontSize: 64, mb: 2 }}>
+            📝
+          </Typography>
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            No categories available
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Categories will appear here when question files are loaded
+          </Typography>
+        </Box>
       )}
     </Container>
   );

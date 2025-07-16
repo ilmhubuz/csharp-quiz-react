@@ -12,14 +12,16 @@ import { ArrowForward, ArrowBack, CheckCircle } from '@mui/icons-material';
 import type { Question, FillQuestion, ErrorSpotQuestion } from '../types';
 import { QuestionCard } from './QuestionCard';
 import { QuizResults } from './QuizResults';
-import questionsData from '../assets/questions.json';
+
+export interface QuizAppProps {
+  questions: Question[];
+}
 
 interface QuizState {
   [questionId: number]: string[] | string;
 }
 
-export const QuizApp: React.FC = () => {
-  const [questions] = useState<Question[]>(questionsData as Question[]);
+export const QuizApp: React.FC<QuizAppProps> = ({ questions }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [answers, setAnswers] = useState<QuizState>(() => {

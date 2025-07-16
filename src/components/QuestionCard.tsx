@@ -288,12 +288,40 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               </Grid>
             </Grid>
 
+            {/* Usage Example Row (before examples) */}
+            {codeWritingQuestion.codeAfter && (
+              <Grid container spacing={4} sx={{ mb: 4 }}>
+                <Grid size={{ xs: 12 }}>
+                  <Paper 
+                    elevation={2} 
+                    sx={{ 
+                      p: 0, 
+                      backgroundColor: 'grey.900',
+                      border: 1,
+                      borderColor: 'divider'
+                    }}
+                  >
+                    <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+                      <Typography variant="subtitle2" color="text.secondary" fontWeight="bold">
+                        Usage Example
+                      </Typography>
+                    </Box>
+                    <CodeEditor 
+                      code={codeWritingQuestion.codeAfter.replace(/^```csharp\n/, '').replace(/\n```$/, '')}
+                      editable={false}
+                      language="csharp"
+                    />
+                  </Paper>
+                </Grid>
+              </Grid>
+            )}
+
             {/* Examples Row */}
             {codeWritingQuestion.examples && codeWritingQuestion.examples.length > 0 && (
               <Grid container spacing={4} sx={{ mb: 4 }}>
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="h6" color="text.primary" mb={2} fontWeight="bold">
-                    Examples
+                    Input/Output namunalar
                   </Typography>
                   {codeWritingQuestion.examples.map((example, index) => (
                     <Box key={index} sx={{ mb: 3 }}>
@@ -308,7 +336,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                       >
                         <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
                           <Typography variant="subtitle2" color="text.secondary" fontWeight="bold">
-                            Example {index + 1}
+                            Namuna {index + 1}
                           </Typography>
                         </Box>
                         <CodeEditor 
@@ -324,7 +352,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             )}
 
             {/* Code Input Row */}
-            <Grid container spacing={4}>
+            <Grid container spacing={4} sx={{ mb: 4 }}>
               <Grid size={{ xs: 12 }}>
                 <Paper 
                   elevation={2} 

@@ -1,12 +1,14 @@
 const ANSWER_STORAGE_KEY = 'quiz_answers';
 
-export interface AnswerData {
-  [questionId: number]: string[] | string;
+export interface CategoryAnswerData {
+  [categoryId: string]: {
+    [questionId: number]: string[] | string;
+  };
 }
 
 class AnswerStorage {
   // Load all saved answers from localStorage
-  loadAnswers(): AnswerData {
+  loadAnswers(): CategoryAnswerData {
     try {
       const stored = localStorage.getItem(ANSWER_STORAGE_KEY);
       if (stored) {
@@ -18,21 +20,24 @@ class AnswerStorage {
     return {};
   }
 
-  // Save answer for a specific question
-  saveAnswer(questionId: number, answer: string[] | string): void {
+  // Save answer for a specific question in a category
+  saveAnswer(categoryId: string, questionId: number, answer: string[] | string): void {
     try {
       const currentAnswers = this.loadAnswers();
-      currentAnswers[questionId] = answer;
+      if (!currentAnswers[categoryId]) {
+        currentAnswers[categoryId] = {};
+      }
+      currentAnswers[categoryId][questionId] = answer;
       localStorage.setItem(ANSWER_STORAGE_KEY, JSON.stringify(currentAnswers));
     } catch (error) {
       console.error('Error saving answer to localStorage:', error);
     }
   }
 
-  // Get answer for a specific question
-  getAnswer(questionId: number): string[] | string | undefined {
+  // Get answer for a specific question in a category
+  getAnswer(categoryId: string, questionId: number): string[] | string | undefined {
     const answers = this.loadAnswers();
-    return answers[questionId];
+    return answers[categoryId]?.[questionId];
   }
 
   // Clear all saved answers
@@ -44,37 +49,44 @@ class AnswerStorage {
     }
   }
 
-  // Clear answer for a specific question
-  clearAnswer(questionId: number): void {
+  // Clear answer for a specific question in a category
+  clearAnswer(categoryId: string, questionId: number): void {
     try {
       const currentAnswers = this.loadAnswers();
-      delete currentAnswers[questionId];
-      localStorage.setItem(ANSWER_STORAGE_KEY, JSON.stringify(currentAnswers));
+      if (currentAnswers[categoryId]) {
+        delete currentAnswers[categoryId][questionId];
+        localStorage.setItem(ANSWER_STORAGE_KEY, JSON.stringify(currentAnswers));
+      }
     } catch (error) {
       console.error('Error clearing specific answer from localStorage:', error);
     }
   }
 
-  // Check if a question has a saved answer
-  hasAnswer(questionId: number): boolean {
-    const answer = this.getAnswer(questionId);
-    if (answer === undefined) return false;
-    
-    if (Array.isArray(answer)) {
-      return answer.length > 0;
-    } else {
-      return typeof answer === 'string' && answer.trim() !== '';
+  // Clear all answers for a category
+  clearCategoryAnswers(categoryId: string): void {
+    try {
+      const currentAnswers = this.loadAnswers();
+      delete currentAnswers[categoryId];
+      localStorage.setItem(ANSWER_STORAGE_KEY, JSON.stringify(currentAnswers));
+    } catch (error) {
+      console.error('Error clearing category answers from localStorage:', error);
     }
   }
 
-  // Get answers for a list of question IDs
-  getAnswersForQuestions(questionIds: number[]): AnswerData {
+  // Get answers for a specific category
+  getCategoryAnswers(categoryId: string): { [questionId: number]: string[] | string } {
     const allAnswers = this.loadAnswers();
-    const filteredAnswers: AnswerData = {};
+    return allAnswers[categoryId] || {};
+  }
+
+  // Get answers for a list of questions in a category (for compatibility)
+  getAnswersForQuestions(categoryId: string, questionIds: number[]): { [questionId: number]: string[] | string } {
+    const categoryAnswers = this.getCategoryAnswers(categoryId);
+    const filteredAnswers: { [questionId: number]: string[] | string } = {};
     
     questionIds.forEach(id => {
-      if (allAnswers[id] !== undefined) {
-        filteredAnswers[id] = allAnswers[id];
+      if (categoryAnswers[id] !== undefined) {
+        filteredAnswers[id] = categoryAnswers[id];
       }
     });
     
@@ -106,9 +118,18 @@ export function validateAnswer(questionId: number, userAnswer: any, questions: a
       return userAnswer === correctAnswer;
       
     case 'error_spotting':
-    case 'output_prediction':
     case 'code_writing':
     case 'fill':
+      // Code-based answers - normalize by removing markdown formatting
+      if (typeof userAnswer === 'string' && typeof correctAnswer === 'string') {
+        const normalizeCode = (code: string) => {
+          return code.replace(/```\w*\n?/g, '').replace(/```/g, '').trim();
+        };
+        return normalizeCode(userAnswer) === normalizeCode(correctAnswer);
+      }
+      return false;
+      
+    case 'output_prediction':
       // Text-based answers - exact match (case-insensitive, trimmed)
       if (typeof userAnswer === 'string' && typeof correctAnswer === 'string') {
         return userAnswer.trim().toLowerCase() === correctAnswer.trim().toLowerCase();
@@ -167,7 +188,8 @@ export function calculateCategoryStats(questions: any[]): any[] {
   // Calculate progress for each category
   questions.forEach(question => {
     const category = question.metadata.category;
-    const userAnswer = savedAnswers[question.id];
+    const categoryAnswers = savedAnswers[category] || {};
+    const userAnswer = categoryAnswers[question.id];
     
     if (userAnswer !== undefined) {
       categoryMap[category].answeredQuestions++;
@@ -209,7 +231,9 @@ export function calculateTypeStats(questions: any[]): any[] {
   // Calculate progress for each type
   questions.forEach(question => {
     const questionType = question.type;
-    const userAnswer = savedAnswers[question.id];
+    const category = question.metadata.category;
+    const categoryAnswers = savedAnswers[category] || {};
+    const userAnswer = categoryAnswers[question.id];
     
     if (userAnswer !== undefined) {
       typeMap[questionType].answeredQuestions++;

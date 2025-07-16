@@ -80,6 +80,7 @@ export interface CodeWritingQuestion {
 	type: 'code_writing';
 	metadata: QuestionMetadata;
 	prompt: string;
+	codeAfter?: string;
 	examples: string[];
 	solution?: string;
 	testCases?: Array<{
@@ -212,3 +213,16 @@ export interface TypeInfo {
   icon: string;
   color: string;
 }
+
+export type CategoryMetadata = {
+  categoryId: number;
+  id: string;
+  title: string;
+  description?: string;
+  icon?: string;
+};
+
+export type CategoryFile = {
+  metadata: CategoryMetadata;
+  questions: Question[];
+};

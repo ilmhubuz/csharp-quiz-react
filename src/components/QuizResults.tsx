@@ -19,6 +19,7 @@ import {
   Quiz as QuizIcon,
   Home as HomeIcon
 } from '@mui/icons-material';
+import { MarkdownRenderer } from './MarkdownRenderer';
 import type { Question, MCQQuestion, TrueFalseQuestion, FillQuestion, ErrorSpotQuestion, OutputPredictionQuestion } from '../types';
 
 interface QuizResultsProps {
@@ -63,15 +64,20 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
         
         case 'fill':
           const fillQuestion = question as FillQuestion;
-          // For fill questions, we'll do a simple string comparison (trimmed)
-          // In a real app, you might want more sophisticated comparison
-          isCorrect = fillQuestion.answer.trim() === (userAnswer as string).trim();
+          // For fill questions, normalize both answers by removing markdown formatting
+          const normalizeCode = (code: string) => {
+            return code.replace(/```\w*\n?/g, '').replace(/```/g, '').trim();
+          };
+          isCorrect = normalizeCode(fillQuestion.answer) === normalizeCode(userAnswer as string);
           break;
         
         case 'error_spotting':
           const errorQuestion = question as ErrorSpotQuestion;
-          // For error spotting, compare corrected code
-          isCorrect = errorQuestion.answer.trim() === (userAnswer as string).trim();
+          // For error spotting, normalize both answers by removing markdown formatting
+          const normalizeErrorCode = (code: string) => {
+            return code.replace(/```\w*\n?/g, '').replace(/```/g, '').trim();
+          };
+          isCorrect = normalizeErrorCode(errorQuestion.answer) === normalizeErrorCode(userAnswer as string);
           break;
         
         case 'output_prediction':
@@ -103,31 +109,70 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
 
   const getQuestionTypeLabel = (type: string) => {
     switch (type) {
-      case 'mcq': return 'Multiple Choice';
-      case 'true_false': return 'True/False';
-      case 'fill': return 'Fill in the Blank';
-      case 'error_spotting': return 'Error Spotting';
-      case 'output_prediction': return 'Output Prediction';
-      case 'code_writing': return 'Code Writing';
+      case 'mcq': return 'Ko\'p Tanlovli';
+      case 'true_false': return 'To\'g\'ri/Noto\'g\'ri';
+      case 'fill': return 'Bo\'shliqni To\'ldirish';
+      case 'error_spotting': return 'Xatolarni Topish';
+      case 'output_prediction': return 'Natijani Bashorat Qilish';
+      case 'code_writing': return 'Kod Yozish';
       default: return type;
     }
   };
 
   const formatUserAnswer = (result: QuestionResult) => {
-    const { userAnswer, question } = result;
-    if (!userAnswer) return 'No answer provided';
+    const { userAnswer } = result;
+    if (!userAnswer) return 'Javob berilmagan';
     
     if (Array.isArray(userAnswer)) {
       return userAnswer.join(', ');
     }
     
-    // For code-based questions, show truncated version
-    if (question.type === 'fill' || question.type === 'error_spotting' || question.type === 'output_prediction' || question.type === 'code_writing') {
-      const codeAnswer = userAnswer as string;
-      return codeAnswer.length > 100 ? codeAnswer.substring(0, 100) + '...' : codeAnswer;
+    return userAnswer as string;
+  };
+
+  const renderCodeAnswer = (answer: string) => {
+    return (
+      <Box
+        component="pre"
+        sx={{
+          backgroundColor: 'grey.900',
+          color: 'grey.100',
+          p: 2,
+          borderRadius: 1,
+          fontSize: '0.875rem',
+          fontFamily: 'monospace',
+          overflow: 'auto',
+          maxHeight: '300px',
+          border: '1px solid',
+          borderColor: 'divider'
+        }}
+      >
+        <code>{answer}</code>
+      </Box>
+    );
+  };
+
+  const renderCorrectAnswer = (question: any) => {
+    const answer = question.answer;
+    if (Array.isArray(answer)) {
+      return (
+        <Typography variant="body2" color="success.main">
+          {answer.join(', ')}
+        </Typography>
+      );
     }
     
-    return userAnswer as string;
+    // For code-based questions, remove markdown formatting and render as code
+    if (question.type === 'fill' || question.type === 'error_spotting' || question.type === 'code_writing') {
+      const cleanAnswer = answer.replace(/```\w*\n?/g, '').replace(/```/g, '').trim();
+      return renderCodeAnswer(cleanAnswer);
+    }
+    
+    return (
+      <Typography variant="body2" color="success.main">
+        {answer}
+      </Typography>
+    );
   };
 
   return (
@@ -136,10 +181,10 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
       <Box textAlign="center" mb={4}>
         <QuizIcon sx={{ fontSize: 64, color: 'primary.main', mb: 2 }} />
         <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
-          Quiz Results
+          Quiz Natijalari
         </Typography>
         <Typography variant="h6" color="text.secondary">
-          Here's how you performed on the C# Quiz
+          C# Quiz bo'yicha sizning natijalaringiz
         </Typography>
       </Box>
 
@@ -153,7 +198,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                 {percentage}%
               </Typography>
               <Typography variant="h6" color="text.secondary">
-                Overall Score
+                Umumiy Ball
               </Typography>
             </Box>
           </Grid>
@@ -192,19 +237,19 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
               <Box display="flex" alignItems="center" gap={1}>
                 <CheckCircle color="success" fontSize="small" />
                 <Typography variant="body1">
-                  <strong>{correctAnswers}</strong> Correct
+                  <strong>{correctAnswers}</strong> To'g'ri
                 </Typography>
               </Box>
               <Box display="flex" alignItems="center" gap={1}>
                 <Cancel color="error" fontSize="small" />
                 <Typography variant="body1">
-                  <strong>{incorrectAnswers}</strong> Incorrect
+                  <strong>{incorrectAnswers}</strong> Noto'g'ri
                 </Typography>
               </Box>
               <Box display="flex" alignItems="center" gap={1}>
                 <QuizIcon color="primary" fontSize="small" />
                 <Typography variant="body1">
-                  <strong>{totalQuestions}</strong> Total Questions
+                  <strong>{totalQuestions}</strong> Jami Savollar
                 </Typography>
               </Box>
             </Box>
@@ -215,24 +260,24 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
       {/* Performance Message */}
       <Paper elevation={2} sx={{ p: 3, mb: 4, textAlign: 'center' }}>
         <Typography variant="h6" gutterBottom>
-          {percentage >= 90 ? '🎉 Excellent work!' :
-           percentage >= 80 ? '👏 Great job!' :
-           percentage >= 70 ? '👍 Good work!' :
-           percentage >= 60 ? '📚 Keep practicing!' :
-           '💪 Don\'t give up!'}
+          {percentage >= 90 ? '🎉 Ajoyib natija!' :
+           percentage >= 80 ? '👏 Zo\'r ish!' :
+           percentage >= 70 ? '👍 Yaxshi natija!' :
+           percentage >= 60 ? '📚 Mashq qilishda davom eting!' :
+           '💪 Taslim bo\'lmang!'}
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          {percentage >= 90 ? 'You have mastered C# concepts!' :
-           percentage >= 80 ? 'You have a strong understanding of C#.' :
-           percentage >= 70 ? 'You have a good grasp of the basics.' :
-           percentage >= 60 ? 'Review the concepts and try again.' :
-           'Consider studying the topics more thoroughly.'}
+          {percentage >= 90 ? 'Siz C# kontseptsiyalarini mukammal o\'zlashtirdingiz!' :
+           percentage >= 80 ? 'Sizda C# bo\'yicha kuchli tushuncha bor.' :
+           percentage >= 70 ? 'Asosiy tushunchalarni yaxshi bilasiz.' :
+           percentage >= 60 ? 'Mavzularni takrorlang va qayta urinib ko\'ring.' :
+           'Mavzularni chuqurroq o\'rganishni tavsiya qilamiz.'}
         </Typography>
       </Paper>
 
       {/* Question-by-Question Results */}
       <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 3 }}>
-        Question Details
+        Savollar Tafsiloti
       </Typography>
 
       {results.map((result) => (
@@ -241,7 +286,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
             <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
               <Box display="flex" alignItems="center" gap={2}>
                 <Typography variant="h6" color="primary" fontWeight="bold">
-                  Question {result.questionNumber}
+                  Savol {result.questionNumber}
                 </Typography>
                 <Chip 
                   label={getQuestionTypeLabel(result.question.type)}
@@ -256,29 +301,60 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                   <Cancel color="error" />
                 )}
                 <Typography variant="body1" fontWeight="bold" color={result.isCorrect ? 'success.main' : 'error.main'}>
-                  {result.isCorrect ? 'Correct' : 'Incorrect'}
+                  {result.isCorrect ? 'To\'g\'ri' : 'Noto\'g\'ri'}
                 </Typography>
               </Box>
             </Box>
 
             <Divider sx={{ mb: 2 }} />
 
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              <strong>Question:</strong> {result.question.prompt}
-            </Typography>
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="body2" color="text.secondary" fontWeight="bold" sx={{ mb: 1 }}>
+                Savol:
+              </Typography>
+              <MarkdownRenderer content={result.question.prompt} />
+            </Box>
 
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              <strong>Your Answer:</strong> {formatUserAnswer(result)}
-            </Typography>
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="body2" color="text.secondary" fontWeight="bold" sx={{ mb: 1 }}>
+                Sizning Javobingiz:
+              </Typography>
+              {result.question.type === 'fill' || result.question.type === 'error_spotting' || result.question.type === 'output_prediction' || result.question.type === 'code_writing' ? (
+                result.userAnswer ? renderCodeAnswer(result.userAnswer as string) : (
+                                      <Typography variant="body2" color="text.secondary">
+                      Javob berilmagan
+                    </Typography>
+                )
+              ) : (
+                <Typography variant="body2">
+                  {formatUserAnswer(result)}
+                </Typography>
+              )}
+            </Box>
 
             {!result.isCorrect && result.question.type !== 'code_writing' && 'answer' in result.question && (
-              <Typography variant="body2" color="success.main">
-                <strong>Correct Answer:</strong> {
-                  Array.isArray(result.question.answer) 
-                    ? result.question.answer.join(', ')
-                    : result.question.answer
-                }
-              </Typography>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" color="success.main" fontWeight="bold" sx={{ mb: 1 }}>
+                  To'g'ri Javob:
+                </Typography>
+                <Box sx={{ 
+                  '& pre': { 
+                    backgroundColor: 'success.dark',
+                    color: 'success.contrastText'
+                  }
+                }}>
+                  {renderCorrectAnswer(result.question)}
+                </Box>
+              </Box>
+            )}
+
+            {(result.question as any).explanation && (
+              <Box sx={{ mt: 2, p: 2, backgroundColor: 'action.hover', borderRadius: 1 }}>
+                <Typography variant="body2" color="text.secondary" fontWeight="bold" sx={{ mb: 1 }}>
+                  Tushuntirish:
+                </Typography>
+                <MarkdownRenderer content={(result.question as any).explanation} />
+              </Box>
             )}
           </CardContent>
         </Card>
@@ -299,25 +375,25 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
             borderRadius: 2
           }}
         >
-          Retry Quiz
+          Qayta Urinish
         </Button>
         
         {onGoHome && (
-          <Button
-            variant="outlined"
-            size="large"
-            startIcon={<HomeIcon />}
-            onClick={onGoHome}
-            sx={{
-              px: 4,
-              py: 1.5,
-              fontSize: '1.1rem',
-              fontWeight: 'bold',
-              borderRadius: 2
-            }}
-          >
-            Go Home
-          </Button>
+                  <Button
+          variant="outlined"
+          size="large"
+          startIcon={<HomeIcon />}
+          onClick={onGoHome}
+          sx={{
+            px: 4,
+            py: 1.5,
+            fontSize: '1.1rem',
+            fontWeight: 'bold',
+            borderRadius: 2
+          }}
+        >
+          Bosh Sahifa
+        </Button>
         )}
       </Box>
     </Container>
