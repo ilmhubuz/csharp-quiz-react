@@ -1173,9 +1173,9 @@
         },
         "codeBefore": "",
         "codeAfter": "",
-        "prompt": "`Memory<T>` async metodlarda ishlatish mumkin, lekin `Span<T>` ishlatib bo'lmaydi.",
+        "prompt": "**Memory<T>** async metodlarda ishlatish mumkin, lekin **Span<T>** ishlatib bo'lmaydi.\n\n**Async/await compatibility:**\n- Memory<T> async method da ishlatish mumkinmi?\n- Span<T> async method da ishlatish mumkinmi?\n- Ref struct limitations\n- Async state machine requirements",
         "answer": "true",
-        "explanation": "To'g'ri. Memory<T> async/await bilan ishlaydi, lekin Span<T> ref struct bo'lgani uchun async metodlarda ishlatib bo'lmaydi."
+        "explanation": "✓ **To'g'ri statement**\n\n✓ **Async compatibility:**\n- `Memory<T>` async method da ishlatish mumkin ✓\n- `Span<T>` async method da ishlatish mumkin emas ✗\n\n✓ **Sababi:** Ref struct lar async state machine da saqlanishi mumkin emas\n\n✓ **Yechim:** Async uchun `Memory<T>` ishlatish, keyin `Memory<T>.Span` orqali `Span<T>` ga o'tish"
     },
     {
         "id": 62,
