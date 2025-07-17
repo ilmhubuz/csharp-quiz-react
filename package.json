@@ -16,6 +16,8 @@
     "@mui/icons-material": "^7.1.2",
     "@mui/lab": "^7.0.0-beta.14",
     "@mui/material": "^7.1.2",
+    "@react-keycloak/web": "^3.4.0",
+    "keycloak-js": "^26.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-markdown": "^10.1.0",

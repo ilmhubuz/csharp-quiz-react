@@ -70,7 +70,12 @@ class ApiClient {
   }
 
   private getAuthToken(): string | null {
-    // TODO: Implement token retrieval from auth context
+    // Try to get token from Keycloak if available
+    if (typeof window !== 'undefined' && window.keycloak) {
+      return window.keycloak.token || null;
+    }
+    
+    // Fallback to localStorage
     return localStorage.getItem('auth_token');
   }
 
@@ -113,5 +118,12 @@ export class ApiError extends Error {
   ) {
     super(message);
     this.name = 'ApiError';
+  }
+}
+
+// Extend Window interface to include Keycloak
+declare global {
+  interface Window {
+    keycloak?: any;
   }
 } 

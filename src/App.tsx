@@ -1,5 +1,6 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { AuthProvider } from './components/auth';
 import { EnhancedQuizApp } from './components';
 
 const darkTheme = createTheme({
@@ -83,10 +84,12 @@ const darkTheme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <EnhancedQuizApp />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <EnhancedQuizApp />
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

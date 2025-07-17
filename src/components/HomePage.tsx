@@ -8,88 +8,31 @@ import {
   LinearProgress,
   IconButton,
   Tooltip,
+  Alert,
+  CircularProgress,
 } from '@mui/material';
 import {
   Refresh,
 } from '@mui/icons-material';
-import { calculateCategoryStats } from '../services/answerStorage';
-import type { CategoryFile } from '../types';
-
-interface CategoryStats {
-  category: string;
-  totalQuestions: number;
-  answeredQuestions: number;
-  correctAnswers: number;
-  successRate: number;
-  completionRate: number;
-}
+import { collectionService } from '../api';
+import { useApi } from '../hooks/useApi';
+import { AuthHeader } from './auth/AuthHeader';
+import type { CollectionResponse } from '../types/api';
 
 interface HomePageProps {
-  categories: Array<{ 
-    categoryId: number;
-    id: string; 
-    title: string; 
-    description?: string; 
-    icon?: string;
-  }>;
-  categoryFiles: CategoryFile[];
-  onSelectCategory: (categoryId: string) => void;
+  onSelectCollection: (collectionId: number) => void;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ 
-  categories, 
-  categoryFiles, 
-  onSelectCategory 
-}) => {
-  const [categoryStats, setCategoryStats] = useState<CategoryStats[]>([]);
+export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
+  const { data: collections, loading, error, execute, reset } = useApi<CollectionResponse[]>();
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    // Calculate stats for each category
-    const stats: CategoryStats[] = categories
-      .sort((a, b) => (a.categoryId || 0) - (b.categoryId || 0)) // Sort by categoryId
-      .map(category => {
-        const categoryFile = categoryFiles.find(cf => cf.metadata.id === category.id);
-        if (!categoryFile) {
-          return {
-            category: category.id,
-            totalQuestions: 0,
-            answeredQuestions: 0,
-            correctAnswers: 0,
-            successRate: 0,
-            completionRate: 0,
-          };
-        }
-
-        const allQuestions = categoryFile.questions;
-        const categoryStatsFromService = calculateCategoryStats(allQuestions);
-        const thisCategoryStats = categoryStatsFromService.find(cs => cs.category === category.id);
-
-        if (!thisCategoryStats) {
-          return {
-            category: category.id,
-            totalQuestions: allQuestions.length,
-            answeredQuestions: 0,
-            correctAnswers: 0,
-            successRate: 0,
-            completionRate: 0,
-          };
-        }
-
-        return {
-          category: category.id,
-          totalQuestions: thisCategoryStats.totalQuestions,
-          answeredQuestions: thisCategoryStats.answeredQuestions,
-          correctAnswers: thisCategoryStats.correctAnswers,
-          successRate: thisCategoryStats.successRate,
-          completionRate: (thisCategoryStats.answeredQuestions / thisCategoryStats.totalQuestions) * 100,
-        };
-      });
-
-    setCategoryStats(stats);
-  }, [categories, categoryFiles, refreshKey]);
+    execute(() => collectionService.getCollections());
+  }, [execute, refreshKey]);
 
   const handleRefresh = () => {
+    reset();
     setRefreshKey(prev => prev + 1);
   };
 
@@ -99,8 +42,36 @@ export const HomePage: React.FC<HomePageProps> = ({
     return 'error';
   };
 
+  if (loading) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+          <CircularProgress />
+        </Box>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Alert severity="error" sx={{ mb: 2 }}>
+          Failed to load collections: {error.message}
+        </Alert>
+        <Box display="flex" justifyContent="center">
+          <IconButton onClick={handleRefresh} color="primary">
+            <Refresh />
+          </IconButton>
+        </Box>
+      </Container>
+    );
+  }
+
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 4, position: 'relative' }}>
+      {/* Authentication Header */}
+      <AuthHeader />
+
       {/* Header */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
         <Box>
@@ -111,14 +82,14 @@ export const HomePage: React.FC<HomePageProps> = ({
             C# dasturlash tilini o'rganish va bilimingizni sinash uchun turli xil savollar bilan mashq qiling. Har bir kategoriyada o'z darajangizni aniqlang va ko'nikmalaringizni rivojlantiring.
           </Typography>
         </Box>
-        <Tooltip title="Refresh Progress">
+        <Tooltip title="Refresh Collections">
           <IconButton onClick={handleRefresh} color="primary">
             <Refresh />
           </IconButton>
         </Tooltip>
       </Box>
 
-      {/* Categories Grid */}
+      {/* Collections Grid */}
       <Box
         sx={{
           display: 'grid',
@@ -130,106 +101,107 @@ export const HomePage: React.FC<HomePageProps> = ({
           gap: 3,
         }}
       >
-        {categories
-          .sort((a, b) => (a.categoryId || 0) - (b.categoryId || 0)) // Sort by categoryId
-          .map((category) => {
-            const stats = categoryStats.find(s => s.category === category.id) || {
-              category: category.id,
-              totalQuestions: 0,
-              answeredQuestions: 0,
-              correctAnswers: 0,
-              successRate: 0,
-              completionRate: 0,
-            };
+        {collections?.map((collection) => {
+          const userProgress = collection.userProgress;
+          const stats = {
+            collectionId: collection.id,
+            totalQuestions: collection.totalQuestions,
+            answeredQuestions: userProgress?.answeredQuestions || 0,
+            correctAnswers: userProgress?.correctAnswers || 0,
+            successRate: userProgress?.successRate || 0,
+            completionRate: userProgress?.completionRate || 0,
+          };
 
-            return (
-              <Card
-                key={category.id}
-                onClick={() => onSelectCategory(category.id)}
-                sx={{
-                  cursor: 'pointer',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: 4,
-                  },
-                  '&:active': {
-                    transform: 'translateY(-2px)',
-                  },
-                }}
-              >
-                <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                  {/* Category Header */}
-                  <Box display="flex" alignItems="center" mb={2}>
-                    <Typography variant="h4" sx={{ mr: 1 }}>
-                      {category.icon || '📝'}
+          return (
+            <Card
+              key={collection.id}
+              onClick={() => onSelectCollection(collection.id)}
+              sx={{
+                cursor: 'pointer',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: 4,
+                },
+                '&:active': {
+                  transform: 'translateY(-2px)',
+                },
+              }}
+            >
+              <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                {/* Collection Header */}
+                <Box display="flex" alignItems="center" mb={2}>
+                  <Typography variant="h4" sx={{ mr: 1 }}>
+                    {collection.icon || '📝'}
+                  </Typography>
+                  <Typography variant="h6" component="h2" fontWeight="600">
+                    {collection.title}
+                  </Typography>
+                </Box>
+
+                {/* Description */}
+                {collection.description && (
+                  <Typography 
+                    variant="body2" 
+                    color="text.secondary" 
+                    sx={{ mb: 3, minHeight: 40 }}
+                  >
+                    {collection.description}
+                  </Typography>
+                )}
+
+                {/* Stats */}
+                <Box sx={{ mb: 2 }}>
+                  <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                    <Typography variant="body2" color="text.secondary">
+                      Progress
                     </Typography>
-                    <Typography variant="h6" component="h2" fontWeight="600">
-                      {category.title}
+                    <Typography variant="body2" fontWeight="600">
+                      {stats.answeredQuestions}/{stats.totalQuestions} questions
                     </Typography>
                   </Box>
+                  <LinearProgress
+                    variant="determinate"
+                    value={stats.completionRate}
+                    color={getProgressColor(stats.completionRate)}
+                    sx={{
+                      height: 8,
+                      borderRadius: 4,
+                    }}
+                  />
+                </Box>
 
-                  {/* Description */}
-                  {category.description && (
-                    <Typography 
-                      variant="body2" 
-                      color="text.secondary" 
-                      sx={{ mb: 3, minHeight: 40 }}
-                    >
-                      {category.description}
-                    </Typography>
-                  )}
-
-                  {/* Stats */}
+                {/* Success Rate */}
+                {stats.answeredQuestions > 0 && (
                   <Box sx={{ mb: 2 }}>
-                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
                       <Typography variant="body2" color="text.secondary">
-                        Progress
+                        Success Rate
                       </Typography>
                       <Typography variant="body2" fontWeight="600">
-                        {stats.answeredQuestions}/{stats.totalQuestions} questions
+                        {stats.successRate.toFixed(1)}%
                       </Typography>
                     </Box>
-                    <LinearProgress
-                      variant="determinate"
-                      value={stats.completionRate}
-                      sx={{
-                        height: 8,
-                        borderRadius: 4,
-                        backgroundColor: 'action.hover',
-                        '& .MuiLinearProgress-bar': {
-                          borderRadius: 4,
-                        },
-                      }}
-                      color={getProgressColor(stats.completionRate)}
-                    />
                   </Box>
-                </CardContent>
-              </Card>
-            );
-          })}
+                )}
+
+                {/* Last Updated */}
+                <Typography variant="caption" color="text.secondary">
+                  Updated: {new Date(collection.updatedAt).toLocaleDateString()}
+                </Typography>
+              </CardContent>
+            </Card>
+          );
+        })}
       </Box>
 
-      {/* Empty State */}
-      {categories.length === 0 && (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          py={8}
-        >
-          <Typography variant="h1" sx={{ fontSize: 64, mb: 2 }}>
-            📝
-          </Typography>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            No categories available
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Categories will appear here when question files are loaded
+      {collections && collections.length === 0 && (
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="40vh">
+          <Typography variant="h6" color="text.secondary">
+            No collections available
           </Typography>
         </Box>
       )}

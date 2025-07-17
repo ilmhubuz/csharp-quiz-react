@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Box, 
   Container, 
@@ -6,7 +6,6 @@ import {
   LinearProgress, 
   Paper, 
   Fab, 
-  Zoom, 
   IconButton,
 } from '@mui/material';
 import { 
@@ -20,36 +19,14 @@ import { QuestionCard } from './QuestionCard';
 import { QuizResults } from './QuizResults';
 import { progressStorage } from '../services/progressStorage';
 import { answerStorage } from '../services/answerStorage';
-import type { 
-  Question, 
-  CategoryFile
-} from '../types';
-
-// Remove require.context and use import.meta.glob for Vite
-
-const questionFiles = import.meta.glob('../assets/questions/*.json', { eager: true });
-
-function loadAllCategories() {
-  // Returns: Array<{ metadata, questions }>
-  return Object.values(questionFiles).map((mod: any) => ({ ...mod }));
-}
+import type { Question } from '../types';
 
 export const EnhancedQuizApp: React.FC = () => {
-  // Load all categories and their questions
-  const [categories, setCategories] = useState<any[]>([]);
-  const [categoryFiles, setCategoryFiles] = useState<CategoryFile[]>([]);
   const [viewMode, setViewMode] = useState<'home' | 'quiz' | 'results'>('home');
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [showResults, setShowResults] = useState(false);
   const [answers, setAnswers] = useState<any>({});
-
-  // On mount, load all categories and questions
-  useEffect(() => {
-    const loadedCategories = loadAllCategories();
-    setCategoryFiles(loadedCategories);
-    setCategories(loadedCategories.map(cat => cat.metadata));
-  }, []);
+  const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
 
   const currentQuestion = filteredQuestions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === filteredQuestions.length - 1;
@@ -98,9 +75,9 @@ export const EnhancedQuizApp: React.FC = () => {
 
   const handleGoHome = () => {
     setViewMode('home');
-    setShowResults(false);
     setCurrentQuestionIndex(0);
     setAnswers({});
+    setSelectedCollectionId(null);
   };
 
   const handleAnswerChange = (questionId: number, answer: string[] | string) => {
@@ -110,10 +87,9 @@ export const EnhancedQuizApp: React.FC = () => {
       [questionId]: answer
     }));
     
-    // Save to localStorage with category and question ID
-    if (currentQuestion) {
-      const categoryId = currentQuestion.metadata.category;
-      answerStorage.saveAnswer(categoryId, questionId, answer as any);
+    // Save to localStorage with collection and question ID
+    if (currentQuestion && selectedCollectionId) {
+      answerStorage.saveAnswer(selectedCollectionId.toString(), questionId, answer as any);
     }
   };
 
@@ -130,13 +106,12 @@ export const EnhancedQuizApp: React.FC = () => {
   };
 
   const handleShowResults = () => {
-    setShowResults(true);
     setViewMode('results');
     
     // Update progress for all answered questions
     Object.entries(answers).forEach(([questionIdStr, userAnswer]) => {
       const questionId = parseInt(questionIdStr);
-      const question = filteredQuestions.find(q => q.id === questionId); // Use filteredQuestions here
+      const question = filteredQuestions.find(q => q.id === questionId);
       if (question) {
         // This is a simplified correctness check - in a real app you'd have proper answer validation
         const isCorrect = false; // Placeholder - implement proper answer checking
@@ -144,41 +119,30 @@ export const EnhancedQuizApp: React.FC = () => {
       }
     });
     
-    progressStorage.updateAggregateProgress(filteredQuestions); // Use filteredQuestions here
+    progressStorage.updateAggregateProgress(filteredQuestions);
   };
 
   const handleRetryQuiz = () => {
-    setShowResults(false);
     setViewMode('quiz');
     setCurrentQuestionIndex(0);
     setAnswers({});
   };
 
-  // Handle category selection
-  const handleSelectCategory = (categoryId: string) => {
-    const categoryFile = categoryFiles.find(cat => cat.metadata.id === categoryId);
-    if (categoryFile) {
-      setFilteredQuestions(categoryFile.questions);
-      setCurrentQuestionIndex(0);
-      
-      // Load saved answers for this category's questions
-      const questionIds = categoryFile.questions.map(q => q.id);
-      const savedAnswers = answerStorage.getAnswersForQuestions(categoryId, questionIds);
-      setAnswers(savedAnswers);
-      
-      setShowResults(false);
-      setViewMode('quiz');
-    }
+  // Handle collection selection
+  const handleSelectCollection = (collectionId: number) => {
+    setSelectedCollectionId(collectionId);
+    // TODO: Load questions from API for this collection
+    // For now, we'll use placeholder data
+    setFilteredQuestions([]);
+    setCurrentQuestionIndex(0);
+    setAnswers({});
+    setViewMode('quiz');
   };
 
   // Show home page
   if (viewMode === 'home') {
     return (
-      <HomePage 
-        categories={categories} 
-        categoryFiles={categoryFiles}
-        onSelectCategory={handleSelectCategory} 
-      />
+      <HomePage onSelectCollection={handleSelectCollection} />
     );
   }
 
@@ -189,7 +153,7 @@ export const EnhancedQuizApp: React.FC = () => {
         <Container maxWidth="lg" sx={{ py: 4 }}>
           <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
             <Typography variant="h6" color="text.secondary">
-              No questions available for this category
+              No questions available for this collection
             </Typography>
           </Box>
         </Container>
@@ -198,121 +162,97 @@ export const EnhancedQuizApp: React.FC = () => {
 
     return (
       <Box sx={{ minHeight: '100vh', pb: 10 }}>
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-          {/* Question Card */}
-          <Box 
-            display="flex" 
-            justifyContent="center" 
-            alignItems="center" 
-            minHeight="calc(100vh - 200px)"
-          >
-            <QuestionCard
-              question={currentQuestion}
-              answer={answers[currentQuestion.id]}
-              onAnswerChange={handleAnswerChange}
-              questionNumber={currentQuestionIndex + 1}
-              totalQuestions={filteredQuestions.length}
-            />
-          </Box>
-        </Container>
-
         {/* Progress Bar */}
-        <Paper
-          elevation={8}
+        <LinearProgress
+          variant="determinate"
+          value={progress}
           sx={{
             position: 'fixed',
-            bottom: 0,
+            top: 0,
             left: 0,
             right: 0,
-            p: 2,
-            borderRadius: 0,
-            backgroundColor: 'background.paper',
-            borderTop: 1,
-            borderColor: 'divider'
+            zIndex: 1000,
+            height: 4,
           }}
-        >
-          <Box display="flex" alignItems="center" gap={2}>
-            <Typography variant="body2" color="text.secondary" sx={{ minWidth: 80 }}>
-              {currentQuestionIndex + 1} of {filteredQuestions.length}
+        />
+
+        {/* Header */}
+        <Container maxWidth="lg" sx={{ py: 2 }}>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Typography variant="h6" component="h1">
+              Question {currentQuestionIndex + 1} of {filteredQuestions.length}
             </Typography>
-            <LinearProgress
-              variant="determinate"
-              value={progress}
-              sx={{ 
-                flexGrow: 1, 
-                height: 8, 
-                borderRadius: 4,
-                backgroundColor: 'action.hover',
-                '& .MuiLinearProgress-bar': {
-                  borderRadius: 4,
-                }
-              }}
-            />
-            <Typography variant="body2" color="text.secondary" sx={{ minWidth: 40 }}>
-              {Math.round(progress)}%
-            </Typography>
-            <IconButton
-              color="primary"
-              onClick={handleGoHome}
-              sx={{ ml: 1 }}
-            >
+            <IconButton onClick={handleGoHome} color="primary">
               <HomeIcon />
             </IconButton>
           </Box>
-        </Paper>
+        </Container>
 
-        {/* Previous Button */}
-        <Zoom in={currentQuestionIndex > 0}>
-          <Fab
-            color="secondary"
-            sx={{
-              position: 'fixed',
-              bottom: 80,
-              left: 24,
-            }}
+        {/* Question Card */}
+        <Container maxWidth="lg" sx={{ py: 2 }}>
+          <QuestionCard
+            question={currentQuestion}
+            answer={answers[currentQuestion.id]}
+            onAnswerChange={handleAnswerChange}
+            questionNumber={currentQuestionIndex + 1}
+            totalQuestions={filteredQuestions.length}
+          />
+        </Container>
+
+        {/* Navigation */}
+        <Paper
+          sx={{
+            position: 'fixed',
+            bottom: 16,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            px: 2,
+            py: 1,
+            borderRadius: 3,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <IconButton
             onClick={handlePrevious}
+            disabled={currentQuestionIndex === 0}
+            color="primary"
           >
             <ArrowBack />
-          </Fab>
-        </Zoom>
+          </IconButton>
 
-        {/* Next Button */}
-        <Zoom in={isAnswered && !isLastQuestion}>
-          <Fab
-            color="primary"
-            sx={{
-              position: 'fixed',
-              bottom: 80,
-              right: 24,
-            }}
-            onClick={handleNext}
-          >
-            <ArrowForward />
-          </Fab>
-        </Zoom>
+          <Typography variant="body2" color="text.secondary">
+            {currentQuestionIndex + 1} / {filteredQuestions.length}
+          </Typography>
 
-        {/* Completion Button */}
-        <Zoom in={isAnswered && isLastQuestion}>
-          <Fab
-            color="success"
-            sx={{
-              position: 'fixed',
-              bottom: 80,
-              right: 24,
-            }}
-            onClick={handleShowResults}
-          >
-            <CheckCircle />
-          </Fab>
-        </Zoom>
+          {isLastQuestion ? (
+            <Fab
+              color="primary"
+              onClick={handleShowResults}
+              disabled={!isAnswered}
+              sx={{ ml: 1 }}
+            >
+              <CheckCircle />
+            </Fab>
+          ) : (
+            <IconButton
+              onClick={handleNext}
+              disabled={!isAnswered}
+              color="primary"
+            >
+              <ArrowForward />
+            </IconButton>
+          )}
+        </Paper>
       </Box>
     );
   }
 
   // Show results page
-  if (showResults && viewMode === 'results') {
+  if (viewMode === 'results') {
     return (
-      <QuizResults 
+      <QuizResults
         questions={filteredQuestions}
         answers={answers}
         onRetry={handleRetryQuiz}
@@ -321,197 +261,5 @@ export const EnhancedQuizApp: React.FC = () => {
     );
   }
 
-  // Show quiz completion message
-  if (!currentQuestion && filteredQuestions.length === 0) {
-    return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Box 
-          display="flex" 
-          flexDirection="column"
-          justifyContent="center" 
-          alignItems="center" 
-          minHeight="60vh"
-          gap={3}
-        >
-          <Typography variant="h4" color="primary">
-            No questions found for this selection
-          </Typography>
-          <Box display="flex" gap={2}>
-            <Fab
-              variant="extended"
-              color="primary"
-              onClick={handleGoHome}
-            >
-              <HomeIcon sx={{ mr: 1 }} />
-              Go Home
-            </Fab>
-          </Box>
-        </Box>
-      </Container>
-    );
-  }
-
-  if (!currentQuestion) {
-    return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Box 
-          display="flex" 
-          flexDirection="column"
-          justifyContent="center" 
-          alignItems="center" 
-          minHeight="60vh"
-          gap={3}
-        >
-          <Typography variant="h4" color="primary">
-            Quiz Completed! 🎉
-          </Typography>
-          <Box display="flex" gap={2}>
-            <Fab
-              variant="extended"
-              color="success"
-              onClick={handleShowResults}
-            >
-              <CheckCircle sx={{ mr: 1 }} />
-              View Results
-            </Fab>
-            <Fab
-              variant="extended"
-              color="primary"
-              onClick={handleGoHome}
-            >
-              <HomeIcon sx={{ mr: 1 }} />
-              Go Home
-            </Fab>
-          </Box>
-        </Box>
-      </Container>
-    );
-  }
-
-  return (
-    <Box sx={{ minHeight: '100vh', pb: 10 }}>
-      {/* Top App Bar */}
-      <Box sx={{ position: 'sticky', top: 0, zIndex: 1 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', p: 1, bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider' }}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={handleGoHome}
-            sx={{ mr: 2 }}
-          >
-            <HomeIcon />
-          </IconButton>
-          <Box flexGrow={1}>
-            <Typography variant="h6" fontWeight="bold">
-              Quiz
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.8 }}>
-              Question {currentQuestionIndex + 1} of {filteredQuestions.length}
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        {/* Question Card */}
-        <Box 
-          display="flex" 
-          justifyContent="center" 
-          alignItems="center" 
-          minHeight="calc(100vh - 300px)"
-        >
-          <QuestionCard
-            question={currentQuestion}
-            answer={answers[currentQuestion.id]}
-            onAnswerChange={handleAnswerChange}
-            questionNumber={currentQuestionIndex + 1}
-            totalQuestions={filteredQuestions.length}
-          />
-        </Box>
-      </Container>
-
-      {/* Progress Bar */}
-      <Paper
-        elevation={8}
-        sx={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          p: 2,
-          borderRadius: 0,
-          backgroundColor: 'background.paper',
-          borderTop: 1,
-          borderColor: 'divider'
-        }}
-      >
-        <Box display="flex" alignItems="center" gap={2}>
-          <Typography variant="body2" color="text.secondary" sx={{ minWidth: 80 }}>
-            {currentQuestionIndex + 1} of {filteredQuestions.length}
-          </Typography>
-          <LinearProgress
-            variant="determinate"
-            value={progress}
-            sx={{ 
-              flexGrow: 1, 
-              height: 8, 
-              borderRadius: 4,
-              backgroundColor: 'action.hover',
-              '& .MuiLinearProgress-bar': {
-                borderRadius: 4,
-              }
-            }}
-          />
-          <Typography variant="body2" color="text.secondary" sx={{ minWidth: 40 }}>
-            {Math.round(progress)}%
-          </Typography>
-        </Box>
-      </Paper>
-
-      {/* Previous Button */}
-      <Zoom in={currentQuestionIndex > 0}>
-        <Fab
-          color="secondary"
-          sx={{
-            position: 'fixed',
-            bottom: 80,
-            left: 24,
-          }}
-          onClick={handlePrevious}
-        >
-          <ArrowBack />
-        </Fab>
-      </Zoom>
-
-      {/* Next Button */}
-      <Zoom in={isAnswered && !isLastQuestion}>
-        <Fab
-          color="primary"
-          sx={{
-            position: 'fixed',
-            bottom: 80,
-            right: 24,
-          }}
-          onClick={handleNext}
-        >
-          <ArrowForward />
-        </Fab>
-      </Zoom>
-
-      {/* Completion Button */}
-      <Zoom in={isAnswered && isLastQuestion}>
-        <Fab
-          color="success"
-          sx={{
-            position: 'fixed',
-            bottom: 80,
-            right: 24,
-          }}
-          onClick={handleShowResults}
-        >
-          <CheckCircle />
-        </Fab>
-      </Zoom>
-    </Box>
-  );
+  return null;
 }; 
