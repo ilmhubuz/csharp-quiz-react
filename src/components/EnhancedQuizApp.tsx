@@ -27,6 +27,7 @@ import { HomePage } from './HomePage';
 import { QuestionCard } from './QuestionCard';
 import { QuizResults } from './QuizResults';
 import { answerStorage } from '../services/answerStorage';
+import { sessionStorage } from '../services/sessionStorage';
 import { questionService } from '../api/services/questionService';
 import { hasCSharpQuizAccess } from '../lib/auth-utils';
 import type {
@@ -129,6 +130,11 @@ export const EnhancedQuizApp: React.FC = () => {
         setSelectedCollectionId(null);
         setQuestionsError(null);
         setErrorType(null);
+        
+        // Clear session for unauthenticated users
+        if (!keycloak.authenticated) {
+            sessionStorage.clearSession();
+        }
     };
 
     const handleAnswerChange = (
@@ -140,14 +146,15 @@ export const EnhancedQuizApp: React.FC = () => {
             ...prev,
             [questionId]: answer,
         }));
-
-        // Save to localStorage with collection and question ID
-        if (currentQuestion && selectedCollectionId) {
-            answerStorage.saveAnswer(
-                selectedCollectionId.toString(),
-                questionId,
-                answer as any,
-            );
+        
+        if (keycloak.authenticated) {
+            // Save to localStorage with collection and question ID for authenticated users
+            if (currentQuestion && selectedCollectionId) {
+                answerStorage.saveAnswer(selectedCollectionId.toString(), questionId, answer as any);
+            }
+        } else {
+            // Update session storage for unauthenticated users
+            sessionStorage.updateAnswer(questionId, answer);
         }
     };
 
@@ -203,6 +210,10 @@ export const EnhancedQuizApp: React.FC = () => {
                 // Unauthenticated user - get preview questions
                 questions =
                     await questionService.getPreviewQuestions(collectionId);
+                
+                // Create session for unauthenticated users
+                const collectionName = 'Preview Collection'; // You might want to get this from the collection data
+                sessionStorage.createSession(collectionId, collectionName, questions);
             }
 
             // Convert QuestionResponse to Question format
@@ -283,45 +294,39 @@ export const EnhancedQuizApp: React.FC = () => {
             });
 
             setFilteredQuestions(convertedQuestions);
+            
+            // Load existing answers for unauthenticated users
+            if (!keycloak.authenticated) {
+                const sessionAnswers = sessionStorage.getAnswers();
+                setAnswers(sessionAnswers);
+            }
         } catch (error: any) {
             console.error('Failed to load questions:', error);
+            
             // Determine error type based on status code or error message
             if (error.status === 401) {
                 setErrorType('forbidden');
                 if (!keycloak.authenticated) {
-                    setQuestionsError(
-                        'Ushbu kontentni ko\'rish uchun tizimga kirishingiz kerak.'
-                    );
+                    setQuestionsError('Ushbu kontentni ko\'rish uchun tizimga kirishingiz kerak.');
                 } else {
-                    setQuestionsError(
-                        'Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q. Iltimos, administrator bilan bog\'laning.'
-                    );
+                    setQuestionsError('Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q. Iltimos, administrator bilan bog\'laning.');
                 }
             } else if (error.status === 403) {
                 setErrorType('forbidden');
                 if (keycloak.authenticated && !hasCSharpQuizAccess(keycloak)) {
-                    setQuestionsError(
-                        'Sizda C# Quiz dasturiga kirish uchun "Ustoz" a\'zoligi mavjud emas. To\'liq kirish uchun a\'zolikni sotib oling.'
-                    );
+                    setQuestionsError('Sizda C# Quiz dasturiga kirish uchun "Ustoz" a\'zoligi mavjud emas. To\'liq kirish uchun a\'zolikni sotib oling.');
                 } else {
-                    setQuestionsError(
-                        'Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q.'
-                    );
+                    setQuestionsError('Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q.');
                 }
             } else if (
                 error.message?.toLowerCase().includes('unauthorized') ||
                 error.message?.toLowerCase().includes('forbidden')
             ) {
                 setErrorType('forbidden');
-                setQuestionsError(
-                    'Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q.'
-                );
+                setQuestionsError('Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q.');
             } else {
                 setErrorType('error');
-                setQuestionsError(
-                    error.message ||
-                        'Savollarni yuklashda xatolik yuz berdi. Iltimos, keyinroq urinib ko\'ring.'
-                );
+                setQuestionsError(error.message || 'Savollarni yuklashda xatolik yuz berdi. Iltimos, keyinroq urinib ko\'ring.');
             }
         } finally {
             setQuestionsLoading(false);
@@ -330,7 +335,9 @@ export const EnhancedQuizApp: React.FC = () => {
 
     // Show home page
     if (viewMode === 'home') {
-        return <HomePage onSelectCollection={handleSelectCollection} />;
+        return (
+            <HomePage onSelectCollection={handleSelectCollection} />
+        );
     }
 
     // Show quiz page

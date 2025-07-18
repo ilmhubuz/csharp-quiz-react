@@ -98,43 +98,62 @@ export interface AnswerSubmissionResponse {
 // Review/Result Types
 export interface CollectionResultSummary {
     collectionId: number;
-    collectionCode: string;
+    collectionName: string;
     totalQuestions: number;
     answeredQuestions: number;
     correctAnswers: number;
-    successRate: number;
-    completionRate: number;
-    totalTimeSpent: number;
-    averageTimePerQuestion: number;
+    scorePercentage: number;
+    totalTimeSpent: string;
+    completedAt: string;
 }
 
-export interface AnswerReview {
-    questionId: number;
-    userAnswer: string | string[];
-    correctAnswer: string | string[];
+export interface UserAnswer {
+    answer: string | string[];
     isCorrect: boolean;
-    explanation: string;
-    timeSpentSeconds: number;
     submittedAt: string;
+    timeSpentSeconds: number;
 }
 
-export interface CollectionReviewResponse {
-    collectionId: number;
-    collectionCode: string;
-    summary: CollectionResultSummary;
-    answerReviews: AnswerReview[];
+export interface CorrectAnswer {
+    options?: Array<{
+        id: string;
+        text: string;
+        isCorrect: boolean;
+    }>;
+    booleanAnswer?: boolean;
+    textAnswer?: string;
+    sampleSolution?: string;
+    testCaseResults?: Array<{
+        input: string;
+        expectedOutput: string;
+        userOutput?: string;
+        passed: boolean;
+    }>;
 }
 
-export interface CompletePreviewSessionRequest {
-    collectionId: number;
-    answers: {
-        questionId: number;
-        answer: string | string[];
-        timeSpentSeconds: number;
-    }[];
+export interface ReviewItem {
+    questionId: number;
+    questionType: string;
+    prompt: string;
+    content: QuestionContent;
+    userAnswer: UserAnswer;
+    correctAnswer: CorrectAnswer;
+    explanation: string;
+    hints?: string[];
 }
 
-export interface CompletePreviewSessionResponse {
-    success: boolean;
-    review: CollectionReviewResponse;
+export interface SessionCompletionResponse {
+    sessionId: string;
+    totalQuestions: number;
+    correctAnswers: number;
+    scorePercentage: number;
+    reviewItems: ReviewItem[];
+}
+
+export interface CompleteSessionRequest {
+  answers: Array<{
+    questionId: number;
+    answer: string;
+    timeSpentSeconds: number;
+  }>;
 }
