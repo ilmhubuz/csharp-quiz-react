@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Box,
     Container,
@@ -28,8 +28,12 @@ import { QuestionCard } from './QuestionCard';
 import { QuizResults } from './QuizResults';
 import { answerStorage } from '../services/answerStorage';
 import { sessionStorage } from '../services/sessionStorage';
-import { questionService, createAuthenticatedQuestionService } from '../api/services/questionService';
+import {
+    questionService,
+    createAuthenticatedQuestionService,
+} from '../api/services/questionService';
 import { useApi } from '../hooks/useApi';
+import { useAnswerSubmission } from '../hooks/useAnswerSubmission';
 import { hasCSharpQuizAccess } from '../lib/auth-utils';
 import type {
     Question,
@@ -50,7 +54,7 @@ export const EnhancedQuizApp: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [viewMode, setViewMode] = useState<'home' | 'quiz' | 'results'>(
-        'home',
+        'home'
     );
     const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -61,12 +65,39 @@ export const EnhancedQuizApp: React.FC = () => {
     const [questionsLoading, setQuestionsLoading] = useState(false);
     const [questionsError, setQuestionsError] = useState<string | null>(null);
     const [errorType, setErrorType] = useState<'forbidden' | 'error' | null>(
-        null
+        null,
     );
 
     const currentQuestion = filteredQuestions[currentQuestionIndex];
     const isLastQuestion =
         currentQuestionIndex === filteredQuestions.length - 1;
+
+    // Use answer submission hook for authenticated users (only when we have a valid question)
+    const { submitAnswer, isSubmitting, hasPreviousAnswer, hasAnswerChanged, previousAnswer } =
+        useAnswerSubmission({
+            questionId: currentQuestion?.id || 0,
+            onAnswerLoaded: answer => {
+                if (currentQuestion && answer !== undefined) {
+                    setAnswers((prev: any) => ({
+                        ...prev,
+                        [currentQuestion.id]: answer,
+                    }));
+                }
+            },
+        });
+
+    // Ensure previous answer is loaded when currentQuestion and previousAnswer are both available
+    useEffect(() => {
+        if (currentQuestion && previousAnswer && previousAnswer.questionId === currentQuestion.id) {
+            // Only set if we don't already have an answer for this question
+            if (answers[currentQuestion.id] === undefined) {
+                setAnswers((prev: any) => ({
+                    ...prev,
+                    [currentQuestion.id]: previousAnswer.answer,
+                }));
+            }
+        }
+    }, [currentQuestion?.id, previousAnswer, answers]);
 
     // Enhanced answer checking logic
     const isAnswered =
@@ -141,7 +172,7 @@ export const EnhancedQuizApp: React.FC = () => {
 
     const handleAnswerChange = (
         questionId: number,
-        answer: string[] | string
+        answer: string[] | string,
     ) => {
         // Update local state
         setAnswers((prev: any) => ({
@@ -155,7 +186,7 @@ export const EnhancedQuizApp: React.FC = () => {
                 answerStorage.saveAnswer(
                     selectedCollectionId.toString(),
                     questionId,
-                    answer as any
+                    answer as any,
                 );
             }
         } else {
@@ -164,8 +195,16 @@ export const EnhancedQuizApp: React.FC = () => {
         }
     };
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (currentQuestionIndex < filteredQuestions.length - 1) {
+            // Submit answer for authenticated users before navigating
+            // Only submit if answer has changed from the previous one
+            if (keycloak.authenticated && currentQuestion && isAnswered) {
+                const answer = answers[currentQuestion.id];
+                if (answer !== undefined && hasAnswerChanged(answer)) {
+                    await submitAnswer(answer);
+                }
+            }
             setCurrentQuestionIndex(prev => prev + 1);
         }
     };
@@ -176,7 +215,15 @@ export const EnhancedQuizApp: React.FC = () => {
         }
     };
 
-    const handleShowResults = () => {
+    const handleShowResults = async () => {
+        // Submit answer for authenticated users before showing results
+        // Only submit if answer has changed from the previous one
+        if (keycloak.authenticated && currentQuestion && isAnswered) {
+            const answer = answers[currentQuestion.id];
+            if (answer !== undefined && hasAnswerChanged(answer)) {
+                await submitAnswer(answer);
+            }
+        }
         setViewMode('results');
     };
 
@@ -206,12 +253,14 @@ export const EnhancedQuizApp: React.FC = () => {
 
             if (keycloak.authenticated) {
                 // Authenticated user - get full questions
-                const authenticatedQuestionService = createAuthenticatedQuestionService(authenticatedApiClient);
-                const response = await authenticatedQuestionService.getQuestionsByCollection(
-                    collectionId,
-                    1,
-                    100
-                );
+                const authenticatedQuestionService =
+                    createAuthenticatedQuestionService(authenticatedApiClient);
+                const response =
+                    await authenticatedQuestionService.getQuestionsByCollection(
+                        collectionId,
+                        1,
+                        100
+                    );
                 questions = response.data || [];
             } else {
                 // Unauthenticated user - get preview questions
@@ -223,7 +272,7 @@ export const EnhancedQuizApp: React.FC = () => {
                 sessionStorage.createSession(
                     collectionId,
                     collectionName,
-                    questions
+                    questions,
                 );
             }
 
@@ -319,22 +368,22 @@ export const EnhancedQuizApp: React.FC = () => {
                 setErrorType('forbidden');
                 if (!keycloak.authenticated) {
                     setQuestionsError(
-                        "Ushbu kontentni ko'rish uchun tizimga kirishingiz kerak."
+                        'Ushbu kontentni ko\'rish uchun tizimga kirishingiz kerak.'
                     );
                 } else {
                     setQuestionsError(
-                        "Sizda ushbu kontentni ko'rish uchun ruxsat yo'q. Iltimos, administrator bilan bog'laning."
+                        'Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q. Iltimos, administrator bilan bog\'laning.'
                     );
                 }
             } else if (error.status === 403) {
                 setErrorType('forbidden');
                 if (keycloak.authenticated && !hasCSharpQuizAccess(keycloak)) {
                     setQuestionsError(
-                        "Sizda C# Quiz dasturiga kirish uchun \"Ustoz\" a'zoligi mavjud emas. To'liq kirish uchun a'zolikni sotib oling."
+                        'Sizda C# Quiz dasturiga kirish uchun "Ustoz" a\'zoligi mavjud emas. To\'liq kirish uchun a\'zolikni sotib oling.'
                     );
                 } else {
                     setQuestionsError(
-                        "Sizda ushbu kontentni ko'rish uchun ruxsat yo'q."
+                        'Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q.'
                     );
                 }
             } else if (
@@ -343,13 +392,13 @@ export const EnhancedQuizApp: React.FC = () => {
             ) {
                 setErrorType('forbidden');
                 setQuestionsError(
-                    "Sizda ushbu kontentni ko'rish uchun ruxsat yo'q."
+                    'Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q.'
                 );
             } else {
                 setErrorType('error');
                 setQuestionsError(
                     error.message ||
-                        "Savollarni yuklashda xatolik yuz berdi. Iltimos, keyinroq urinib ko'ring."
+                        'Savollarni yuklashda xatolik yuz berdi. Iltimos, keyinroq urinib ko\'ring.'
                 );
             }
         } finally {
@@ -467,73 +516,57 @@ export const EnhancedQuizApp: React.FC = () => {
                         >
                             {errorType === 'forbidden' &&
                                 !keycloak.authenticated && (
-                                    <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size={isMobile ? 'medium' : 'large'}
-                                        onClick={() => keycloak.login()}
-                                        fullWidth={isMobile}
-                                >
+                                <Button
+                                        variant="contained"
+                                        color="primary"
+                                        size={isMobile ? 'medium' : 'large'}
+                                    onClick={() => keycloak.login()}
+                                    fullWidth={isMobile}
+                                    >
                                         Tizimga kirish
-                                </Button>
-                                )}
+                                    </Button>
+                            )}
                             {errorType === 'forbidden' &&
                                 keycloak.authenticated &&
                                 !hasCSharpQuizAccess(keycloak) && (
-                                    <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size={isMobile ? 'medium' : 'large'}
-                                        onClick={() =>
-                                            window.open(
-                                                'https://ilmhub.uz/membership',
-                                                '_blank'
-                                            )
-                                        }
-                                        fullWidth={isMobile}
-                                    >
+                                <Button
+                                        variant="contained"
+                                        color="primary"
+                                        size={isMobile ? 'medium' : 'large'}
+                                    onClick={() =>
+                                        window.open(
+                                            'https://ilmhub.uz/membership',
+                                            '_blank'
+                                        )
+                                    }
+                                    fullWidth={isMobile}
+                                >
                                         Ustoz a'zoligini sotib olish
-                                </Button>
-                                )}
+                                    </Button>
+                            )}
                             {errorType === 'error' && (
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     size={isMobile ? 'medium' : 'large'}
-                                    startIcon={<RefreshIcon />}
                                     onClick={handleRetryLoad}
+                                    startIcon={<RefreshIcon />}
                                     fullWidth={isMobile}
                                 >
                                     Qayta urinish
                                 </Button>
                             )}
-
                             <Button
                                 variant="outlined"
                                 color="primary"
                                 size={isMobile ? 'medium' : 'large'}
-                                startIcon={<HomeIcon />}
                                 onClick={handleGoHome}
+                                startIcon={<HomeIcon />}
                                 fullWidth={isMobile}
                             >
-                                Bosh sahifa
+                                Bosh sahifaga qaytish
                             </Button>
                         </Stack>
-
-                        {/* Additional Help Text */}
-                        {errorType === 'forbidden' &&
-                            keycloak.authenticated &&
-                            hasCSharpQuizAccess(keycloak) && (
-                                <Typography
-                                variant="caption"
-                                color="text.secondary"
-                                sx={{ mt: 3, display: 'block' }}
-                                >
-                                    Agar sizda kirish huquqi bo'lishi kerak deb
-                                    hisoblasangiz, administrator bilan
-                                    bog'laning.
-                            </Typography>
-                            )}
                     </Box>
                 </Container>
             );
@@ -541,39 +574,21 @@ export const EnhancedQuizApp: React.FC = () => {
 
         if (!currentQuestion) {
             return (
-                <Container maxWidth="md" sx={{ py: { xs: 2, sm: 4 } }}>
+                <Container maxWidth="lg" sx={{ py: { xs: 2, sm: 4 } }}>
                     <Box
                         display="flex"
                         flexDirection="column"
                         justifyContent="center"
                         alignItems="center"
                         minHeight={{ xs: '70vh', sm: '60vh' }}
-                        textAlign="center"
-                        px={{ xs: 2, sm: 3 }}
+                        gap={2}
                     >
                         <Typography
                             variant={isMobile ? 'h6' : 'h5'}
                             color="text.secondary"
-                            gutterBottom
                         >
-                            Savollar mavjud emas
+                            Savollar topilmadi
                         </Typography>
-                        <Typography
-                            variant={isMobile ? 'body2' : 'body1'}
-                            color="text.secondary"
-                            sx={{ mb: 3 }}
-                        >
-                            Ushbu to'plamda hali savollar yo'q.
-                        </Typography>
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            size={isMobile ? 'medium' : 'large'}
-                            startIcon={<HomeIcon />}
-                            onClick={handleGoHome}
-                        >
-                            Orqaga qaytish
-                        </Button>
                     </Box>
                 </Container>
             );
@@ -620,6 +635,7 @@ export const EnhancedQuizApp: React.FC = () => {
                         onAnswerChange={handleAnswerChange}
                         questionNumber={currentQuestionIndex + 1}
                         totalQuestions={filteredQuestions.length}
+                        hasPreviousAnswer={hasPreviousAnswer}
                     />
                 </Container>
 
@@ -654,18 +670,26 @@ export const EnhancedQuizApp: React.FC = () => {
                         <Fab
                             color="primary"
                             onClick={handleShowResults}
-                            disabled={!isAnswered}
+                            disabled={!isAnswered || isSubmitting}
                             sx={{ ml: 1 }}
                         >
-                            <CheckCircle />
+                            {isSubmitting ? (
+                                <CircularProgress size={24} color="inherit" />
+                            ) : (
+                                <CheckCircle />
+                            )}
                         </Fab>
                     ) : (
                         <IconButton
                             onClick={handleNext}
-                            disabled={!isAnswered}
+                            disabled={!isAnswered || isSubmitting}
                             color="primary"
                         >
-                            <ArrowForward />
+                            {isSubmitting ? (
+                                <CircularProgress size={24} color="inherit" />
+                            ) : (
+                                <ArrowForward />
+                            )}
                         </IconButton>
                     )}
                 </Paper>

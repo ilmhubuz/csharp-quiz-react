@@ -14,10 +14,14 @@ export function useApi(): AuthenticatedApiClient {
 
     const authenticatedApiClient = useMemo(() => {
         return {
-            get: <T>(endpoint: string) => apiClient.get<T>(endpoint, keycloak?.token),
-            post: <T>(endpoint: string, data?: any) => apiClient.post<T>(endpoint, data, keycloak?.token),
-            put: <T>(endpoint: string, data?: any) => apiClient.put<T>(endpoint, data, keycloak?.token),
-            delete: <T>(endpoint: string) => apiClient.delete<T>(endpoint, keycloak?.token),
+            get: <T>(endpoint: string) =>
+                apiClient.get<T>(endpoint, keycloak?.token),
+            post: <T>(endpoint: string, data?: any) =>
+                apiClient.post<T>(endpoint, data, keycloak?.token),
+            put: <T>(endpoint: string, data?: any) =>
+                apiClient.put<T>(endpoint, data, keycloak?.token),
+            delete: <T>(endpoint: string) =>
+                apiClient.delete<T>(endpoint, keycloak?.token),
         };
     }, [keycloak?.token]);
 

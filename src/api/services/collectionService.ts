@@ -23,9 +23,9 @@ export class CollectionService {
     async getCollectionById(id: number): Promise<CollectionResponse | null> {
         try {
             const client = this.authenticatedApiClient || apiClient;
-            const response = await client.get<
-                ApiResponse<CollectionResponse>
-            >(`${this.baseEndpoint}/${id}`);
+            const response = await client.get<ApiResponse<CollectionResponse>>(
+                `${this.baseEndpoint}/${id}`
+            );
             return response.data || null;
         } catch (error) {
             console.error(`Failed to fetch collection ${id}:`, error);
@@ -34,13 +34,13 @@ export class CollectionService {
     }
 
     async getCollectionByCode(
-        code: string
+        code: string,
     ): Promise<CollectionResponse | null> {
         try {
             const client = this.authenticatedApiClient || apiClient;
-            const response = await client.get<
-                ApiResponse<CollectionResponse>
-            >(`${this.baseEndpoint}/code/${code}`);
+            const response = await client.get<ApiResponse<CollectionResponse>>(
+                `${this.baseEndpoint}/code/${code}`
+            );
             return response.data || null;
         } catch (error) {
             console.error(`Failed to fetch collection by code ${code}:`, error);
@@ -52,6 +52,8 @@ export class CollectionService {
 export const collectionService = new CollectionService();
 
 // Function to create an authenticated collection service
-export function createAuthenticatedCollectionService(authenticatedApiClient: AuthenticatedApiClient) {
+export function createAuthenticatedCollectionService(
+    authenticatedApiClient: AuthenticatedApiClient
+) {
     return new CollectionService(authenticatedApiClient);
 }

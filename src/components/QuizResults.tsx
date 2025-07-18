@@ -475,7 +475,8 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                             <Box display="flex" alignItems="center" gap={1}>
                                 <Cancel color="error" fontSize="small" />
                                 <Typography variant="body1">
-                                    <strong>{incorrectAnswers}</strong> Noto'g'ri
+                                    <strong>{incorrectAnswers}</strong>{' '}
+                                    Noto'g'ri
                                 </Typography>
                             </Box>
                             <Box display="flex" alignItems="center" gap={1}>
@@ -606,7 +607,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                                 <DiffEditor
                                                     originalCode={getOriginalCode(
                                                         result.question
-                                                    )}
+                                                        )}
                                                     modifiedCode={
                                                         result.userAnswer as string
                                                     }
@@ -618,7 +619,8 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                                     elevation={2}
                                                     sx={{
                                                         p: 0,
-                                                        backgroundColor: 'grey.900',
+                                                        backgroundColor:
+                                                            'grey.900',
                                                         border: 1,
                                                         borderColor: 'divider',
                                                     }}
@@ -627,7 +629,8 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                                         sx={{
                                                             p: 2,
                                                             borderBottom: 1,
-                                                            borderColor: 'divider',
+                                                            borderColor:
+                                                                'divider',
                                                         }}
                                                     >
                                                         <Typography

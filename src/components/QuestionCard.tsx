@@ -7,7 +7,9 @@ import {
     Chip,
     Paper,
     Grid,
+    Alert,
 } from '@mui/material';
+import { CheckCircle as CheckCircleIcon } from '@mui/icons-material';
 import type {
     Question,
     MCQQuestion,
@@ -28,6 +30,7 @@ interface QuestionCardProps {
     onAnswerChange: (questionId: number, answer: string[] | string) => void;
     questionNumber: number;
     totalQuestions: number;
+    hasPreviousAnswer?: boolean;
 }
 
 export const QuestionCard: React.FC<QuestionCardProps> = ({
@@ -36,6 +39,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     onAnswerChange,
     questionNumber,
     totalQuestions,
+    hasPreviousAnswer = false,
 }) => {
     const isMCQ = question.type === 'mcq';
     const isFill = question.type === 'fill';
@@ -78,6 +82,18 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             }}
         >
             <CardContent sx={{ p: 4 }}>
+                {/* Previous Answer Alert */}
+                {hasPreviousAnswer && (
+                    <Alert
+                        icon={<CheckCircleIcon />}
+                        severity="info"
+                        sx={{ mb: 3 }}
+                    >
+                        Avvalgi javobingiz yuklandi. Agar xohlasangiz, uni
+                        o'zgartirishingiz mumkin.
+                    </Alert>
+                )}
+
                 {/* Header */}
                 <Box
                     display="flex"
@@ -245,7 +261,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                     <>
                         {/* First Row: Code Snippet and Question Prompt */}
                         <Grid container spacing={4} sx={{ mb: 4 }}>
-                            {/* Left Column - Read-only Code Snippet */}
+                            {/* Left Column - Code Snippet */}
                             <Grid size={{ xs: 12, md: 6 }}>
                                 <Paper
                                     elevation={2}
@@ -308,40 +324,50 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                             </Grid>
                         </Grid>
 
-                        {/* Second Row: Console Output Input */}
-                        <Grid container spacing={4}>
+                        {/* Second Row: Answer Input */}
+                        <Grid container spacing={4} sx={{ mb: 4 }}>
                             <Grid size={{ xs: 12 }}>
                                 <Paper
                                     elevation={2}
                                     sx={{
-                                        p: 0,
-                                        backgroundColor: 'grey.900',
+                                        p: 3,
+                                        backgroundColor: 'background.default',
                                         border: 1,
                                         borderColor: 'divider',
                                     }}
                                 >
-                                    <Box
-                                        sx={{
-                                            p: 2,
-                                            borderBottom: 1,
-                                            borderColor: 'divider',
-                                        }}
+                                    <Typography
+                                        variant="subtitle2"
+                                        color="text.secondary"
+                                        mb={2}
+                                        fontWeight="bold"
                                     >
-                                        <Typography
-                                            variant="subtitle2"
-                                            color="text.secondary"
-                                            fontWeight="bold"
-                                        >
-                                            Console Output (Your Answer)
-                                        </Typography>
-                                    </Box>
-                                    <CodeEditor
-                                        code={(answer as string) || ''}
-                                        editable={true}
-                                        onChange={
-                                            handleOutputPredictionAnswerChange
+                                        Your Answer
+                                    </Typography>
+                                    <Box
+                                        component="input"
+                                        type="text"
+                                        value={(answer as string) || ''}
+                                        onChange={e =>
+                                            handleOutputPredictionAnswerChange(
+                                                e.target.value
+                                            )
                                         }
-                                        language="plaintext"
+                                        placeholder="Enter the expected output..."
+                                        sx={{
+                                            width: '100%',
+                                            p: 2,
+                                            border: 1,
+                                            borderColor: 'divider',
+                                            borderRadius: 1,
+                                            fontSize: '1rem',
+                                            fontFamily: 'monospace',
+                                            backgroundColor: 'background.paper',
+                                            '&:focus': {
+                                                outline: 'none',
+                                                borderColor: 'primary.main',
+                                            },
+                                        }}
                                     />
                                 </Paper>
                             </Grid>
@@ -352,9 +378,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 {/* Code Writing Question Layout */}
                 {isCodeWriting && (
                     <>
-                        {/* First Row: Question Prompt */}
+                        {/* First Row: Question Prompt and Examples */}
                         <Grid container spacing={4} sx={{ mb: 4 }}>
-                            <Grid size={{ xs: 12 }}>
+                            {/* Left Column - Question Prompt */}
+                            <Grid size={{ xs: 12, md: 6 }}>
                                 <Paper
                                     elevation={1}
                                     sx={{
@@ -362,6 +389,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                                         backgroundColor: 'background.default',
                                         border: 1,
                                         borderColor: 'divider',
+                                        height: 'fit-content',
                                     }}
                                 >
                                     <Typography
@@ -377,104 +405,66 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                                     />
                                 </Paper>
                             </Grid>
-                        </Grid>
 
-                        {/* Usage Example Row (before examples) */}
-                        {codeWritingQuestion.codeAfter && (
-                            <Grid container spacing={4} sx={{ mb: 4 }}>
-                                <Grid size={{ xs: 12 }}>
+                            {/* Right Column - Examples */}
+                            <Grid size={{ xs: 12, md: 6 }}>
+                                {codeWritingQuestion.examples &&
+                                    codeWritingQuestion.examples.length > 0 && (
                                     <Paper
-                                        elevation={2}
+                                        elevation={1}
                                         sx={{
-                                            p: 0,
-                                            backgroundColor: 'grey.900',
+                                            p: 3,
+                                            backgroundColor:
+                                                    'background.default',
                                             border: 1,
                                             borderColor: 'divider',
+                                            height: 'fit-content',
                                         }}
                                     >
-                                        <Box
-                                            sx={{
-                                                p: 2,
-                                                borderBottom: 1,
-                                                borderColor: 'divider',
-                                            }}
-                                        >
-                                            <Typography
-                                                variant="subtitle2"
-                                                color="text.secondary"
-                                                fontWeight="bold"
-                                            >
-                                                Usage Example
-                                            </Typography>
-                                        </Box>
-                                        <CodeEditor
-                                            code={codeWritingQuestion.codeAfter
-                                                .replace(/^```csharp\n/, '')
-                                                .replace(/\n```$/, '')}
-                                            editable={false}
-                                            language="csharp"
-                                        />
-                                    </Paper>
-                                </Grid>
-                            </Grid>
-                        )}
-
-                        {/* Examples Row */}
-                        {codeWritingQuestion.examples &&
-                            codeWritingQuestion.examples.length > 0 && (
-                                <Grid container spacing={4} sx={{ mb: 4 }}>
-                                <Grid size={{ xs: 12 }}>
                                         <Typography
-                                            variant="h6"
-                                            color="text.primary"
+                                            variant="subtitle2"
+                                            color="text.secondary"
                                             mb={2}
                                             fontWeight="bold"
                                         >
-                                            Input/Output namunalar
-                                    </Typography>
-                                        {codeWritingQuestion.examples.map(
-                                            (example, index) => (
-                                                <Box key={index} sx={{ mb: 3 }}>
-                                                    <Paper
-                                                        elevation={2}
-                                                        sx={{
-                                                            p: 0,
-                                                            backgroundColor:
-                                                                'grey.900',
-                                                        border: 1,
-                                                            borderColor:
-                                                                'divider',
-                                                        }}
-                                                >
+                                                Examples
+                                        </Typography>
+                                        <Grid container spacing={2}>
+                                            {codeWritingQuestion.examples.map(
+                                                (example, index) => (
+                                                    <Grid
+                                                        size={{ xs: 12 }}
+                                                        key={index}
+                                                    >
                                                         <Box
                                                             sx={{
                                                                 p: 2,
-                                                                borderBottom: 1,
+                                                                backgroundColor:
+                                                                        'grey.900',
+                                                                borderRadius: 1,
+                                                                border: 1,
                                                                 borderColor:
-                                                                    'divider',
+                                                                        'divider',
                                                             }}
                                                         >
-                                                            <Typography
-                                                                variant="subtitle2"
-                                                                color="text.secondary"
-                                                                fontWeight="bold"
-                                                            >
-                                                                Namuna{' '}
-                                                            {index + 1}
-                                                        </Typography>
-                                                    </Box>
-                                                        <CodeEditor
-                                                            code={example}
-                                                            editable={false}
-                                                        language="bash"
-                                                    />
-                                                    </Paper>
-                                            </Box>
-                                            )
-                                        )}
-                                </Grid>
+                                                            <CodeEditor
+                                                                code={
+                                                                    example
+                                                                }
+                                                                editable={
+                                                                    false
+                                                                }
+                                                                language="bash"
+                                                            />
+                                                        </Box>
+                                                    </Grid>
+                                                )
+                                            )}
+                                        </Grid>
+                                    </Paper>
+                                )}
                             </Grid>
-                        )}
+                        </Grid>
 
                         {/* Code Input Row */}
                         <Grid container spacing={4} sx={{ mb: 4 }}>
@@ -603,11 +593,11 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                                         }
                                         onAnswerChange={(
                                             selectedOptions: string[]
-                                    ) =>
+                                        ) =>
                                             onAnswerChange(
                                                 question.id,
                                                 selectedOptions,
-                                        )
+                                            )
                                     }
                                 />
                                 ) : (
@@ -616,11 +606,11 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                                     selectedAnswer={answer as string}
                                         onAnswerChange={(
                                             selectedOption: string
-                                    ) =>
+                                        ) =>
                                             onAnswerChange(
                                                 question.id,
-                                                selectedOption,
-                                        )
+                                                selectedOption
+                                            )
                                     }
                                 />
                             )}

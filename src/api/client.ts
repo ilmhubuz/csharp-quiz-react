@@ -12,7 +12,7 @@ class ApiClient {
     private async request<T>(
         endpoint: string,
         options: RequestInit = {},
-        token?: string
+        token?: string,
     ): Promise<T> {
         const url = `${this.baseURL}${endpoint}`;
         const defaultOptions: RequestInit = {
@@ -36,7 +36,7 @@ class ApiClient {
             const controller = new AbortController();
             const timeoutId = setTimeout(
                 () => controller.abort(),
-                this.timeout
+                this.timeout,
             );
 
             const response = await fetch(url, {
@@ -52,7 +52,7 @@ class ApiClient {
                     errorData.message ||
                         `HTTP ${response.status}: ${response.statusText}`,
                     response.status,
-                    errorData.errors
+                    errorData.errors,
                 );
             }
 
@@ -66,7 +66,7 @@ class ApiClient {
             }
             throw new ApiError(
                 error instanceof Error ? error.message : 'Network error',
-                0,
+                0
             );
         }
     }
@@ -87,18 +87,26 @@ class ApiClient {
 
     // POST request
     async post<T>(endpoint: string, data?: any, token?: string): Promise<T> {
-        return this.request<T>(endpoint, {
-            method: 'POST',
-            body: data ? JSON.stringify(data) : undefined,
-        }, token);
+        return this.request<T>(
+            endpoint,
+            {
+                method: 'POST',
+                body: data ? JSON.stringify(data) : undefined,
+            },
+            token
+        );
     }
 
     // PUT request
     async put<T>(endpoint: string, data?: any, token?: string): Promise<T> {
-        return this.request<T>(endpoint, {
-            method: 'PUT',
-            body: data ? JSON.stringify(data) : undefined,
-        }, token);
+        return this.request<T>(
+            endpoint,
+            {
+                method: 'PUT',
+                body: data ? JSON.stringify(data) : undefined,
+            },
+            token
+        );
     }
 
     // DELETE request
@@ -115,7 +123,7 @@ export class ApiError extends Error {
     constructor(
         message: string,
         public status: number,
-        public errors?: string[]
+        public errors?: string[],
     ) {
         super(message);
         this.name = 'ApiError';

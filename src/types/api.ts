@@ -77,9 +77,14 @@ export interface TestCaseResponse {
 }
 
 export interface PreviousAnswerResponse {
+    id: number;
+    questionId: number;
     answer: string | string[];
-    submittedAt: string;
     isCorrect: boolean;
+    timeSpentSeconds: number;
+    submittedAt: string;
+    attemptNumber: number;
+    explanation?: string;
 }
 
 // Answer Types
@@ -90,9 +95,14 @@ export interface SubmitAnswerRequest {
 }
 
 export interface AnswerSubmissionResponse {
-    success: boolean;
+    id: number;
+    questionId: number;
+    answer: string | string[];
     isCorrect: boolean;
-    message?: string;
+    timeSpentSeconds: number;
+    submittedAt: string;
+    attemptNumber: number;
+    explanation?: string;
 }
 
 // Review/Result Types

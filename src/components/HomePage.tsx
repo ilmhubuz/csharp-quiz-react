@@ -12,7 +12,10 @@ import {
     CircularProgress,
 } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
-import { collectionService, createAuthenticatedCollectionService } from '../api/services/collectionService';
+import {
+    collectionService,
+    createAuthenticatedCollectionService,
+} from '../api/services/collectionService';
 import { useApi } from '../hooks/useApi';
 import { useApiState } from '../hooks/useApiState';
 import { useKeycloak } from '@react-keycloak/web';
@@ -37,7 +40,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
 
     useEffect(() => {
         if (keycloak.authenticated) {
-            const authenticatedCollectionService = createAuthenticatedCollectionService(authenticatedApiClient);
+            const authenticatedCollectionService =
+                createAuthenticatedCollectionService(authenticatedApiClient);
             execute(() => authenticatedCollectionService.getCollections());
         } else {
             execute(() => collectionService.getCollections());
@@ -207,7 +211,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
                                         variant="determinate"
                                         value={stats.completionRate}
                                         color={getProgressColor(
-                                            stats.completionRate
+                                            stats.completionRate,
                                         )}
                                         sx={{
                                             height: 8,

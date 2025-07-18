@@ -14,20 +14,20 @@ export class QuestionService {
     async getQuestionsByCollection(
         collectionId: number,
         page: number = 1,
-        pageSize: number = 10,
+        pageSize: number = 10
     ): Promise<PaginatedApiResponse<QuestionResponse>> {
         try {
             const client = this.authenticatedApiClient || apiClient;
             const response = await client.get<
                 PaginatedApiResponse<QuestionResponse>
             >(
-                `${this.baseEndpoint}?collectionId=${collectionId}&page=${page}&pageSize=${pageSize}`,
+                `${this.baseEndpoint}?collectionId=${collectionId}&page=${page}&pageSize=${pageSize}`
             );
             return response;
         } catch (error) {
             console.error(
                 `Failed to fetch questions for collection ${collectionId}:`,
-                error,
+                error
             );
             throw error;
         }
@@ -36,50 +36,50 @@ export class QuestionService {
     async getQuestionsByCollectionCode(
         collectionCode: string,
         page: number = 1,
-        pageSize: number = 10,
+        pageSize: number = 10
     ): Promise<PaginatedApiResponse<QuestionResponse>> {
         try {
             const client = this.authenticatedApiClient || apiClient;
             const response = await client.get<
                 PaginatedApiResponse<QuestionResponse>
             >(
-                `${this.baseEndpoint}?collectionCode=${collectionCode}&page=${page}&pageSize=${pageSize}`,
+                `${this.baseEndpoint}?collectionCode=${collectionCode}&page=${page}&pageSize=${pageSize}`
             );
             return response;
         } catch (error) {
             console.error(
                 `Failed to fetch questions for collection code ${collectionCode}:`,
-                error,
+                error
             );
             throw error;
         }
     }
 
     async getPreviewQuestions(
-        collectionId: number,
+        collectionId: number
     ): Promise<QuestionResponse[]> {
         try {
             const client = this.authenticatedApiClient || apiClient;
-            const response = await client.get<
-                ApiResponse<QuestionResponse[]>
-            >(`${this.baseEndpoint}/preview?collectionId=${collectionId}`);
+            const response = await client.get<ApiResponse<QuestionResponse[]>>(
+                `${this.baseEndpoint}/preview?collectionId=${collectionId}`
+            );
             return response.data || [];
         } catch (error) {
             console.error(
                 `Failed to fetch preview questions for collection ${collectionId}:`,
-                error,
+                error
             );
             throw error;
         }
     }
 
     async getQuestionById(
-        questionId: number,
+        questionId: number
     ): Promise<QuestionResponse | null> {
         try {
             const client = this.authenticatedApiClient || apiClient;
             const response = await client.get<ApiResponse<QuestionResponse>>(
-                `${this.baseEndpoint}/${questionId}`,
+                `${this.baseEndpoint}/${questionId}`
             );
             return response.data || null;
         } catch (error) {
@@ -92,6 +92,8 @@ export class QuestionService {
 export const questionService = new QuestionService();
 
 // Function to create an authenticated question service
-export function createAuthenticatedQuestionService(authenticatedApiClient: any) {
+export function createAuthenticatedQuestionService(
+    authenticatedApiClient: any
+) {
     return new QuestionService(authenticatedApiClient);
 }
