@@ -330,44 +330,34 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                                 <Paper
                                     elevation={2}
                                     sx={{
-                                        p: 3,
-                                        backgroundColor: 'background.default',
+                                        p: 0,
+                                        backgroundColor: 'grey.900',
                                         border: 1,
                                         borderColor: 'divider',
                                     }}
                                 >
-                                    <Typography
-                                        variant="subtitle2"
-                                        color="text.secondary"
-                                        mb={2}
-                                        fontWeight="bold"
-                                    >
-                                        Your Answer
-                                    </Typography>
                                     <Box
-                                        component="input"
-                                        type="text"
-                                        value={(answer as string) || ''}
-                                        onChange={e =>
-                                            handleOutputPredictionAnswerChange(
-                                                e.target.value
-                                            )
-                                        }
-                                        placeholder="Enter the expected output..."
                                         sx={{
-                                            width: '100%',
                                             p: 2,
-                                            border: 1,
+                                            borderBottom: 1,
                                             borderColor: 'divider',
-                                            borderRadius: 1,
-                                            fontSize: '1rem',
-                                            fontFamily: 'monospace',
-                                            backgroundColor: 'background.paper',
-                                            '&:focus': {
-                                                outline: 'none',
-                                                borderColor: 'primary.main',
-                                            },
                                         }}
+                                    >
+                                        <Typography
+                                            variant="subtitle2"
+                                            color="text.secondary"
+                                            fontWeight="bold"
+                                        >
+                                            Your Answer
+                                        </Typography>
+                                    </Box>
+                                    <CodeEditor
+                                        code={(answer as string) || ''}
+                                        editable={true}
+                                        onChange={handleOutputPredictionAnswerChange}
+                                        language="text"
+                                        minLines={3}
+                                        maxLines={10}
                                     />
                                 </Paper>
                             </Grid>

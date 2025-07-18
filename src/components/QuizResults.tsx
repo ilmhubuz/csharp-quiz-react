@@ -260,15 +260,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
         }
     };
 
-    // Helper functions to determine question types
-    const isCodeQuestion = (type: string) => {
-        return (
-            type === 'fill' ||
-            type === 'error_spotting' ||
-            type === 'code_writing'
-        );
-    };
-
+    // Helper function to determine if question uses diff editor
     const isDiffQuestion = (type: string) => {
         return type === 'fill' || type === 'error_spotting';
     };
@@ -300,88 +292,90 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
         return '';
     };
 
-    const formatUserAnswer = (result: QuestionResult) => {
-        const { userAnswer } = result;
-        if (!userAnswer) return 'Javob berilmagan';
 
-        if (Array.isArray(userAnswer)) {
-            return userAnswer.join(', ');
-        }
-        return userAnswer as string;
-    };
 
-    const renderCodeAnswer = (answer: string) => {
+    // Helper function to render MCQ options for results
+    const renderMCQOptions = (question: any, selectedAnswers: string[] = [], correctAnswers: string[] = []) => {
+        if (!question.options) return null;
+
         return (
-            <Box
-                component="pre"
-                sx={{
-                    backgroundColor: 'grey.900',
-                    color: 'grey.100',
-                    p: 2,
-                    borderRadius: 1,
-                    fontSize: '0.875rem',
-                    fontFamily: 'monospace',
-                    overflow: 'auto',
-                    maxHeight: '300px',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                }}
-            >
-                <code>{answer}</code>
-            </Box>
+            <Grid container spacing={2}>
+                {question.options.map((option: any) => {
+                    const isSelected = selectedAnswers.includes(option.id);
+                    const isCorrect = correctAnswers.includes(option.id);
+                    
+                    return (
+                        <Grid size={{ xs: 12, sm: 6 }} key={option.id}>
+                            <Paper
+                                elevation={isSelected || isCorrect ? 3 : 1}
+                                sx={{
+                                    p: 2,
+                                    backgroundColor: isCorrect 
+                                        ? 'success.dark' 
+                                        : isSelected 
+                                        ? 'error.dark' 
+                                        : 'background.paper',
+                                    border: 2,
+                                    borderColor: isCorrect 
+                                        ? 'success.main' 
+                                        : isSelected 
+                                        ? 'error.main' 
+                                        : 'transparent',
+                                }}
+                            >
+                                <Box display="flex" alignItems="center">
+                                    <Typography
+                                        variant="body1"
+                                        component="span"
+                                        fontWeight="bold"
+                                        color={isCorrect || isSelected ? 'white' : 'text.primary'}
+                                        sx={{ mr: 1, lineHeight: 1.6 }}
+                                    >
+                                        {option.id}.
+                                    </Typography>
+                                    <Box
+                                        component="span"
+                                        sx={{
+                                            flex: 1,
+                                            '& *': {
+                                                color: isCorrect || isSelected 
+                                                    ? 'white !important' 
+                                                    : 'inherit !important',
+                                            },
+                                        }}
+                                    >
+                                        <MarkdownRenderer content={option.option} />
+                                    </Box>
+                                    {isSelected && (
+                                        <Chip
+                                            label="Sizning javobingiz"
+                                            size="small"
+                                            sx={{
+                                                ml: 1,
+                                                backgroundColor: 'rgba(255,255,255,0.2)',
+                                                color: 'white',
+                                                fontWeight: 'bold'
+                                            }}
+                                        />
+                                    )}
+                                    {isCorrect && (
+                                        <CheckCircle 
+                                            sx={{ ml: 1, color: 'white' }}
+                                            fontSize="small"
+                                        />
+                                    )}
+                                </Box>
+                            </Paper>
+                        </Grid>
+                    );
+                })}
+            </Grid>
         );
     };
 
-    const renderCorrectAnswer = (correctAnswer: any) => {
-        if (!correctAnswer) return null;
 
-        // Handle different answer types based on question type
-        if (correctAnswer.options) {
-            // MCQ - show correct options
-            const correctOptions = correctAnswer.options
-                .filter((opt: any) => opt.isCorrect)
-                .map((opt: any) => opt.text)
-                .join(', ');
-            return (
-                <Typography variant="body2" color="success.main">
-                    {correctOptions}
-                </Typography>
-            );
-        }
 
-        if (correctAnswer.booleanAnswer !== undefined) {
-            // True/False
-            return (
-                <Typography variant="body2" color="success.main">
-                    {correctAnswer.booleanAnswer ? "To'g'ri" : "Noto'g'ri"}
-                </Typography>
-            );
-        }
-        if (correctAnswer.textAnswer) {
-            // Fill, Error Spotting, Output Prediction
-            if (
-                correctAnswer.textAnswer.includes('```') ||
-                correctAnswer.textAnswer.includes('{') ||
-                correctAnswer.textAnswer.includes(';')
-            ) {
-                const cleanAnswer = correctAnswer.textAnswer
-                    .replace(/```\w*\n?/g, '')
-                    .replace(/```/g, '')
-                    .trim();
-                return renderCodeAnswer(cleanAnswer);
-            }
-            return (
-                <Typography variant="body2" color="success.main">
-                    {correctAnswer.textAnswer}
-                </Typography>
-            );
-        }
-        if (correctAnswer.sampleSolution) {
-            // Code Writing
-            return renderCodeAnswer(correctAnswer.sampleSolution);
-        }
-        return null;
-    };
+
 
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -591,106 +585,168 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                             />
                         </Box>
 
-                        <Box sx={{ mb: 2 }}>
-                            <Typography
-                                variant="body2"
-                                color="text.secondary"
-                                fontWeight="bold"
-                                sx={{ mb: 1 }}
-                            >
-                                Sizning Javobingiz:
-                            </Typography>
-                            <Box display="flex" alignItems="center" gap={1}>
-                                {isCodeQuestion(result.question.type) ? (
-                                    result.userAnswer ? (
-                                        <Box sx={{ flex: 1 }}>
-                                            {isDiffQuestion(
-                                                result.question.type
-                                            ) ? (
-                                                <DiffEditor
-                                                    originalCode={getOriginalCode(
-                                                        result.question
-                                                        )}
-                                                    modifiedCode={
-                                                        result.userAnswer as string
-                                                    }
-                                                    language="csharp"
-                                                    title="Sizning Javobingiz"
-                                                />
-                                            ) : (
-                                                <Paper
-                                                    elevation={2}
-                                                    sx={{
-                                                        p: 0,
-                                                        backgroundColor:
-                                                            'grey.900',
-                                                        border: 1,
-                                                        borderColor: 'divider',
-                                                    }}
-                                                >
-                                                    <Box
-                                                        sx={{
-                                                            p: 2,
-                                                            borderBottom: 1,
-                                                            borderColor:
-                                                                'divider',
-                                                        }}
-                                                    >
-                                                        <Typography
-                                                            variant="subtitle2"
-                                                            color="text.secondary"
-                                                            fontWeight="bold"
-                                                        >
-                                                            Sizning Javobingiz
-                                                        </Typography>
-                                                    </Box>
-                                                    <CodeEditor
-                                                        code={
-                                                            result.userAnswer as string
-                                                        }
-                                                        editable={false}
-                                                        language="csharp"
-                                                    />
-                                                </Paper>
-                                            )}
-                                        </Box>
-                                    ) : (
-                                        <Typography
-                                            variant="body2"
-                                            color="text.secondary"
-                                        >
-                                            Javob berilmagan
-                                        </Typography>
-                                    )
-                                ) : (
-                                    <Typography
-                                        variant="body2"
-                                        sx={{ flex: 1 }}
-                                    >
-                                        {formatUserAnswer(result)}
-                                    </Typography>
-                                )}
-                                {result.isCorrect && (
-                                    <CheckCircle
-                                        color="success"
-                                        fontSize="small"
-                                    />
-                                )}
-                            </Box>
-                        </Box>
-
-                        {!result.isCorrect && result.correctAnswer && (
+                        {/* MCQ Questions */}
+                        {result.question.type === 'mcq' && (
                             <Box sx={{ mb: 2 }}>
                                 <Typography
                                     variant="body2"
-                                    color="success.main"
+                                    color="text.secondary"
+                                    fontWeight="bold"
+                                    sx={{ mb: 2 }}
+                                >
+                                    Javoblar:
+                                </Typography>
+                                {renderMCQOptions(
+                                    result.question,
+                                    result.userAnswer as string[] || [],
+                                    result.correctAnswer?.options?.filter((opt: any) => opt.isCorrect).map((opt: any) => opt.id) || []
+                                )}
+                                <Box display="flex" alignItems="center" gap={1} mt={2}>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Sizning javobingiz:
+                                    </Typography>
+                                    {result.userAnswer && Array.isArray(result.userAnswer) ? (
+                                        <Box display="flex" gap={1}>
+                                            {result.userAnswer.map((answer, index) => (
+                                                <Chip
+                                                    key={index}
+                                                    label={answer}
+                                                    size="small"
+                                                    sx={{
+                                                        backgroundColor: 'text.primary',
+                                                        color: 'background.paper',
+                                                        fontWeight: 'bold'
+                                                    }}
+                                                />
+                                            ))}
+                                        </Box>
+                                    ) : (
+                                        <Typography variant="body2" color="text.secondary">
+                                            Javob berilmagan
+                                        </Typography>
+                                    )}
+                                    {result.isCorrect && (
+                                        <CheckCircle color="success" fontSize="small" />
+                                    )}
+                                </Box>
+                            </Box>
+                        )}
+
+                        {/* True/False Questions */}
+                        {result.question.type === 'true_false' && (
+                            <Box sx={{ mb: 2 }}>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
                                     fontWeight="bold"
                                     sx={{ mb: 1 }}
                                 >
-                                    To'g'ri Javob:
+                                    Sizning Javobingiz:
                                 </Typography>
-                                <Box>
-                                    {isCodeQuestion(result.question.type) ? (
+                                <Box display="flex" alignItems="center" gap={1}>
+                                    <Typography variant="body2" sx={{ flex: 1 }}>
+                                        {result.userAnswer || 'Javob berilmagan'}
+                                    </Typography>
+                                    {result.isCorrect && (
+                                        <CheckCircle color="success" fontSize="small" />
+                                    )}
+                                </Box>
+                                {!result.isCorrect && result.correctAnswer && (
+                                    <Box sx={{ mt: 1 }}>
+                                        <Typography
+                                            variant="body2"
+                                            color="success.main"
+                                            fontWeight="bold"
+                                        >
+                                            To'g'ri Javob: {result.correctAnswer.booleanAnswer ? 'true' : 'false'}
+                                        </Typography>
+                                    </Box>
+                                )}
+                            </Box>
+                        )}
+
+                        {/* Code Questions (Fill, Error Spotting) */}
+                        {(result.question.type === 'fill' || result.question.type === 'error_spotting') && (
+                            <Box sx={{ mb: 2 }}>
+                                {result.userAnswer ? (
+                                    <Box sx={{ mb: 2 }}>
+                                        {isDiffQuestion(result.question.type) ? (
+                                            <DiffEditor
+                                                originalCode={getOriginalCode(result.question)}
+                                                modifiedCode={result.userAnswer as string}
+                                                language="csharp"
+                                                title="Sizning Javobingiz"
+                                            />
+                                        ) : (
+                                            <Paper
+                                                elevation={2}
+                                                sx={{
+                                                    p: 0,
+                                                    backgroundColor: 'grey.900',
+                                                    border: 1,
+                                                    borderColor: 'divider',
+                                                }}
+                                            >
+                                                <CodeEditor
+                                                    code={result.userAnswer as string}
+                                                    editable={false}
+                                                    language="csharp"
+                                                />
+                                            </Paper>
+                                        )}
+                                    </Box>
+                                ) : (
+                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                                        Javob berilmagan
+                                    </Typography>
+                                )}
+                                
+                                {!result.isCorrect && result.correctAnswer && (
+                                    <Paper
+                                        elevation={2}
+                                        sx={{
+                                            p: 0,
+                                            backgroundColor: 'grey.900',
+                                            border: 1,
+                                            borderColor: 'success.main',
+                                        }}
+                                    >
+                                        <Box
+                                            sx={{
+                                                p: 2,
+                                                borderBottom: 1,
+                                                borderColor: 'divider',
+                                            }}
+                                        >
+                                            <Typography
+                                                variant="subtitle2"
+                                                color="success.main"
+                                                fontWeight="bold"
+                                            >
+                                                To'g'ri Javob
+                                            </Typography>
+                                        </Box>
+                                        <CodeEditor
+                                            code={getCorrectAnswerCode(result.correctAnswer)}
+                                            editable={false}
+                                            language="csharp"
+                                        />
+                                    </Paper>
+                                )}
+                                
+                                <Box display="flex" alignItems="center" gap={1} mt={1}>
+                                    {result.isCorrect && (
+                                        <CheckCircle color="success" fontSize="small" />
+                                    )}
+                                </Box>
+                            </Box>
+                        )}
+
+                        {/* Output Prediction Questions */}
+                        {result.question.type === 'output_prediction' && (
+                            <Box sx={{ mb: 2 }}>
+                                <Grid container spacing={2}>
+                                    <Grid size={{ xs: 12, md: 6 }}>
                                         <Paper
                                             elevation={2}
                                             sx={{
@@ -712,31 +768,129 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                                     color="text.secondary"
                                                     fontWeight="bold"
                                                 >
-                                                    To'g'ri Javob
+                                                    Sizning Javobingiz
                                                 </Typography>
                                             </Box>
                                             <CodeEditor
-                                                code={getCorrectAnswerCode(
-                                                    result.correctAnswer
-                                                )}
+                                                code={result.userAnswer as string || 'Javob berilmagan'}
                                                 editable={false}
-                                                language="csharp"
+                                                language="text"
                                             />
                                         </Paper>
-                                    ) : (
+                                    </Grid>
+                                    {!result.isCorrect && result.correctAnswer && (
+                                        <Grid size={{ xs: 12, md: 6 }}>
+                                            <Paper
+                                                elevation={2}
+                                                sx={{
+                                                    p: 0,
+                                                    backgroundColor: 'grey.900',
+                                                    border: 1,
+                                                    borderColor: 'success.main',
+                                                }}
+                                            >
+                                                <Box
+                                                    sx={{
+                                                        p: 2,
+                                                        borderBottom: 1,
+                                                        borderColor: 'divider',
+                                                    }}
+                                                >
+                                                    <Typography
+                                                        variant="subtitle2"
+                                                        color="success.main"
+                                                        fontWeight="bold"
+                                                    >
+                                                        To'g'ri Javob
+                                                    </Typography>
+                                                </Box>
+                                                <CodeEditor
+                                                    code={result.correctAnswer.textAnswer || ''}
+                                                    editable={false}
+                                                    language="text"
+                                                />
+                                            </Paper>
+                                        </Grid>
+                                    )}
+                                </Grid>
+                                <Box display="flex" alignItems="center" gap={1} mt={1}>
+                                    {result.isCorrect && (
+                                        <CheckCircle color="success" fontSize="small" />
+                                    )}
+                                </Box>
+                            </Box>
+                        )}
+
+                        {/* Code Writing Questions */}
+                        {result.question.type === 'code_writing' && (
+                            <Box sx={{ mb: 2 }}>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    fontWeight="bold"
+                                    sx={{ mb: 1 }}
+                                >
+                                    Sizning Javobingiz:
+                                </Typography>
+                                {result.userAnswer ? (
+                                    <Paper
+                                        elevation={2}
+                                        sx={{
+                                            p: 0,
+                                            backgroundColor: 'grey.900',
+                                            border: 1,
+                                            borderColor: 'divider',
+                                            mb: 2
+                                        }}
+                                    >
+                                        <CodeEditor
+                                            code={result.userAnswer as string}
+                                            editable={false}
+                                            language="csharp"
+                                        />
+                                    </Paper>
+                                ) : (
+                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                                        Javob berilmagan
+                                    </Typography>
+                                )}
+                                
+                                {!result.isCorrect && result.correctAnswer && (
+                                    <Paper
+                                        elevation={2}
+                                        sx={{
+                                            p: 0,
+                                            backgroundColor: 'grey.900',
+                                            border: 1,
+                                            borderColor: 'success.main',
+                                        }}
+                                    >
                                         <Box
                                             sx={{
-                                                '& pre': {
-                                                    backgroundColor:
-                                                        'success.dark',
-                                                    color: 'success.contrastText',
-                                                },
+                                                p: 2,
+                                                borderBottom: 1,
+                                                borderColor: 'divider',
                                             }}
                                         >
-                                            {renderCorrectAnswer(
-                                                result.correctAnswer
-                                            )}
+                                            <Typography
+                                                variant="subtitle2"
+                                                color="success.main"
+                                                fontWeight="bold"
+                                            >
+                                                To'g'ri Javob
+                                            </Typography>
                                         </Box>
+                                        <CodeEditor
+                                            code={getCorrectAnswerCode(result.correctAnswer)}
+                                            editable={false}
+                                            language="csharp"
+                                        />
+                                    </Paper>
+                                )}
+                                
+                                <Box display="flex" alignItems="center" gap={1} mt={1}>
+                                    {result.isCorrect && (
+                                        <CheckCircle color="success" fontSize="small" />
                                     )}
                                 </Box>
                             </Box>
