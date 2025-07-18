@@ -1,7 +1,5 @@
 export type QuestionType = 'mcq' | 'true_false' | 'fill' | 'error_spotting' | 'output_prediction' | 'code_writing';
 
-export type CSharpVersion = '6.0' | '7.0' | '7.1' | '7.2' | '7.3' | '8.0' | '9.0' | '10.0' | '11.0' | '12.0' | '13.0';
-
 export type TopicCategory = 
   | 'asosiy-til-xususiyatlari'
   | 'tip-tizimi-oop' 
@@ -92,30 +90,6 @@ export interface CodeWritingQuestion {
 
 export type Question = MCQQuestion | TrueFalseQuestion | FillQuestion | ErrorSpotQuestion | OutputPredictionQuestion | CodeWritingQuestion;
 
-// Helper interfaces for organizing questions
-export interface TopicGroup {
-	category: TopicCategory;
-	subcategory: string;
-	questions: Question[];
-	totalQuestions: number;
-}
-
-export interface StudySession {
-	id: string;
-	name: string;
-	description: string;
-	questions: number[];
-	estimatedDurationMinutes: number;
-}
-
-export interface QuizSettings {
-	questionCount?: number;
-	categories?: TopicCategory[];
-	excludeIds?: number[];
-	randomizeOrder?: boolean;
-	timeLimit?: number;
-}
-
 // Progress Tracking Types
 export interface QuestionProgress {
   questionId: number;
@@ -179,50 +153,4 @@ export interface UserProgress {
   };
 }
 
-// Navigation and UI Types
-export type ViewMode = 'home' | 'quiz' | 'results';
 
-export interface FilterOptions {
-  categories: TopicCategory[];
-  types: QuestionType[];
-}
-
-export interface QuizConfig {
-  mode: 'category' | 'type' | 'mixed';
-  selectedCategories?: TopicCategory[];
-  selectedTypes?: QuestionType[];
-  randomizeOrder?: boolean;
-  questionLimit?: number;
-}
-
-// Category and Type Display Information
-export interface CategoryInfo {
-  id: TopicCategory;
-  name: string;
-  nameUz: string;
-  description: string;
-  icon: string;
-  color: string;
-}
-
-export interface TypeInfo {
-  id: QuestionType;
-  name: string;
-  nameUz: string;
-  description: string;
-  icon: string;
-  color: string;
-}
-
-export type CategoryMetadata = {
-  categoryId: number;
-  id: string;
-  title: string;
-  description?: string;
-  icon?: string;
-};
-
-export type CategoryFile = {
-  metadata: CategoryMetadata;
-  questions: Question[];
-};
