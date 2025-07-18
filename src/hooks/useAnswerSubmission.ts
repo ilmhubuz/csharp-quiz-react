@@ -63,7 +63,17 @@ export const useAnswerSubmission = ({
                 setPreviousAnswer(latestAnswer);
                 
                 if (latestAnswer && onAnswerLoaded) {
-                    onAnswerLoaded(latestAnswer.answer);
+                    // Check if the answer is a JSON string (from MCQ) and parse it back to array
+                    let parsedAnswer = latestAnswer.answer;
+                    if (typeof parsedAnswer === 'string' && parsedAnswer.startsWith('[') && parsedAnswer.endsWith(']')) {
+                        try {
+                            parsedAnswer = JSON.parse(parsedAnswer);
+                        } catch (e) {
+                            // If parsing fails, keep the original string
+                            console.warn('Failed to parse previous answer as JSON:', e);
+                        }
+                    }
+                    onAnswerLoaded(parsedAnswer);
                 }
             } catch (error: any) {
                 // If 404 is returned, it means user hasn't answered this question before
@@ -84,7 +94,16 @@ export const useAnswerSubmission = ({
         (currentAnswer: string | string[]): boolean => {
             if (!previousAnswer) return true; // No previous answer, so it's a new answer
 
-            const prevAnswer = previousAnswer.answer;
+            let prevAnswer = previousAnswer.answer;
+            
+            // Parse JSON string back to array if needed for comparison
+            if (typeof prevAnswer === 'string' && prevAnswer.startsWith('[') && prevAnswer.endsWith(']')) {
+                try {
+                    prevAnswer = JSON.parse(prevAnswer);
+                } catch (e) {
+                    // If parsing fails, keep as string
+                }
+            }
 
             // Compare answers based on their format
             if (Array.isArray(currentAnswer) && Array.isArray(prevAnswer)) {
@@ -124,9 +143,14 @@ export const useAnswerSubmission = ({
 
             setIsSubmitting(true);
             try {
+                // Convert MCQ array answers to JSON string for submission
+                const submissionAnswer = Array.isArray(answer) 
+                    ? JSON.stringify(answer)
+                    : answer;
+
                 const result = await answerService.submitAnswer(
                     questionId,
-                    answer,
+                    submissionAnswer,
                     timeSpent
                 );
 

@@ -58,7 +58,7 @@ export class ResultService {
                 answers: answers.map(answer => ({
                     questionId: answer.questionId,
                     answer: Array.isArray(answer.answer)
-                        ? answer.answer.join(',')
+                        ? JSON.stringify(answer.answer)
                         : answer.answer,
                     timeSpentSeconds: answer.timeSpentSeconds,
                 })),
