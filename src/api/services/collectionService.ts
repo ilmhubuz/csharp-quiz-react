@@ -1,12 +1,16 @@
 import { apiClient } from '../client';
 import type { CollectionResponse, ApiResponse } from '../../types/api';
+import type { AuthenticatedApiClient } from '../../hooks/useApi';
 
 export class CollectionService {
     private baseEndpoint = '/api/csharp/collections';
 
+    constructor(private authenticatedApiClient?: AuthenticatedApiClient) {}
+
     async getCollections(): Promise<CollectionResponse[]> {
         try {
-            const response = await apiClient.get<
+            const client = this.authenticatedApiClient || apiClient;
+            const response = await client.get<
                 ApiResponse<CollectionResponse[]>
             >(this.baseEndpoint);
             return response.data || [];
@@ -18,7 +22,8 @@ export class CollectionService {
 
     async getCollectionById(id: number): Promise<CollectionResponse | null> {
         try {
-            const response = await apiClient.get<
+            const client = this.authenticatedApiClient || apiClient;
+            const response = await client.get<
                 ApiResponse<CollectionResponse>
             >(`${this.baseEndpoint}/${id}`);
             return response.data || null;
@@ -32,7 +37,8 @@ export class CollectionService {
         code: string
     ): Promise<CollectionResponse | null> {
         try {
-            const response = await apiClient.get<
+            const client = this.authenticatedApiClient || apiClient;
+            const response = await client.get<
                 ApiResponse<CollectionResponse>
             >(`${this.baseEndpoint}/code/${code}`);
             return response.data || null;
@@ -44,3 +50,8 @@ export class CollectionService {
 }
 
 export const collectionService = new CollectionService();
+
+// Function to create an authenticated collection service
+export function createAuthenticatedCollectionService(authenticatedApiClient: AuthenticatedApiClient) {
+    return new CollectionService(authenticatedApiClient);
+}

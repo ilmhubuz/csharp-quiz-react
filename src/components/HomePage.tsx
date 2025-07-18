@@ -12,8 +12,10 @@ import {
     CircularProgress,
 } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
-import { collectionService } from '../api';
+import { collectionService, createAuthenticatedCollectionService } from '../api/services/collectionService';
 import { useApi } from '../hooks/useApi';
+import { useApiState } from '../hooks/useApiState';
+import { useKeycloak } from '@react-keycloak/web';
 import { AuthHeader } from './auth/AuthHeader';
 import type { CollectionResponse } from '../types/api';
 
@@ -22,18 +24,25 @@ interface HomePageProps {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
+    const { keycloak } = useKeycloak();
+    const authenticatedApiClient = useApi();
     const {
         data: collections,
         loading,
         error,
         execute,
         reset,
-    } = useApi<CollectionResponse[]>();
+    } = useApiState<CollectionResponse[]>();
     const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
-        execute(() => collectionService.getCollections());
-    }, [execute, refreshKey]);
+        if (keycloak.authenticated) {
+            const authenticatedCollectionService = createAuthenticatedCollectionService(authenticatedApiClient);
+            execute(() => authenticatedCollectionService.getCollections());
+        } else {
+            execute(() => collectionService.getCollections());
+        }
+    }, [execute, refreshKey, keycloak.authenticated, authenticatedApiClient]);
 
     const handleRefresh = () => {
         reset();

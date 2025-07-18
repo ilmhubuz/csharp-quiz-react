@@ -1,48 +1,25 @@
-import { useState, useCallback } from 'react';
-import { ApiError } from '../api';
+import { useKeycloak } from '@react-keycloak/web';
+import { useMemo } from 'react';
+import { apiClient } from '../api/client';
 
-export interface ApiState<T> {
-    data: T | null;
-    loading: boolean;
-    error: ApiError | null;
+export interface AuthenticatedApiClient {
+    get: <T>(endpoint: string) => Promise<T>;
+    post: <T>(endpoint: string, data?: any) => Promise<T>;
+    put: <T>(endpoint: string, data?: any) => Promise<T>;
+    delete: <T>(endpoint: string) => Promise<T>;
 }
 
-export function useApi<T>() {
-    const [state, setState] = useState<ApiState<T>>({
-        data: null,
-        loading: false,
-        error: null,
-    });
+export function useApi(): AuthenticatedApiClient {
+    const { keycloak } = useKeycloak();
 
-    const execute = useCallback(async (apiCall: () => Promise<T>) => {
-        setState(prev => ({ ...prev, loading: true, error: null }));
+    const authenticatedApiClient = useMemo(() => {
+        return {
+            get: <T>(endpoint: string) => apiClient.get<T>(endpoint, keycloak?.token),
+            post: <T>(endpoint: string, data?: any) => apiClient.post<T>(endpoint, data, keycloak?.token),
+            put: <T>(endpoint: string, data?: any) => apiClient.put<T>(endpoint, data, keycloak?.token),
+            delete: <T>(endpoint: string) => apiClient.delete<T>(endpoint, keycloak?.token),
+        };
+    }, [keycloak?.token]);
 
-        try {
-            const data = await apiCall();
-            setState({ data, loading: false, error: null });
-            return data;
-        } catch (error) {
-            const apiError =
-                error instanceof ApiError
-                    ? error
-                    : new ApiError(
-                          error instanceof Error
-                              ? error.message
-                              : 'Unknown error',
-                          0
-                      );
-            setState({ data: null, loading: false, error: apiError });
-            throw apiError;
-        }
-    }, []);
-
-    const reset = useCallback(() => {
-        setState({ data: null, loading: false, error: null });
-    }, []);
-
-    return {
-        ...state,
-        execute,
-        reset,
-    };
+    return authenticatedApiClient;
 }

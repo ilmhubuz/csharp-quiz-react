@@ -28,7 +28,8 @@ import { QuestionCard } from './QuestionCard';
 import { QuizResults } from './QuizResults';
 import { answerStorage } from '../services/answerStorage';
 import { sessionStorage } from '../services/sessionStorage';
-import { questionService } from '../api/services/questionService';
+import { questionService, createAuthenticatedQuestionService } from '../api/services/questionService';
+import { useApi } from '../hooks/useApi';
 import { hasCSharpQuizAccess } from '../lib/auth-utils';
 import type {
     Question,
@@ -45,6 +46,7 @@ import type { QuestionResponse } from '../types/api';
 
 export const EnhancedQuizApp: React.FC = () => {
     const { keycloak } = useKeycloak();
+    const authenticatedApiClient = useApi();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [viewMode, setViewMode] = useState<'home' | 'quiz' | 'results'>(
@@ -204,7 +206,8 @@ export const EnhancedQuizApp: React.FC = () => {
 
             if (keycloak.authenticated) {
                 // Authenticated user - get full questions
-                const response = await questionService.getQuestionsByCollection(
+                const authenticatedQuestionService = createAuthenticatedQuestionService(authenticatedApiClient);
+                const response = await authenticatedQuestionService.getQuestionsByCollection(
                     collectionId,
                     1,
                     100

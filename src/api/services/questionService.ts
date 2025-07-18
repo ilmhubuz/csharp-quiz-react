@@ -4,9 +4,12 @@ import type {
     ApiResponse,
     PaginatedApiResponse,
 } from '../../types/api';
+import type { AuthenticatedApiClient } from '../../hooks/useApi';
 
 export class QuestionService {
     private baseEndpoint = '/api/csharp/questions';
+
+    constructor(private authenticatedApiClient?: AuthenticatedApiClient) {}
 
     async getQuestionsByCollection(
         collectionId: number,
@@ -14,7 +17,8 @@ export class QuestionService {
         pageSize: number = 10,
     ): Promise<PaginatedApiResponse<QuestionResponse>> {
         try {
-            const response = await apiClient.get<
+            const client = this.authenticatedApiClient || apiClient;
+            const response = await client.get<
                 PaginatedApiResponse<QuestionResponse>
             >(
                 `${this.baseEndpoint}?collectionId=${collectionId}&page=${page}&pageSize=${pageSize}`,
@@ -35,7 +39,8 @@ export class QuestionService {
         pageSize: number = 10,
     ): Promise<PaginatedApiResponse<QuestionResponse>> {
         try {
-            const response = await apiClient.get<
+            const client = this.authenticatedApiClient || apiClient;
+            const response = await client.get<
                 PaginatedApiResponse<QuestionResponse>
             >(
                 `${this.baseEndpoint}?collectionCode=${collectionCode}&page=${page}&pageSize=${pageSize}`,
@@ -54,7 +59,8 @@ export class QuestionService {
         collectionId: number,
     ): Promise<QuestionResponse[]> {
         try {
-            const response = await apiClient.get<
+            const client = this.authenticatedApiClient || apiClient;
+            const response = await client.get<
                 ApiResponse<QuestionResponse[]>
             >(`${this.baseEndpoint}/preview?collectionId=${collectionId}`);
             return response.data || [];
@@ -71,7 +77,8 @@ export class QuestionService {
         questionId: number,
     ): Promise<QuestionResponse | null> {
         try {
-            const response = await apiClient.get<ApiResponse<QuestionResponse>>(
+            const client = this.authenticatedApiClient || apiClient;
+            const response = await client.get<ApiResponse<QuestionResponse>>(
                 `${this.baseEndpoint}/${questionId}`,
             );
             return response.data || null;
@@ -83,3 +90,8 @@ export class QuestionService {
 }
 
 export const questionService = new QuestionService();
+
+// Function to create an authenticated question service
+export function createAuthenticatedQuestionService(authenticatedApiClient: any) {
+    return new QuestionService(authenticatedApiClient);
+}
