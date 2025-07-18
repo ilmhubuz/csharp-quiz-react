@@ -8,13 +8,19 @@ import {
   Fab, 
   IconButton,
   CircularProgress,
-  Alert,
+  Button,
+  Stack,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { 
   ArrowBack, 
   ArrowForward, 
   CheckCircle,
   Home as HomeIcon,
+  Lock as LockIcon,
+  Error as ErrorIcon,
+  Refresh as RefreshIcon,
 } from '@mui/icons-material';
 import { useKeycloak } from '@react-keycloak/web';
 import { HomePage } from './HomePage';
@@ -23,6 +29,7 @@ import { QuizResults } from './QuizResults';
 import { progressStorage } from '../services/progressStorage';
 import { answerStorage } from '../services/answerStorage';
 import { questionService } from '../api/services/questionService';
+import { hasCSharpQuizAccess } from '../lib/auth-utils';
 import type { 
   Question, 
   QuestionType, 
@@ -38,6 +45,9 @@ import type { QuestionResponse } from '../types/api';
 
 export const EnhancedQuizApp: React.FC = () => {
   const { keycloak } = useKeycloak();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
   const [viewMode, setViewMode] = useState<'home' | 'quiz' | 'results'>('home');
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -45,6 +55,7 @@ export const EnhancedQuizApp: React.FC = () => {
   const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
   const [questionsLoading, setQuestionsLoading] = useState(false);
   const [questionsError, setQuestionsError] = useState<string | null>(null);
+  const [errorType, setErrorType] = useState<'forbidden' | 'error' | null>(null);
 
   const currentQuestion = filteredQuestions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === filteredQuestions.length - 1;
@@ -97,6 +108,7 @@ export const EnhancedQuizApp: React.FC = () => {
     setAnswers({});
     setSelectedCollectionId(null);
     setQuestionsError(null);
+    setErrorType(null);
   };
 
   const handleAnswerChange = (questionId: number, answer: string[] | string) => {
@@ -145,6 +157,12 @@ export const EnhancedQuizApp: React.FC = () => {
     setViewMode('quiz');
     setCurrentQuestionIndex(0);
     setAnswers({});
+  };
+
+  const handleRetryLoad = () => {
+    if (selectedCollectionId) {
+      handleSelectCollection(selectedCollectionId);
+    }
   };
 
   // Handle collection selection
@@ -246,9 +264,31 @@ export const EnhancedQuizApp: React.FC = () => {
       });
 
       setFilteredQuestions(convertedQuestions);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to load questions:', error);
-      setQuestionsError(error instanceof Error ? error.message : 'Failed to load questions');
+      
+      // Determine error type based on status code or error message
+      if (error.status === 401) {
+        setErrorType('forbidden');
+        if (!keycloak.authenticated) {
+          setQuestionsError('Ushbu kontentni ko\'rish uchun tizimga kirishingiz kerak.');
+        } else {
+          setQuestionsError('Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q. Iltimos, administrator bilan bog\'laning.');
+        }
+      } else if (error.status === 403) {
+        setErrorType('forbidden');
+        if (keycloak.authenticated && !hasCSharpQuizAccess(keycloak)) {
+          setQuestionsError('Sizda C# Quiz dasturiga kirish uchun "Ustoz" a\'zoligi mavjud emas. To\'liq kirish uchun a\'zolikni sotib oling.');
+        } else {
+          setQuestionsError('Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q.');
+        }
+      } else if (error.message?.toLowerCase().includes('unauthorized') || error.message?.toLowerCase().includes('forbidden')) {
+        setErrorType('forbidden');
+        setQuestionsError('Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q.');
+      } else {
+        setErrorType('error');
+        setQuestionsError(error.message || 'Savollarni yuklashda xatolik yuz berdi. Iltimos, keyinroq urinib ko\'ring.');
+      }
     } finally {
       setQuestionsLoading(false);
     }
@@ -265,9 +305,22 @@ export const EnhancedQuizApp: React.FC = () => {
   if (viewMode === 'quiz') {
     if (questionsLoading) {
       return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-          <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
-            <CircularProgress />
+        <Container maxWidth="lg" sx={{ py: { xs: 2, sm: 4 } }}>
+          <Box 
+            display="flex" 
+            flexDirection="column"
+            justifyContent="center" 
+            alignItems="center" 
+            minHeight={{ xs: '70vh', sm: '60vh' }}
+            gap={2}
+          >
+            <CircularProgress size={isMobile ? 40 : 50} />
+            <Typography 
+              variant={isMobile ? 'body2' : 'body1'} 
+              color="text.secondary"
+            >
+              Savollar yuklanmoqda...
+            </Typography>
           </Box>
         </Container>
       );
@@ -275,14 +328,122 @@ export const EnhancedQuizApp: React.FC = () => {
 
     if (questionsError) {
       return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {questionsError}
-          </Alert>
-          <Box display="flex" justifyContent="center">
-            <IconButton onClick={handleGoHome} color="primary">
-              <HomeIcon />
-            </IconButton>
+        <Container maxWidth="md" sx={{ py: { xs: 2, sm: 4, md: 6 } }}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            minHeight={{ xs: '70vh', sm: '60vh' }}
+            textAlign="center"
+            px={{ xs: 2, sm: 3 }}
+          >
+            {/* Error Icon */}
+            <Box
+              sx={{
+                width: { xs: 80, sm: 100, md: 120 },
+                height: { xs: 80, sm: 100, md: 120 },
+                borderRadius: '50%',
+                backgroundColor: errorType === 'forbidden' ? 'warning.light' : 'error.light',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mb: 3,
+                opacity: 0.1,
+              }}
+            >
+              {errorType === 'forbidden' ? (
+                <LockIcon sx={{ fontSize: { xs: 40, sm: 50, md: 60 }, color: 'warning.dark' }} />
+              ) : (
+                <ErrorIcon sx={{ fontSize: { xs: 40, sm: 50, md: 60 }, color: 'error.dark' }} />
+              )}
+            </Box>
+
+            {/* Error Title */}
+            <Typography
+              variant={isMobile ? 'h5' : 'h4'}
+              component="h1"
+              gutterBottom
+              fontWeight="600"
+              color={errorType === 'forbidden' ? 'warning.main' : 'error.main'}
+            >
+              {errorType === 'forbidden' ? 'Kirish taqiqlangan' : 'Xatolik yuz berdi'}
+            </Typography>
+
+            {/* Error Message */}
+            <Typography
+              variant={isMobile ? 'body2' : 'body1'}
+              color="text.secondary"
+              sx={{ mb: 4, maxWidth: 500 }}
+            >
+              {questionsError}
+            </Typography>
+
+            {/* Action Buttons */}
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={2}
+              sx={{ width: { xs: '100%', sm: 'auto' } }}
+            >
+              {errorType === 'forbidden' && !keycloak.authenticated && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size={isMobile ? 'medium' : 'large'}
+                  onClick={() => keycloak.login()}
+                  fullWidth={isMobile}
+                >
+                  Tizimga kirish
+                </Button>
+              )}
+              
+              {errorType === 'forbidden' && keycloak.authenticated && !hasCSharpQuizAccess(keycloak) && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size={isMobile ? 'medium' : 'large'}
+                  onClick={() => window.open('https://ilmhub.uz/membership', '_blank')}
+                  fullWidth={isMobile}
+                >
+                  Ustoz a'zoligini sotib olish
+                </Button>
+              )}
+              
+              {errorType === 'error' && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size={isMobile ? 'medium' : 'large'}
+                  startIcon={<RefreshIcon />}
+                  onClick={handleRetryLoad}
+                  fullWidth={isMobile}
+                >
+                  Qayta urinish
+                </Button>
+              )}
+              
+              <Button
+                variant="outlined"
+                color="primary"
+                size={isMobile ? 'medium' : 'large'}
+                startIcon={<HomeIcon />}
+                onClick={handleGoHome}
+                fullWidth={isMobile}
+              >
+                Bosh sahifa
+              </Button>
+            </Stack>
+
+            {/* Additional Help Text */}
+            {errorType === 'forbidden' && keycloak.authenticated && hasCSharpQuizAccess(keycloak) && (
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ mt: 3, display: 'block' }}
+              >
+                Agar sizda kirish huquqi bo'lishi kerak deb hisoblasangiz, administrator bilan bog'laning.
+              </Typography>
+            )}
           </Box>
         </Container>
       );
@@ -290,11 +451,39 @@ export const EnhancedQuizApp: React.FC = () => {
 
     if (!currentQuestion) {
       return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-          <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
-            <Typography variant="h6" color="text.secondary">
-              No questions available for this collection
+        <Container maxWidth="md" sx={{ py: { xs: 2, sm: 4 } }}>
+          <Box 
+            display="flex" 
+            flexDirection="column"
+            justifyContent="center" 
+            alignItems="center" 
+            minHeight={{ xs: '70vh', sm: '60vh' }}
+            textAlign="center"
+            px={{ xs: 2, sm: 3 }}
+          >
+            <Typography 
+              variant={isMobile ? 'h6' : 'h5'} 
+              color="text.secondary"
+              gutterBottom
+            >
+              Savollar mavjud emas
             </Typography>
+            <Typography 
+              variant={isMobile ? 'body2' : 'body1'} 
+              color="text.secondary"
+              sx={{ mb: 3 }}
+            >
+              Ushbu to'plamda hali savollar yo'q.
+            </Typography>
+            <Button
+              variant="outlined"
+              color="primary"
+              size={isMobile ? 'medium' : 'large'}
+              startIcon={<HomeIcon />}
+              onClick={handleGoHome}
+            >
+              Orqaga qaytish
+            </Button>
           </Box>
         </Container>
       );
@@ -320,7 +509,7 @@ export const EnhancedQuizApp: React.FC = () => {
         <Container maxWidth="lg" sx={{ py: 2 }}>
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <Typography variant="h6" component="h1">
-              Question {currentQuestionIndex + 1} of {filteredQuestions.length}
+              {currentQuestionIndex + 1}-savol / {filteredQuestions.length} ta
             </Typography>
             <IconButton onClick={handleGoHome} color="primary">
               <HomeIcon />
