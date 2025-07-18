@@ -469,15 +469,13 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                             <Box display="flex" alignItems="center" gap={1}>
                                 <CheckCircle color="success" fontSize="small" />
                                 <Typography variant="body1">
-                                    <strong>{correctAnswers}</strong>{' '}
-                                    <code>True</code>
+                                    <strong>{correctAnswers}</strong> To'g'ri
                                 </Typography>
                             </Box>
                             <Box display="flex" alignItems="center" gap={1}>
                                 <Cancel color="error" fontSize="small" />
                                 <Typography variant="body1">
-                                    <strong>{incorrectAnswers}</strong>{' '}
-                                    <code>False</code>
+                                    <strong>{incorrectAnswers}</strong> Noto'g'ri
                                 </Typography>
                             </Box>
                             <Box display="flex" alignItems="center" gap={1}>
