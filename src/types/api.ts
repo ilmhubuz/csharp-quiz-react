@@ -151,9 +151,9 @@ export interface SessionCompletionResponse {
 }
 
 export interface CompleteSessionRequest {
-  answers: Array<{
-    questionId: number;
-    answer: string;
-    timeSpentSeconds: number;
-  }>;
+    answers: Array<{
+        questionId: number;
+        answer: string;
+        timeSpentSeconds: number;
+    }>;
 }

@@ -22,7 +22,11 @@ class SessionStorageService {
         return `preview-session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     }
 
-    createSession(collectionId: number, collectionName: string, questions: any[]): string {
+    createSession(
+        collectionId: number,
+        collectionName: string,
+        questions: any[]
+    ): string {
         const sessionId = this.generateSessionId();
         const session: QuizSession = {
             sessionId,
@@ -40,7 +44,10 @@ class SessionStorageService {
             lastActivityAt: new Date().toISOString(),
         };
 
-        window.sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
+        window.sessionStorage.setItem(
+            this.SESSION_KEY,
+            JSON.stringify(session)
+        );
         return sessionId;
     }
 
@@ -50,11 +57,11 @@ class SessionStorageService {
             if (!sessionData) return null;
 
             const session: QuizSession = JSON.parse(sessionData);
-            
+
             // Check if session has expired
             const lastActivity = new Date(session.lastActivityAt).getTime();
             const now = Date.now();
-            
+
             if (now - lastActivity > this.SESSION_TIMEOUT) {
                 this.clearSession();
                 return null;
@@ -74,8 +81,11 @@ class SessionStorageService {
 
         session.answers[questionId] = answer;
         session.lastActivityAt = new Date().toISOString();
-        
-        window.sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
+
+        window.sessionStorage.setItem(
+            this.SESSION_KEY,
+            JSON.stringify(session)
+        );
     }
 
     getAnswers(): { [questionId: number]: string | string[] } {
@@ -114,7 +124,7 @@ class SessionStorageService {
     getAnsweredCount(): number {
         const session = this.getCurrentSession();
         if (!session) return 0;
-        
+
         return Object.keys(session.answers).length;
     }
 
@@ -126,9 +136,9 @@ class SessionStorageService {
     isComplete(): boolean {
         const session = this.getCurrentSession();
         if (!session) return false;
-        
+
         return Object.keys(session.answers).length === session.questions.length;
     }
 }
 
-export const sessionStorage = new SessionStorageService(); 
+export const sessionStorage = new SessionStorageService();

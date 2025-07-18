@@ -48,7 +48,7 @@ export const EnhancedQuizApp: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [viewMode, setViewMode] = useState<'home' | 'quiz' | 'results'>(
-        'home'
+        'home',
     );
     const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -59,7 +59,7 @@ export const EnhancedQuizApp: React.FC = () => {
     const [questionsLoading, setQuestionsLoading] = useState(false);
     const [questionsError, setQuestionsError] = useState<string | null>(null);
     const [errorType, setErrorType] = useState<'forbidden' | 'error' | null>(
-        null,
+        null
     );
 
     const currentQuestion = filteredQuestions[currentQuestionIndex];
@@ -130,7 +130,7 @@ export const EnhancedQuizApp: React.FC = () => {
         setSelectedCollectionId(null);
         setQuestionsError(null);
         setErrorType(null);
-        
+
         // Clear session for unauthenticated users
         if (!keycloak.authenticated) {
             sessionStorage.clearSession();
@@ -139,18 +139,22 @@ export const EnhancedQuizApp: React.FC = () => {
 
     const handleAnswerChange = (
         questionId: number,
-        answer: string[] | string,
+        answer: string[] | string
     ) => {
         // Update local state
         setAnswers((prev: any) => ({
             ...prev,
             [questionId]: answer,
         }));
-        
+
         if (keycloak.authenticated) {
             // Save to localStorage with collection and question ID for authenticated users
             if (currentQuestion && selectedCollectionId) {
-                answerStorage.saveAnswer(selectedCollectionId.toString(), questionId, answer as any);
+                answerStorage.saveAnswer(
+                    selectedCollectionId.toString(),
+                    questionId,
+                    answer as any
+                );
             }
         } else {
             // Update session storage for unauthenticated users
@@ -203,17 +207,21 @@ export const EnhancedQuizApp: React.FC = () => {
                 const response = await questionService.getQuestionsByCollection(
                     collectionId,
                     1,
-                    100,
+                    100
                 );
                 questions = response.data || [];
             } else {
                 // Unauthenticated user - get preview questions
                 questions =
                     await questionService.getPreviewQuestions(collectionId);
-                
+
                 // Create session for unauthenticated users
                 const collectionName = 'Preview Collection'; // You might want to get this from the collection data
-                sessionStorage.createSession(collectionId, collectionName, questions);
+                sessionStorage.createSession(
+                    collectionId,
+                    collectionName,
+                    questions
+                );
             }
 
             // Convert QuestionResponse to Question format
@@ -294,7 +302,7 @@ export const EnhancedQuizApp: React.FC = () => {
             });
 
             setFilteredQuestions(convertedQuestions);
-            
+
             // Load existing answers for unauthenticated users
             if (!keycloak.authenticated) {
                 const sessionAnswers = sessionStorage.getAnswers();
@@ -302,31 +310,44 @@ export const EnhancedQuizApp: React.FC = () => {
             }
         } catch (error: any) {
             console.error('Failed to load questions:', error);
-            
+
             // Determine error type based on status code or error message
             if (error.status === 401) {
                 setErrorType('forbidden');
                 if (!keycloak.authenticated) {
-                    setQuestionsError('Ushbu kontentni ko\'rish uchun tizimga kirishingiz kerak.');
+                    setQuestionsError(
+                        "Ushbu kontentni ko'rish uchun tizimga kirishingiz kerak."
+                    );
                 } else {
-                    setQuestionsError('Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q. Iltimos, administrator bilan bog\'laning.');
+                    setQuestionsError(
+                        "Sizda ushbu kontentni ko'rish uchun ruxsat yo'q. Iltimos, administrator bilan bog'laning."
+                    );
                 }
             } else if (error.status === 403) {
                 setErrorType('forbidden');
                 if (keycloak.authenticated && !hasCSharpQuizAccess(keycloak)) {
-                    setQuestionsError('Sizda C# Quiz dasturiga kirish uchun "Ustoz" a\'zoligi mavjud emas. To\'liq kirish uchun a\'zolikni sotib oling.');
+                    setQuestionsError(
+                        "Sizda C# Quiz dasturiga kirish uchun \"Ustoz\" a'zoligi mavjud emas. To'liq kirish uchun a'zolikni sotib oling."
+                    );
                 } else {
-                    setQuestionsError('Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q.');
+                    setQuestionsError(
+                        "Sizda ushbu kontentni ko'rish uchun ruxsat yo'q."
+                    );
                 }
             } else if (
                 error.message?.toLowerCase().includes('unauthorized') ||
                 error.message?.toLowerCase().includes('forbidden')
             ) {
                 setErrorType('forbidden');
-                setQuestionsError('Sizda ushbu kontentni ko\'rish uchun ruxsat yo\'q.');
+                setQuestionsError(
+                    "Sizda ushbu kontentni ko'rish uchun ruxsat yo'q."
+                );
             } else {
                 setErrorType('error');
-                setQuestionsError(error.message || 'Savollarni yuklashda xatolik yuz berdi. Iltimos, keyinroq urinib ko\'ring.');
+                setQuestionsError(
+                    error.message ||
+                        "Savollarni yuklashda xatolik yuz berdi. Iltimos, keyinroq urinib ko'ring."
+                );
             }
         } finally {
             setQuestionsLoading(false);
@@ -335,9 +356,7 @@ export const EnhancedQuizApp: React.FC = () => {
 
     // Show home page
     if (viewMode === 'home') {
-        return (
-            <HomePage onSelectCollection={handleSelectCollection} />
-        );
+        return <HomePage onSelectCollection={handleSelectCollection} />;
     }
 
     // Show quiz page
@@ -445,34 +464,34 @@ export const EnhancedQuizApp: React.FC = () => {
                         >
                             {errorType === 'forbidden' &&
                                 !keycloak.authenticated && (
-                                <Button
-                                        variant="contained"
-                                        color="primary"
-                                        size={isMobile ? 'medium' : 'large'}
-                                    onClick={() => keycloak.login()}
-                                    fullWidth={isMobile}
-                                    >
+                                    <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size={isMobile ? 'medium' : 'large'}
+                                        onClick={() => keycloak.login()}
+                                        fullWidth={isMobile}
+                                >
                                         Tizimga kirish
-                                    </Button>
-                            )}
+                                </Button>
+                                )}
                             {errorType === 'forbidden' &&
                                 keycloak.authenticated &&
                                 !hasCSharpQuizAccess(keycloak) && (
-                                <Button
-                                        variant="contained"
-                                        color="primary"
-                                        size={isMobile ? 'medium' : 'large'}
-                                    onClick={() =>
-                                        window.open(
-                                            'https://ilmhub.uz/membership',
-                                            '_blank'
-                                        )
-                                    }
-                                    fullWidth={isMobile}
-                                >
+                                    <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size={isMobile ? 'medium' : 'large'}
+                                        onClick={() =>
+                                            window.open(
+                                                'https://ilmhub.uz/membership',
+                                                '_blank'
+                                            )
+                                        }
+                                        fullWidth={isMobile}
+                                    >
                                         Ustoz a'zoligini sotib olish
-                                    </Button>
-                            )}
+                                </Button>
+                                )}
                             {errorType === 'error' && (
                                 <Button
                                     variant="contained"
@@ -502,16 +521,16 @@ export const EnhancedQuizApp: React.FC = () => {
                         {errorType === 'forbidden' &&
                             keycloak.authenticated &&
                             hasCSharpQuizAccess(keycloak) && (
-                            <Typography
-                                    variant="caption"
-                                    color="text.secondary"
-                                    sx={{ mt: 3, display: 'block' }}
-                            >
+                                <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                sx={{ mt: 3, display: 'block' }}
+                                >
                                     Agar sizda kirish huquqi bo'lishi kerak deb
                                     hisoblasangiz, administrator bilan
                                     bog'laning.
-                                </Typography>
-                        )}
+                            </Typography>
+                            )}
                     </Box>
                 </Container>
             );

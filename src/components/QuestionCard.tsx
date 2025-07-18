@@ -603,11 +603,11 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                                         }
                                         onAnswerChange={(
                                             selectedOptions: string[]
-                                        ) =>
+                                    ) =>
                                             onAnswerChange(
                                                 question.id,
                                                 selectedOptions,
-                                            )
+                                        )
                                     }
                                 />
                                 ) : (
@@ -616,11 +616,11 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                                     selectedAnswer={answer as string}
                                         onAnswerChange={(
                                             selectedOption: string
-                                        ) =>
+                                    ) =>
                                             onAnswerChange(
                                                 question.id,
                                                 selectedOption,
-                                            )
+                                        )
                                     }
                                 />
                             )}

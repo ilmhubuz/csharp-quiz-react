@@ -5,4 +5,5 @@ export { QuizResults } from './QuizResults';
 export { MCQOptions } from './MCQOptions';
 export { TrueFalseOptions } from './TrueFalseOptions';
 export { CodeEditor } from './CodeEditor';
+export { DiffEditor } from './DiffEditor';
 export { MarkdownRenderer } from './MarkdownRenderer';
