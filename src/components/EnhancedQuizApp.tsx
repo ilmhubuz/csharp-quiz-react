@@ -72,10 +72,10 @@ export const EnhancedQuizApp: React.FC = () => {
     const isLastQuestion =
         currentQuestionIndex === filteredQuestions.length - 1;
 
-    // Use answer submission hook for authenticated users (only when we have a valid question)
+    // Use answer submission hook for authenticated users (only when we have a valid question and are in quiz mode)
     const { submitAnswer, isSubmitting, hasPreviousAnswer, hasAnswerChanged, previousAnswer } =
         useAnswerSubmission({
-            questionId: currentQuestion?.id || 0,
+            questionId: (viewMode === 'quiz' && currentQuestion?.id) || 0,
             onAnswerLoaded: answer => {
                 if (currentQuestion && answer !== undefined) {
                     setAnswers((prev: any) => ({

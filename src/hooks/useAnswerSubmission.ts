@@ -54,7 +54,7 @@ export const useAnswerSubmission = ({
     // Fetch previous answer when question loads (only once per question)
     useEffect(() => {
         const fetchPreviousAnswer = async () => {
-            if (!keycloak.authenticated || !questionId || isLatestAnswerFetched) return;
+            if (!keycloak.authenticated || !questionId || questionId === 0 || isLatestAnswerFetched) return;
 
             setIsLatestAnswerFetched(true);
             
@@ -128,7 +128,7 @@ export const useAnswerSubmission = ({
 
     const submitAnswer = useCallback(
         async (answer: string | string[]): Promise<boolean> => {
-            if (!keycloak.authenticated || !questionId) {
+            if (!keycloak.authenticated || !questionId || questionId === 0) {
                 return false;
             }
 
