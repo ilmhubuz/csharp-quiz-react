@@ -7,6 +7,8 @@ import {
   Paper, 
   Fab, 
   IconButton,
+  CircularProgress,
+  Alert,
 } from '@mui/material';
 import { 
   ArrowBack, 
@@ -14,19 +16,35 @@ import {
   CheckCircle,
   Home as HomeIcon,
 } from '@mui/icons-material';
+import { useKeycloak } from '@react-keycloak/web';
 import { HomePage } from './HomePage';
 import { QuestionCard } from './QuestionCard';
 import { QuizResults } from './QuizResults';
 import { progressStorage } from '../services/progressStorage';
 import { answerStorage } from '../services/answerStorage';
-import type { Question } from '../types';
+import { questionService } from '../api/services/questionService';
+import type { 
+  Question, 
+  QuestionType, 
+  TopicCategory, 
+  MCQQuestion, 
+  TrueFalseQuestion, 
+  FillQuestion, 
+  ErrorSpotQuestion, 
+  OutputPredictionQuestion, 
+  CodeWritingQuestion 
+} from '../types';
+import type { QuestionResponse } from '../types/api';
 
 export const EnhancedQuizApp: React.FC = () => {
+  const { keycloak } = useKeycloak();
   const [viewMode, setViewMode] = useState<'home' | 'quiz' | 'results'>('home');
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<any>({});
   const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
+  const [questionsLoading, setQuestionsLoading] = useState(false);
+  const [questionsError, setQuestionsError] = useState<string | null>(null);
 
   const currentQuestion = filteredQuestions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === filteredQuestions.length - 1;
@@ -78,6 +96,7 @@ export const EnhancedQuizApp: React.FC = () => {
     setCurrentQuestionIndex(0);
     setAnswers({});
     setSelectedCollectionId(null);
+    setQuestionsError(null);
   };
 
   const handleAnswerChange = (questionId: number, answer: string[] | string) => {
@@ -129,14 +148,110 @@ export const EnhancedQuizApp: React.FC = () => {
   };
 
   // Handle collection selection
-  const handleSelectCollection = (collectionId: number) => {
+  const handleSelectCollection = async (collectionId: number) => {
     setSelectedCollectionId(collectionId);
-    // TODO: Load questions from API for this collection
-    // For now, we'll use placeholder data
-    setFilteredQuestions([]);
+    setQuestionsLoading(true);
+    setQuestionsError(null);
     setCurrentQuestionIndex(0);
     setAnswers({});
     setViewMode('quiz');
+
+    try {
+      let questions: QuestionResponse[] = [];
+
+      if (keycloak.authenticated) {
+        // Authenticated user - get full questions
+        const response = await questionService.getQuestionsByCollection(collectionId, 1, 100);
+        questions = response.data || [];
+      } else {
+        // Unauthenticated user - get preview questions
+        questions = await questionService.getPreviewQuestions(collectionId);
+      }
+
+      // Convert QuestionResponse to Question format
+      const convertedQuestions: Question[] = questions.map(q => {
+        const baseQuestion = {
+          id: q.id,
+          type: q.type as QuestionType,
+          metadata: {
+            category: q.metadata.subcategory as TopicCategory,
+            subcategory: q.metadata.subcategory,
+          },
+          explanation: q.explanation,
+        };
+
+        switch (q.type) {
+          case 'MCQ':
+            return {
+              ...baseQuestion,
+              type: 'mcq',
+              codeBefore: q.content.codeBefore,
+              codeAfter: q.content.codeAfter,
+              prompt: q.content.prompt,
+              options: q.options || [],
+              answer: [], // Will be filled by user
+            } as MCQQuestion;
+
+          case 'TrueFalse':
+            return {
+              ...baseQuestion,
+              type: 'true_false',
+              codeBefore: q.content.codeBefore,
+              codeAfter: q.content.codeAfter,
+              prompt: q.content.prompt,
+              answer: 'true' as const, // Will be filled by user
+            } as TrueFalseQuestion;
+
+          case 'Fill':
+            return {
+              ...baseQuestion,
+              type: 'fill',
+              codeWithBlank: q.content.codeWithBlank || '',
+              prompt: q.content.prompt,
+              answer: '', // Will be filled by user
+              hints: q.hints,
+            } as FillQuestion;
+
+          case 'ErrorSpotting':
+            return {
+              ...baseQuestion,
+              type: 'error_spotting',
+              codeWithError: q.content.codeWithError || '',
+              prompt: q.content.prompt,
+              answer: '', // Will be filled by user
+            } as ErrorSpotQuestion;
+
+          case 'OutputPrediction':
+            return {
+              ...baseQuestion,
+              type: 'output_prediction',
+              snippet: q.content.snippet || '',
+              prompt: q.content.prompt,
+              answer: '', // Will be filled by user
+            } as OutputPredictionQuestion;
+
+          case 'CodeWriting':
+            return {
+              ...baseQuestion,
+              type: 'code_writing',
+              prompt: q.content.prompt,
+              codeAfter: q.content.codeAfter,
+              examples: q.content.examples || [],
+              testCases: q.content.testCases,
+            } as CodeWritingQuestion;
+
+          default:
+            throw new Error(`Unsupported question type: ${q.type}`);
+        }
+      });
+
+      setFilteredQuestions(convertedQuestions);
+    } catch (error) {
+      console.error('Failed to load questions:', error);
+      setQuestionsError(error instanceof Error ? error.message : 'Failed to load questions');
+    } finally {
+      setQuestionsLoading(false);
+    }
   };
 
   // Show home page
@@ -148,6 +263,31 @@ export const EnhancedQuizApp: React.FC = () => {
 
   // Show quiz page
   if (viewMode === 'quiz') {
+    if (questionsLoading) {
+      return (
+        <Container maxWidth="lg" sx={{ py: 4 }}>
+          <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+            <CircularProgress />
+          </Box>
+        </Container>
+      );
+    }
+
+    if (questionsError) {
+      return (
+        <Container maxWidth="lg" sx={{ py: 4 }}>
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {questionsError}
+          </Alert>
+          <Box display="flex" justifyContent="center">
+            <IconButton onClick={handleGoHome} color="primary">
+              <HomeIcon />
+            </IconButton>
+          </Box>
+        </Container>
+      );
+    }
+
     if (!currentQuestion) {
       return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
