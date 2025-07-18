@@ -71,19 +71,6 @@ export function getUserEmail(keycloak: Keycloak): string | undefined {
     return keycloak.tokenParsed.email;
 }
 
-export function getUserPhones(keycloak: Keycloak): string[] {
-    if (!keycloak.authenticated || !keycloak.tokenParsed) {
-        return [];
-    }
-
-    const phones = keycloak.tokenParsed.phones;
-    if (!phones) {
-        return [];
-    }
-
-    return Array.isArray(phones) ? phones : [phones];
-}
-
 export function getUserRoles(keycloak: Keycloak): string[] {
     if (!keycloak.authenticated || !keycloak.tokenParsed) {
         return [];
@@ -101,3 +88,4 @@ export function hasRole(keycloak: Keycloak, role: string): boolean {
     const roles = getUserRoles(keycloak);
     return roles.includes(role);
 }
+

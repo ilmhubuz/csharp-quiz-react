@@ -77,13 +77,13 @@ export const MCQOptions: React.FC<MCQOptionsProps> = ({
                                     cursor: 'pointer',
                                     transition: 'all 0.2s ease-in-out',
                                     backgroundColor: selectedAnswers.includes(
-                                        option.id,
+                                        option.id
                                     )
                                         ? 'primary.dark'
                                         : 'background.paper',
                                     border: 2,
                                     borderColor: selectedAnswers.includes(
-                                        option.id,
+                                        option.id
                                     )
                                         ? 'primary.main'
                                         : 'transparent',
@@ -99,7 +99,7 @@ export const MCQOptions: React.FC<MCQOptionsProps> = ({
                                 onClick={() =>
                                     handleOptionChange(
                                         option.id,
-                                        !selectedAnswers.includes(option.id),
+                                        !selectedAnswers.includes(option.id)
                                     )
                                 }
                             >
@@ -107,12 +107,12 @@ export const MCQOptions: React.FC<MCQOptionsProps> = ({
                                     control={
                                         <Checkbox
                                             checked={selectedAnswers.includes(
-                                                option.id,
+                                                option.id
                                             )}
                                             onChange={e =>
                                                 handleOptionChange(
                                                     option.id,
-                                                    e.target.checked,
+                                                    e.target.checked
                                                 )
                                             }
                                             color="primary"
@@ -138,7 +138,7 @@ export const MCQOptions: React.FC<MCQOptionsProps> = ({
                                                 fontWeight="bold"
                                                 color={
                                                     selectedAnswers.includes(
-                                                        option.id,
+                                                        option.id
                                                     )
                                                         ? 'primary.contrastText'
                                                         : 'text.primary'
@@ -153,7 +153,7 @@ export const MCQOptions: React.FC<MCQOptionsProps> = ({
                                                     flex: 1,
                                                     '& *': {
                                                         color: selectedAnswers.includes(
-                                                            option.id,
+                                                            option.id
                                                         )
                                                             ? 'primary.contrastText !important'
                                                             : 'inherit !important',

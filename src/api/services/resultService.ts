@@ -13,7 +13,7 @@ export class ResultService {
     constructor(private authenticatedApiClient?: AuthenticatedApiClient) {}
 
     async getCollectionResultSummary(
-        collectionId: number,
+        collectionId: number
     ): Promise<CollectionResultSummary | null> {
         try {
             const client = this.authenticatedApiClient || apiClient;
@@ -24,7 +24,7 @@ export class ResultService {
         } catch (error) {
             console.error(
                 `Failed to fetch collection result summary for collection ${collectionId}:`,
-                error,
+                error
             );
             throw error;
         }
@@ -32,18 +32,18 @@ export class ResultService {
 
     async getCollectionReview(
         collectionId: number,
-        includeUnanswered: boolean = false,
+        includeUnanswered: boolean = false
     ): Promise<ReviewItem[] | null> {
         try {
             const client = this.authenticatedApiClient || apiClient;
             const response = await client.get<ApiResponse<ReviewItem[]>>(
-                `${this.baseEndpoint}/collections/${collectionId}/review?includeUnanswered=${includeUnanswered}`,
+                `${this.baseEndpoint}/collections/${collectionId}/review?includeUnanswered=${includeUnanswered}`
             );
             return response.data || null;
         } catch (error) {
             console.error(
                 `Failed to fetch collection review for collection ${collectionId}:`,
-                error,
+                error
             );
             throw error;
         }
@@ -55,7 +55,7 @@ export class ResultService {
             questionId: number;
             answer: string | string[];
             timeSpentSeconds: number;
-        }>,
+        }>
     ): Promise<SessionCompletionResponse> {
         try {
             // Convert answers to the format expected by the backend
@@ -89,6 +89,8 @@ export class ResultService {
 export const resultService = new ResultService();
 
 // Function to create an authenticated result service
-export function createAuthenticatedResultService(authenticatedApiClient: AuthenticatedApiClient) {
+export function createAuthenticatedResultService(
+    authenticatedApiClient: AuthenticatedApiClient
+) {
     return new ResultService(authenticatedApiClient);
 }

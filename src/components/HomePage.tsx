@@ -211,7 +211,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
                                         variant="determinate"
                                         value={stats.completionRate}
                                         color={getProgressColor(
-                                            stats.completionRate,
+                                            stats.completionRate
                                         )}
                                         sx={{
                                             height: 8,

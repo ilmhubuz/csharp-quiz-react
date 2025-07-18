@@ -12,7 +12,7 @@ class ApiClient {
     private async request<T>(
         endpoint: string,
         options: RequestInit = {},
-        token?: string,
+        token?: string
     ): Promise<T> {
         const url = `${this.baseURL}${endpoint}`;
         const defaultOptions: RequestInit = {
@@ -36,7 +36,7 @@ class ApiClient {
             const controller = new AbortController();
             const timeoutId = setTimeout(
                 () => controller.abort(),
-                this.timeout,
+                this.timeout
             );
 
             const response = await fetch(url, {
@@ -52,7 +52,7 @@ class ApiClient {
                     errorData.message ||
                         `HTTP ${response.status}: ${response.statusText}`,
                     response.status,
-                    errorData.errors,
+                    errorData.errors
                 );
             }
 
@@ -123,7 +123,7 @@ export class ApiError extends Error {
     constructor(
         message: string,
         public status: number,
-        public errors?: string[],
+        public errors?: string[]
     ) {
         super(message);
         this.name = 'ApiError';

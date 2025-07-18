@@ -24,7 +24,10 @@ import {
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { CodeEditor } from './CodeEditor';
 import { DiffEditor } from './DiffEditor';
-import { resultService, createAuthenticatedResultService } from '../api/services/resultService';
+import {
+    resultService,
+    createAuthenticatedResultService,
+} from '../api/services/resultService';
 import { sessionStorage } from '../services/sessionStorage';
 import { useKeycloak } from '@react-keycloak/web';
 import { useApi } from '../hooks/useApi';
@@ -68,11 +71,15 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
 
                 if (keycloak.authenticated) {
                     // Authenticated user - use collection review endpoint with authenticated client
-                    const authenticatedResultService = createAuthenticatedResultService(authenticatedApiClient);
-                    const reviewItems = await authenticatedResultService.getCollectionReview(
-                        collectionId,
-                        false
-                    );
+                    const authenticatedResultService =
+                        createAuthenticatedResultService(
+                            authenticatedApiClient
+                        );
+                    const reviewItems =
+                        await authenticatedResultService.getCollectionReview(
+                            collectionId,
+                            false
+                        );
                     if (reviewItems) {
                         const mappedResults: QuestionResult[] = questions.map(
                             (question, index) => {
@@ -292,10 +299,12 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
         return '';
     };
 
-
-
     // Helper function to render MCQ options for results
-    const renderMCQOptions = (question: any, selectedAnswers: string[] = [], correctAnswers: string[] = []) => {
+    const renderMCQOptions = (
+        question: any,
+        selectedAnswers: string[] = [],
+        correctAnswers: string[] = []
+    ) => {
         if (!question.options) return null;
 
         return (
@@ -303,24 +312,24 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                 {question.options.map((option: any) => {
                     const isSelected = selectedAnswers.includes(option.id);
                     const isCorrect = correctAnswers.includes(option.id);
-                    
+
                     return (
                         <Grid size={{ xs: 12, sm: 6 }} key={option.id}>
                             <Paper
                                 elevation={isSelected || isCorrect ? 3 : 1}
                                 sx={{
                                     p: 2,
-                                    backgroundColor: isCorrect 
-                                        ? 'success.dark' 
-                                        : isSelected 
-                                        ? 'error.dark' 
-                                        : 'background.paper',
+                                    backgroundColor: isCorrect
+                                        ? 'success.dark'
+                                        : isSelected
+                                          ? 'error.dark'
+                                          : 'background.paper',
                                     border: 2,
-                                    borderColor: isCorrect 
-                                        ? 'success.main' 
-                                        : isSelected 
-                                        ? 'error.main' 
-                                        : 'transparent',
+                                    borderColor: isCorrect
+                                        ? 'success.main'
+                                        : isSelected
+                                          ? 'error.main'
+                                          : 'transparent',
                                 }}
                             >
                                 <Box display="flex" alignItems="center">
@@ -328,7 +337,11 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                         variant="body1"
                                         component="span"
                                         fontWeight="bold"
-                                        color={isCorrect || isSelected ? 'white' : 'text.primary'}
+                                        color={
+                                            isCorrect || isSelected
+                                                ? 'white'
+                                                : 'text.primary'
+                                        }
                                         sx={{ mr: 1, lineHeight: 1.6 }}
                                     >
                                         {option.id}.
@@ -338,13 +351,16 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                         sx={{
                                             flex: 1,
                                             '& *': {
-                                                color: isCorrect || isSelected 
-                                                    ? 'white !important' 
-                                                    : 'inherit !important',
+                                                color:
+                                                    isCorrect || isSelected
+                                                        ? 'white !important'
+                                                        : 'inherit !important',
                                             },
                                         }}
                                     >
-                                        <MarkdownRenderer content={option.option} />
+                                        <MarkdownRenderer
+                                            content={option.option}
+                                        />
                                     </Box>
                                     {isSelected && (
                                         <Chip
@@ -352,14 +368,15 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                             size="small"
                                             sx={{
                                                 ml: 1,
-                                                backgroundColor: 'rgba(255,255,255,0.2)',
+                                                backgroundColor:
+                                                    'rgba(255,255,255,0.2)',
                                                 color: 'white',
-                                                fontWeight: 'bold'
+                                                fontWeight: 'bold',
                                             }}
                                         />
                                     )}
                                     {isCorrect && (
-                                        <CheckCircle 
+                                        <CheckCircle
                                             sx={{ ml: 1, color: 'white' }}
                                             fontSize="small"
                                         />
@@ -372,10 +389,6 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
             </Grid>
         );
     };
-
-
-
-
 
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -598,35 +611,55 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                 </Typography>
                                 {renderMCQOptions(
                                     result.question,
-                                    result.userAnswer as string[] || [],
-                                    result.correctAnswer?.options?.filter((opt: any) => opt.isCorrect).map((opt: any) => opt.id) || []
+                                    (result.userAnswer as string[]) || [],
+                                    result.correctAnswer?.options
+                                        ?.filter((opt: any) => opt.isCorrect)
+                                        .map((opt: any) => opt.id) || []
                                 )}
-                                <Box display="flex" alignItems="center" gap={1} mt={2}>
-                                    <Typography variant="body2" color="text.secondary">
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    gap={1}
+                                    mt={2}
+                                >
+                                    <Typography
+                                        variant="body2"
+                                        color="text.secondary"
+                                    >
                                         Sizning javobingiz:
                                     </Typography>
-                                    {result.userAnswer && Array.isArray(result.userAnswer) ? (
+                                    {result.userAnswer &&
+                                    Array.isArray(result.userAnswer) ? (
                                         <Box display="flex" gap={1}>
-                                            {result.userAnswer.map((answer, index) => (
-                                                <Chip
-                                                    key={index}
-                                                    label={answer}
-                                                    size="small"
-                                                    sx={{
-                                                        backgroundColor: 'text.primary',
-                                                        color: 'background.paper',
-                                                        fontWeight: 'bold'
-                                                    }}
-                                                />
-                                            ))}
+                                            {result.userAnswer.map(
+                                                (answer, index) => (
+                                                    <Chip
+                                                        key={index}
+                                                        label={answer}
+                                                        size="small"
+                                                        sx={{
+                                                            backgroundColor:
+                                                                'text.primary',
+                                                            color: 'background.paper',
+                                                            fontWeight: 'bold',
+                                                        }}
+                                                    />
+                                                )
+                                            )}
                                         </Box>
                                     ) : (
-                                        <Typography variant="body2" color="text.secondary">
+                                        <Typography
+                                            variant="body2"
+                                            color="text.secondary"
+                                        >
                                             Javob berilmagan
                                         </Typography>
                                     )}
                                     {result.isCorrect && (
-                                        <CheckCircle color="success" fontSize="small" />
+                                        <CheckCircle
+                                            color="success"
+                                            fontSize="small"
+                                        />
                                     )}
                                 </Box>
                             </Box>
@@ -644,11 +677,18 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                     Sizning Javobingiz:
                                 </Typography>
                                 <Box display="flex" alignItems="center" gap={1}>
-                                    <Typography variant="body2" sx={{ flex: 1 }}>
-                                        {result.userAnswer || 'Javob berilmagan'}
+                                    <Typography
+                                        variant="body2"
+                                        sx={{ flex: 1 }}
+                                    >
+                                        {result.userAnswer ||
+                                            'Javob berilmagan'}
                                     </Typography>
                                     {result.isCorrect && (
-                                        <CheckCircle color="success" fontSize="small" />
+                                        <CheckCircle
+                                            color="success"
+                                            fontSize="small"
+                                        />
                                     )}
                                 </Box>
                                 {!result.isCorrect && result.correctAnswer && (
@@ -658,7 +698,10 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                             color="success.main"
                                             fontWeight="bold"
                                         >
-                                            To'g'ri Javob: {result.correctAnswer.booleanAnswer ? 'true' : 'false'}
+                                            To'g'ri Javob:{' '}
+                                            {result.correctAnswer.booleanAnswer
+                                                ? 'true'
+                                                : 'false'}
                                         </Typography>
                                     </Box>
                                 )}
@@ -666,14 +709,21 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                         )}
 
                         {/* Code Questions (Fill, Error Spotting) */}
-                        {(result.question.type === 'fill' || result.question.type === 'error_spotting') && (
+                        {(result.question.type === 'fill' ||
+                            result.question.type === 'error_spotting') && (
                             <Box sx={{ mb: 2 }}>
                                 {result.userAnswer ? (
                                     <Box sx={{ mb: 2 }}>
-                                        {isDiffQuestion(result.question.type) ? (
+                                        {isDiffQuestion(
+                                            result.question.type
+                                        ) ? (
                                             <DiffEditor
-                                                originalCode={getOriginalCode(result.question)}
-                                                modifiedCode={result.userAnswer as string}
+                                                originalCode={getOriginalCode(
+                                                    result.question
+                                                )}
+                                                modifiedCode={
+                                                    result.userAnswer as string
+                                                }
                                                 language="csharp"
                                                 title="Sizning Javobingiz"
                                             />
@@ -688,7 +738,9 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                                 }}
                                             >
                                                 <CodeEditor
-                                                    code={result.userAnswer as string}
+                                                    code={
+                                                        result.userAnswer as string
+                                                    }
                                                     editable={false}
                                                     language="csharp"
                                                 />
@@ -696,11 +748,15 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                         )}
                                     </Box>
                                 ) : (
-                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                                    <Typography
+                                        variant="body2"
+                                        color="text.secondary"
+                                        sx={{ mb: 2 }}
+                                    >
                                         Javob berilmagan
                                     </Typography>
                                 )}
-                                
+
                                 {!result.isCorrect && result.correctAnswer && (
                                     <Paper
                                         elevation={2}
@@ -727,16 +783,26 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                             </Typography>
                                         </Box>
                                         <CodeEditor
-                                            code={getCorrectAnswerCode(result.correctAnswer)}
+                                            code={getCorrectAnswerCode(
+                                                result.correctAnswer
+                                            )}
                                             editable={false}
                                             language="csharp"
                                         />
                                     </Paper>
                                 )}
-                                
-                                <Box display="flex" alignItems="center" gap={1} mt={1}>
+
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    gap={1}
+                                    mt={1}
+                                >
                                     {result.isCorrect && (
-                                        <CheckCircle color="success" fontSize="small" />
+                                        <CheckCircle
+                                            color="success"
+                                            fontSize="small"
+                                        />
                                     )}
                                 </Box>
                             </Box>
@@ -772,50 +838,69 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                                 </Typography>
                                             </Box>
                                             <CodeEditor
-                                                code={result.userAnswer as string || 'Javob berilmagan'}
+                                                code={
+                                                    (result.userAnswer as string) ||
+                                                    'Javob berilmagan'
+                                                }
                                                 editable={false}
                                                 language="text"
                                             />
                                         </Paper>
                                     </Grid>
-                                    {!result.isCorrect && result.correctAnswer && (
-                                        <Grid size={{ xs: 12, md: 6 }}>
-                                            <Paper
-                                                elevation={2}
-                                                sx={{
-                                                    p: 0,
-                                                    backgroundColor: 'grey.900',
-                                                    border: 1,
-                                                    borderColor: 'success.main',
-                                                }}
-                                            >
-                                                <Box
+                                    {!result.isCorrect &&
+                                        result.correctAnswer && (
+                                            <Grid size={{ xs: 12, md: 6 }}>
+                                                <Paper
+                                                    elevation={2}
                                                     sx={{
-                                                        p: 2,
-                                                        borderBottom: 1,
-                                                        borderColor: 'divider',
+                                                        p: 0,
+                                                        backgroundColor:
+                                                            'grey.900',
+                                                        border: 1,
+                                                        borderColor:
+                                                            'success.main',
                                                     }}
                                                 >
-                                                    <Typography
-                                                        variant="subtitle2"
-                                                        color="success.main"
-                                                        fontWeight="bold"
+                                                    <Box
+                                                        sx={{
+                                                            p: 2,
+                                                            borderBottom: 1,
+                                                            borderColor:
+                                                                'divider',
+                                                        }}
                                                     >
-                                                        To'g'ri Javob
-                                                    </Typography>
-                                                </Box>
-                                                <CodeEditor
-                                                    code={result.correctAnswer.textAnswer || ''}
-                                                    editable={false}
-                                                    language="text"
-                                                />
-                                            </Paper>
-                                        </Grid>
-                                    )}
+                                                        <Typography
+                                                            variant="subtitle2"
+                                                            color="success.main"
+                                                            fontWeight="bold"
+                                                        >
+                                                            To'g'ri Javob
+                                                        </Typography>
+                                                    </Box>
+                                                    <CodeEditor
+                                                        code={
+                                                            result.correctAnswer
+                                                                .textAnswer ||
+                                                            ''
+                                                        }
+                                                        editable={false}
+                                                        language="text"
+                                                    />
+                                                </Paper>
+                                            </Grid>
+                                        )}
                                 </Grid>
-                                <Box display="flex" alignItems="center" gap={1} mt={1}>
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    gap={1}
+                                    mt={1}
+                                >
                                     {result.isCorrect && (
-                                        <CheckCircle color="success" fontSize="small" />
+                                        <CheckCircle
+                                            color="success"
+                                            fontSize="small"
+                                        />
                                     )}
                                 </Box>
                             </Box>
@@ -840,7 +925,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                             backgroundColor: 'grey.900',
                                             border: 1,
                                             borderColor: 'divider',
-                                            mb: 2
+                                            mb: 2,
                                         }}
                                     >
                                         <CodeEditor
@@ -850,11 +935,15 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                         />
                                     </Paper>
                                 ) : (
-                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                                    <Typography
+                                        variant="body2"
+                                        color="text.secondary"
+                                        sx={{ mb: 2 }}
+                                    >
                                         Javob berilmagan
                                     </Typography>
                                 )}
-                                
+
                                 {!result.isCorrect && result.correctAnswer && (
                                     <Paper
                                         elevation={2}
@@ -881,16 +970,26 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                                             </Typography>
                                         </Box>
                                         <CodeEditor
-                                            code={getCorrectAnswerCode(result.correctAnswer)}
+                                            code={getCorrectAnswerCode(
+                                                result.correctAnswer
+                                            )}
                                             editable={false}
                                             language="csharp"
                                         />
                                     </Paper>
                                 )}
-                                
-                                <Box display="flex" alignItems="center" gap={1} mt={1}>
+
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    gap={1}
+                                    mt={1}
+                                >
                                     {result.isCorrect && (
-                                        <CheckCircle color="success" fontSize="small" />
+                                        <CheckCircle
+                                            color="success"
+                                            fontSize="small"
+                                        />
                                     )}
                                 </Box>
                             </Box>

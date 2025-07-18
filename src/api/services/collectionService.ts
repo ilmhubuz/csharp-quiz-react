@@ -34,7 +34,7 @@ export class CollectionService {
     }
 
     async getCollectionByCode(
-        code: string,
+        code: string
     ): Promise<CollectionResponse | null> {
         try {
             const client = this.authenticatedApiClient || apiClient;

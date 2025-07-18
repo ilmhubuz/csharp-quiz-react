@@ -22,7 +22,7 @@ export const DiffEditor: React.FC<DiffEditorProps> = ({
     // Calculate height based on lines of code
     const lineCount = Math.max(
         originalCode.split('\n').length,
-        modifiedCode.split('\n').length,
+        modifiedCode.split('\n').length
     );
     const height = Math.max(minLines, Math.min(lineCount, maxLines)) * 24 + 20; // 24px per line + padding
 

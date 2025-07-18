@@ -24,7 +24,7 @@ class AnswerStorage {
     saveAnswer(
         categoryId: string,
         questionId: number,
-        answer: string[] | string,
+        answer: string[] | string
     ): void {
         try {
             const currentAnswers = this.loadAnswers();
@@ -34,7 +34,7 @@ class AnswerStorage {
             currentAnswers[categoryId][questionId] = answer;
             localStorage.setItem(
                 ANSWER_STORAGE_KEY,
-                JSON.stringify(currentAnswers),
+                JSON.stringify(currentAnswers)
             );
         } catch (error) {
             console.error('Error saving answer to localStorage:', error);
@@ -44,7 +44,7 @@ class AnswerStorage {
     // Get answer for a specific question in a category
     getAnswer(
         categoryId: string,
-        questionId: number,
+        questionId: number
     ): string[] | string | undefined {
         const answers = this.loadAnswers();
         return answers[categoryId]?.[questionId];
@@ -67,13 +67,13 @@ class AnswerStorage {
                 delete currentAnswers[categoryId][questionId];
                 localStorage.setItem(
                     ANSWER_STORAGE_KEY,
-                    JSON.stringify(currentAnswers),
+                    JSON.stringify(currentAnswers)
                 );
             }
         } catch (error) {
             console.error(
                 'Error clearing specific answer from localStorage:',
-                error,
+                error
             );
         }
     }
@@ -85,12 +85,12 @@ class AnswerStorage {
             delete currentAnswers[categoryId];
             localStorage.setItem(
                 ANSWER_STORAGE_KEY,
-                JSON.stringify(currentAnswers),
+                JSON.stringify(currentAnswers)
             );
         } catch (error) {
             console.error(
                 'Error clearing category answers from localStorage:',
-                error,
+                error
             );
         }
     }
@@ -106,7 +106,7 @@ class AnswerStorage {
     // Get answers for a list of questions in a category (for compatibility)
     getAnswersForQuestions(
         categoryId: string,
-        questionIds: number[],
+        questionIds: number[]
     ): { [questionId: number]: string[] | string } {
         const categoryAnswers = this.getCategoryAnswers(categoryId);
         const filteredAnswers: { [questionId: number]: string[] | string } = {};
@@ -186,123 +186,4 @@ export function validateAnswer(
         default:
             return false;
     }
-}
-
-export function calculateOverallStats(questions: any[]): any {
-    const savedAnswers = answerStorage.loadAnswers();
-
-    const stats = {
-        totalQuestions: questions.length,
-        answeredQuestions: 0,
-        correctAnswers: 0,
-        overallSuccessRate: 0,
-    };
-
-    for (const question of questions) {
-        const userAnswer = savedAnswers[question.id];
-        if (userAnswer !== undefined) {
-            stats.answeredQuestions++;
-            if (validateAnswer(question.id, userAnswer, questions)) {
-                stats.correctAnswers++;
-            }
-        }
-    }
-
-    stats.overallSuccessRate =
-        stats.answeredQuestions > 0
-            ? (stats.correctAnswers / stats.answeredQuestions) * 100
-            : 0;
-
-    return stats;
-}
-
-export function calculateCategoryStats(questions: any[]): any[] {
-    const savedAnswers = answerStorage.loadAnswers();
-    const categoryMap: Record<string, any> = {};
-
-    // Initialize categories
-    questions.forEach(question => {
-        const category = question.metadata.category;
-        if (!categoryMap[category]) {
-            categoryMap[category] = {
-                category,
-                totalQuestions: 0,
-                answeredQuestions: 0,
-                correctAnswers: 0,
-                successRate: 0,
-            };
-        }
-        categoryMap[category].totalQuestions++;
-    });
-
-    // Calculate progress for each category
-    questions.forEach(question => {
-        const category = question.metadata.category;
-        const categoryAnswers = savedAnswers[category] || {};
-        const userAnswer = categoryAnswers[question.id];
-
-        if (userAnswer !== undefined) {
-            categoryMap[category].answeredQuestions++;
-            if (validateAnswer(question.id, userAnswer, questions)) {
-                categoryMap[category].correctAnswers++;
-            }
-        }
-    });
-
-    // Calculate success rates
-    Object.values(categoryMap).forEach((categoryStats: any) => {
-        categoryStats.successRate =
-            categoryStats.answeredQuestions > 0
-                ? (categoryStats.correctAnswers /
-                      categoryStats.answeredQuestions) *
-                  100
-                : 0;
-    });
-
-    return Object.values(categoryMap);
-}
-
-export function calculateTypeStats(questions: any[]): any[] {
-    const savedAnswers = answerStorage.loadAnswers();
-    const typeMap: Record<string, any> = {};
-
-    // Initialize types
-    questions.forEach(question => {
-        const questionType = question.type;
-        if (!typeMap[questionType]) {
-            typeMap[questionType] = {
-                questionType,
-                totalQuestions: 0,
-                answeredQuestions: 0,
-                correctAnswers: 0,
-                successRate: 0,
-            };
-        }
-        typeMap[questionType].totalQuestions++;
-    });
-
-    // Calculate progress for each type
-    questions.forEach(question => {
-        const questionType = question.type;
-        const category = question.metadata.category;
-        const categoryAnswers = savedAnswers[category] || {};
-        const userAnswer = categoryAnswers[question.id];
-
-        if (userAnswer !== undefined) {
-            typeMap[questionType].answeredQuestions++;
-            if (validateAnswer(question.id, userAnswer, questions)) {
-                typeMap[questionType].correctAnswers++;
-            }
-        }
-    });
-
-    // Calculate success rates
-    Object.values(typeMap).forEach((typeStats: any) => {
-        typeStats.successRate =
-            typeStats.answeredQuestions > 0
-                ? (typeStats.correctAnswers / typeStats.answeredQuestions) * 100
-                : 0;
-    });
-
-    return Object.values(typeMap);
 }

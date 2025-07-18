@@ -28,7 +28,7 @@ export const useAnswerSubmission = ({
     // Create authenticated answer service (memoized to prevent infinite loops)
     const answerService = useMemo(
         () => createAuthenticatedAnswerService(authenticatedApiClient),
-        [authenticatedApiClient],
+        [authenticatedApiClient]
     );
 
     // Reset timer and flags when question changes
@@ -44,7 +44,7 @@ export const useAnswerSubmission = ({
     useEffect(() => {
         const interval = setInterval(() => {
             setTimeSpent(
-                Math.floor((Date.now() - startTimeRef.current) / 1000),
+                Math.floor((Date.now() - startTimeRef.current) / 1000)
             );
         }, 1000);
 
@@ -54,23 +54,37 @@ export const useAnswerSubmission = ({
     // Fetch previous answer when question loads (only once per question)
     useEffect(() => {
         const fetchPreviousAnswer = async () => {
-            if (!keycloak.authenticated || !questionId || questionId === 0 || isLatestAnswerFetched) return;
+            if (
+                !keycloak.authenticated ||
+                !questionId ||
+                questionId === 0 ||
+                isLatestAnswerFetched
+            )
+                return;
 
             setIsLatestAnswerFetched(true);
-            
+
             try {
-                const latestAnswer = await answerService.getLatestAnswer(questionId);
+                const latestAnswer =
+                    await answerService.getLatestAnswer(questionId);
                 setPreviousAnswer(latestAnswer);
-                
+
                 if (latestAnswer && onAnswerLoaded) {
                     // Check if the answer is a JSON string (from MCQ) and parse it back to array
                     let parsedAnswer = latestAnswer.answer;
-                    if (typeof parsedAnswer === 'string' && parsedAnswer.startsWith('[') && parsedAnswer.endsWith(']')) {
+                    if (
+                        typeof parsedAnswer === 'string' &&
+                        parsedAnswer.startsWith('[') &&
+                        parsedAnswer.endsWith(']')
+                    ) {
                         try {
                             parsedAnswer = JSON.parse(parsedAnswer);
                         } catch (e) {
                             // If parsing fails, keep the original string
-                            console.warn('Failed to parse previous answer as JSON:', e);
+                            console.warn(
+                                'Failed to parse previous answer as JSON:',
+                                e
+                            );
                         }
                     }
                     onAnswerLoaded(parsedAnswer);
@@ -78,7 +92,9 @@ export const useAnswerSubmission = ({
             } catch (error: any) {
                 // If 404 is returned, it means user hasn't answered this question before
                 if (error.status === 404) {
-                    console.log(`No previous answer found for question ${questionId}`);
+                    console.log(
+                        `No previous answer found for question ${questionId}`
+                    );
                     setPreviousAnswer(null);
                 } else {
                     console.error('Failed to fetch previous answer:', error);
@@ -87,7 +103,13 @@ export const useAnswerSubmission = ({
         };
 
         fetchPreviousAnswer();
-    }, [questionId, keycloak.authenticated, onAnswerLoaded, answerService, isLatestAnswerFetched]);
+    }, [
+        questionId,
+        keycloak.authenticated,
+        onAnswerLoaded,
+        answerService,
+        isLatestAnswerFetched,
+    ]);
 
     // Helper function to check if answer has changed from previous
     const hasAnswerChanged = useCallback(
@@ -95,9 +117,13 @@ export const useAnswerSubmission = ({
             if (!previousAnswer) return true; // No previous answer, so it's a new answer
 
             let prevAnswer = previousAnswer.answer;
-            
+
             // Parse JSON string back to array if needed for comparison
-            if (typeof prevAnswer === 'string' && prevAnswer.startsWith('[') && prevAnswer.endsWith(']')) {
+            if (
+                typeof prevAnswer === 'string' &&
+                prevAnswer.startsWith('[') &&
+                prevAnswer.endsWith(']')
+            ) {
                 try {
                     prevAnswer = JSON.parse(prevAnswer);
                 } catch (e) {
@@ -123,7 +149,7 @@ export const useAnswerSubmission = ({
                 return true;
             }
         },
-        [previousAnswer],
+        [previousAnswer]
     );
 
     const submitAnswer = useCallback(
@@ -144,7 +170,7 @@ export const useAnswerSubmission = ({
             setIsSubmitting(true);
             try {
                 // Convert MCQ array answers to JSON string for submission
-                const submissionAnswer = Array.isArray(answer) 
+                const submissionAnswer = Array.isArray(answer)
                     ? JSON.stringify(answer)
                     : answer;
 
@@ -180,7 +206,7 @@ export const useAnswerSubmission = ({
             timeSpent,
             lastSubmittedAnswer,
             answerService,
-        ],
+        ]
     );
 
     return {

@@ -26,11 +26,11 @@ export function useApiState<T>() {
                 error instanceof ApiError
                     ? error
                     : new ApiError(
-                        error instanceof Error
-                            ? error.message
-                            : 'Unknown error',
-                        0
-                    );
+                          error instanceof Error
+                              ? error.message
+                              : 'Unknown error',
+                          0
+                      );
             setState({ data: null, loading: false, error: apiError });
             throw apiError;
         }

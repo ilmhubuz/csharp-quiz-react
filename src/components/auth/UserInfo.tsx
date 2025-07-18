@@ -11,12 +11,7 @@ import {
     Chip,
     Box,
 } from '@mui/material';
-import {
-    Person,
-    Email,
-    School,
-    AccountCircle,
-} from '@mui/icons-material';
+import { Person, Email, School, AccountCircle } from '@mui/icons-material';
 import { useKeycloak } from '@react-keycloak/web';
 import { useState } from 'react';
 import {
