@@ -14,8 +14,6 @@ import {
 import {
     Person,
     Email,
-    Phone,
-    Security,
     School,
     AccountCircle,
 } from '@mui/icons-material';
@@ -25,8 +23,6 @@ import {
     getUserDisplayName,
     getUserAvatar,
     getUserEmail,
-    getUserPhones,
-    getUserRoles,
     getUserMemberships,
 } from '../../lib/auth-utils';
 
@@ -37,8 +33,6 @@ export function UserInfo() {
     const displayName = getUserDisplayName(keycloak);
     const avatar = getUserAvatar(keycloak);
     const email = getUserEmail(keycloak);
-    const phones = getUserPhones(keycloak);
-    const roles = getUserRoles(keycloak);
     const memberships = getUserMemberships(keycloak);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -123,18 +117,6 @@ export function UserInfo() {
                     />
                 </MenuItem>
 
-                {phones.length > 0 && (
-                    <MenuItem>
-                        <ListItemIcon>
-                            <Phone fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary="Phone"
-                            secondary={phones.join(', ')}
-                        />
-                    </MenuItem>
-                )}
-
                 <Divider />
 
                 {memberships.length > 0 && (
@@ -156,30 +138,6 @@ export function UserInfo() {
                                                     ? 'primary'
                                                     : 'default'
                                             }
-                                            sx={{ mr: 0.5, mb: 0.5 }}
-                                        />
-                                    ))}
-                                </Box>
-                            }
-                        />
-                    </MenuItem>
-                )}
-
-                {roles.length > 0 && (
-                    <MenuItem>
-                        <ListItemIcon>
-                            <Security fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary="Roles"
-                            secondary={
-                                <Box sx={{ mt: 0.5 }}>
-                                    {roles.map(role => (
-                                        <Chip
-                                            key={role}
-                                            label={role}
-                                            size="small"
-                                            variant="outlined"
                                             sx={{ mr: 0.5, mb: 0.5 }}
                                         />
                                     ))}
