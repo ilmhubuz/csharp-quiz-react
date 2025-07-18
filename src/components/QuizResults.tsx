@@ -24,9 +24,10 @@ import {
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { CodeEditor } from './CodeEditor';
 import { DiffEditor } from './DiffEditor';
-import { resultService } from '../api/services/resultService';
+import { resultService, createAuthenticatedResultService } from '../api/services/resultService';
 import { sessionStorage } from '../services/sessionStorage';
 import { useKeycloak } from '@react-keycloak/web';
+import { useApi } from '../hooks/useApi';
 import type { Question } from '../types';
 
 interface QuizResultsProps {
@@ -54,6 +55,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
     onGoHome,
 }) => {
     const { keycloak } = useKeycloak();
+    const authenticatedApiClient = useApi();
     const [results, setResults] = useState<QuestionResult[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -65,8 +67,9 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
                 setError(null);
 
                 if (keycloak.authenticated) {
-                    // Authenticated user - use collection review endpoint
-                    const reviewItems = await resultService.getCollectionReview(
+                    // Authenticated user - use collection review endpoint with authenticated client
+                    const authenticatedResultService = createAuthenticatedResultService(authenticatedApiClient);
+                    const reviewItems = await authenticatedResultService.getCollectionReview(
                         collectionId,
                         false
                     );

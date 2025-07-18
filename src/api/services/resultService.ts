@@ -5,15 +5,19 @@ import type {
     ReviewItem,
     ApiResponse,
 } from '../../types/api';
+import type { AuthenticatedApiClient } from '../../hooks/useApi';
 
 export class ResultService {
     private baseEndpoint = '/api/csharp/results';
+
+    constructor(private authenticatedApiClient?: AuthenticatedApiClient) {}
 
     async getCollectionResultSummary(
         collectionId: number,
     ): Promise<CollectionResultSummary | null> {
         try {
-            const response = await apiClient.get<
+            const client = this.authenticatedApiClient || apiClient;
+            const response = await client.get<
                 ApiResponse<CollectionResultSummary>
             >(`${this.baseEndpoint}/collections/${collectionId}`);
             return response.data || null;
@@ -31,7 +35,8 @@ export class ResultService {
         includeUnanswered: boolean = false,
     ): Promise<ReviewItem[] | null> {
         try {
-            const response = await apiClient.get<ApiResponse<ReviewItem[]>>(
+            const client = this.authenticatedApiClient || apiClient;
+            const response = await client.get<ApiResponse<ReviewItem[]>>(
                 `${this.baseEndpoint}/collections/${collectionId}/review?includeUnanswered=${includeUnanswered}`,
             );
             return response.data || null;
@@ -82,3 +87,8 @@ export class ResultService {
 }
 
 export const resultService = new ResultService();
+
+// Function to create an authenticated result service
+export function createAuthenticatedResultService(authenticatedApiClient: AuthenticatedApiClient) {
+    return new ResultService(authenticatedApiClient);
+}
