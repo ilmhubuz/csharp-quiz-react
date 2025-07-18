@@ -76,10 +76,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
         <Box>
           <Typography variant="h4" component="h1" gutterBottom>
-            C# dasturlash tilida bilimingizni mustahkamlang
+            C# bilimingizni sinang!
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            C# dasturlash tilini o'rganish va bilimingizni sinash uchun turli xil savollar bilan mashq qiling. Har bir kategoriyada o'z darajangizni aniqlang va ko'nikmalaringizni rivojlantiring.
+            C# bilimingizni savollar yechib mustahkamlang va darajangizni oshiring!
           </Typography>
         </Box>
         <Tooltip title="Refresh Collections">
@@ -187,11 +187,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
                     </Box>
                   </Box>
                 )}
-
-                {/* Last Updated */}
-                <Typography variant="caption" color="text.secondary">
-                  Updated: {new Date(collection.updatedAt).toLocaleDateString()}
-                </Typography>
               </CardContent>
             </Card>
           );
