@@ -161,9 +161,38 @@ export interface SessionCompletionResponse {
 }
 
 export interface CompleteSessionRequest {
-    answers: Array<{
-        questionId: number;
-        answer: string;
-        timeSpentSeconds: number;
-    }>;
+    collectionId: number;
+    answers: Record<number, string | string[]>;
 }
+
+// User Progress Management Types
+export interface UserProgressGroupedResponse {
+    userId: string;
+    username?: string;
+    name?: string;
+    telegramUsername?: string;
+    firstActivityAt: string;
+    lastActivityAt: string;
+    totalCollections: number;
+    totalQuestionsAnswered: number;
+    totalCorrectAnswers: number;
+    overallSuccessRate: number;
+    collectionProgresses: CollectionProgressResponse[];
+}
+
+export interface CollectionProgressResponse {
+    collectionId: number;
+    collectionCode: string;
+    collectionTitle: string;
+    collectionDescription: string;
+    totalQuestions: number;
+    answeredQuestions: number;
+    correctAnswers: number;
+    successRate: number;
+    completionRate: number;
+    lastAnsweredAt: string;
+    createdAt: string;
+    updatedAt?: string;
+}
+
+export interface UserProgressManagementResponse extends PaginatedApiResponse<UserProgressGroupedResponse> {}

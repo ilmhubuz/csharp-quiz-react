@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
     Container,
     Typography,
@@ -6,12 +6,9 @@ import {
     CardContent,
     Box,
     LinearProgress,
-    IconButton,
-    Tooltip,
     Alert,
     CircularProgress,
 } from '@mui/material';
-import { Refresh } from '@mui/icons-material';
 import {
     collectionService,
     createAuthenticatedCollectionService,
@@ -34,9 +31,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
         loading,
         error,
         execute,
-        reset,
     } = useApiState<CollectionResponse[]>();
-    const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
         if (keycloak.authenticated) {
@@ -46,12 +41,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
         } else {
             execute(() => collectionService.getCollections());
         }
-    }, [execute, refreshKey, keycloak.authenticated, authenticatedApiClient]);
-
-    const handleRefresh = () => {
-        reset();
-        setRefreshKey(prev => prev + 1);
-    };
+    }, [execute, keycloak.authenticated, authenticatedApiClient]);
 
     const getProgressColor = (percentage: number) => {
         if (percentage >= 80) return 'success';
@@ -80,11 +70,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
                 <Alert severity="error" sx={{ mb: 2 }}>
                     Failed to load collections: {error.message}
                 </Alert>
-                <Box display="flex" justifyContent="center">
-                    <IconButton onClick={handleRefresh} color="primary">
-                        <Refresh />
-                    </IconButton>
-                </Box>
             </Container>
         );
     }
@@ -95,26 +80,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
             <AuthHeader />
 
             {/* Header */}
-            <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                mb={4}
-            >
-                <Box>
-                    <Typography variant="h4" component="h1" gutterBottom>
-                        C# bilimingizni sinang!
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                        C# bilimingizni savollar yechib mustahkamlang va
-                        darajangizni oshiring!
-                    </Typography>
-                </Box>
-                <Tooltip title="Refresh Collections">
-                    <IconButton onClick={handleRefresh} color="primary">
-                        <Refresh />
-                    </IconButton>
-                </Tooltip>
+            <Box mb={4}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                    C# bilimingizni sinang!
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                    C# bilimingizni savollar yechib mustahkamlang va
+                    darajangizni oshiring!
+                </Typography>
             </Box>
 
             {/* Collections Grid */}
