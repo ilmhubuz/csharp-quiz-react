@@ -23,11 +23,16 @@ import {
     Refresh as RefreshIcon,
 } from '@mui/icons-material';
 import { useKeycloak } from '@react-keycloak/web';
-import { HomePage } from './HomePage';
+import { useParams, useNavigate } from 'react-router-dom';
+import { CollectionsPage } from './CollectionsPage';
 import { QuestionCard } from './QuestionCard';
 import { QuizResults } from './QuizResults';
 import { answerStorage } from '../services/answerStorage';
 import { sessionStorage } from '../services/sessionStorage';
+import { 
+    collectionService, 
+    createAuthenticatedCollectionService 
+} from '../api/services/collectionService';
 import {
     questionService,
     createAuthenticatedQuestionService,
@@ -51,6 +56,8 @@ import type { QuestionResponse } from '../types/api';
 export const EnhancedQuizApp: React.FC = () => {
     const { keycloak } = useKeycloak();
     const authenticatedApiClient = useApi();
+    const { slug } = useParams<{ slug: string }>();
+    const navigate = useNavigate();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [viewMode, setViewMode] = useState<'home' | 'quiz' | 'results'>(
@@ -107,6 +114,40 @@ export const EnhancedQuizApp: React.FC = () => {
             }
         }
     }, [currentQuestion?.id, previousAnswer, answers]);
+
+    // Handle slug parameter from URL to automatically start quiz
+    useEffect(() => {
+        if (slug && viewMode === 'home') {
+            // Find collection by slug and start quiz
+            const loadCollectionBySlug = async () => {
+                try {
+                    let collections: any[] = [];
+                    
+                    if (keycloak.authenticated) {
+                        const authenticatedCollectionService =
+                            createAuthenticatedCollectionService(authenticatedApiClient);
+                        const response = await authenticatedCollectionService.getCollections();
+                        collections = response || [];
+                    } else {
+                        collections = await collectionService.getCollections();
+                    }
+
+                    const collection = collections.find((c: any) => c.code === slug);
+                    if (collection) {
+                        handleSelectCollection(collection.id);
+                    } else {
+                        // Collection not found, redirect to collections page
+                        navigate('/collections');
+                    }
+                } catch (error) {
+                    console.error('Failed to load collection by slug:', error);
+                    navigate('/collections');
+                }
+            };
+
+            loadCollectionBySlug();
+        }
+    }, [slug, viewMode, keycloak.authenticated, authenticatedApiClient, navigate]);
 
     // Enhanced answer checking logic
     const isAnswered =
@@ -172,6 +213,9 @@ export const EnhancedQuizApp: React.FC = () => {
         setSelectedCollectionId(null);
         setQuestionsError(null);
         setErrorType(null);
+
+        // Navigate back to collections page
+        navigate('/collections');
 
         // Clear session for unauthenticated users
         if (!keycloak.authenticated) {
@@ -417,7 +461,7 @@ export const EnhancedQuizApp: React.FC = () => {
 
     // Show home page
     if (viewMode === 'home') {
-        return <HomePage onSelectCollection={handleSelectCollection} />;
+        return <CollectionsPage />;
     }
 
     // Show quiz page

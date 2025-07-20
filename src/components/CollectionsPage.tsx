@@ -16,16 +16,14 @@ import {
 import { useApi } from '../hooks/useApi';
 import { useApiState } from '../hooks/useApiState';
 import { useKeycloak } from '@react-keycloak/web';
+import { useNavigate } from 'react-router-dom';
 import { AuthHeader } from './auth/AuthHeader';
 import type { CollectionResponse } from '../types/api';
 
-interface HomePageProps {
-    onSelectCollection: (collectionId: number) => void;
-}
-
-export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
+export const CollectionsPage: React.FC = () => {
     const { keycloak } = useKeycloak();
     const authenticatedApiClient = useApi();
+    const navigate = useNavigate();
     const {
         data: collections,
         loading,
@@ -116,7 +114,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectCollection }) => {
                     return (
                         <Card
                             key={collection.id}
-                            onClick={() => onSelectCollection(collection.id)}
+                            onClick={() => navigate(`/quiz/${collection.code}`)}
                             sx={{
                                 cursor: 'pointer',
                                 height: '100%',

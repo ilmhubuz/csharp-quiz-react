@@ -1,5 +1,5 @@
 import { Box, Button } from '@mui/material';
-import { AdminPanelSettings as AdminIcon } from '@mui/icons-material';
+import { AdminPanelSettings as AdminIcon, Home as HomeIcon, Quiz as QuizIcon } from '@mui/icons-material';
 import { useKeycloak } from '@react-keycloak/web';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { UserInfo } from './UserInfo';
@@ -13,6 +13,8 @@ export function AuthHeader() {
     const location = useLocation();
     const isAdminUser = keycloak.authenticated && hasRole(keycloak, 'quiz-admin:read');
     const isOnManagementPage = location.pathname.startsWith('/management');
+    const isOnLandingPage = location.pathname === '/';
+    const isOnCollectionsPage = location.pathname === '/collections';
 
     if (!initialized) {
         return null;
@@ -23,6 +25,17 @@ export function AuthHeader() {
             navigate('/');
         } else {
             navigate('/management/progress');
+        }
+    };
+
+    const handleNavigationClick = () => {
+        if (isOnLandingPage) {
+            navigate('/collections');
+        } else if (isOnCollectionsPage) {
+            navigate('/');
+        } else {
+            // From quiz or management pages, go to collections
+            navigate('/collections');
         }
     };
 
@@ -38,6 +51,18 @@ export function AuthHeader() {
                 zIndex: 1000,
             }}
         >
+            {/* Navigation Button - only show on non-landing pages */}
+            {!isOnLandingPage && (
+                <Button
+                    variant="outlined"
+                    startIcon={isOnCollectionsPage ? <HomeIcon /> : <QuizIcon />}
+                    onClick={handleNavigationClick}
+                    size="small"
+                >
+                    {isOnCollectionsPage ? 'Home' : 'Collections'}
+                </Button>
+            )}
+
             {keycloak.authenticated ? (
                 <>
                     {isAdminUser && (
@@ -47,7 +72,7 @@ export function AuthHeader() {
                             onClick={handleManagementClick}
                             size="small"
                         >
-                            {isOnManagementPage ? 'Back to Quiz' : 'Management'}
+                            {isOnManagementPage ? 'Back to Home' : 'Management'}
                         </Button>
                     )}
                     <UserInfo />

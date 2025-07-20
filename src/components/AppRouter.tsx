@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useKeycloak } from '@react-keycloak/web';
 import { EnhancedQuizApp } from './EnhancedQuizApp';
 import { ManagementProgressPage } from './ManagementProgressPage';
+import LandingPage from './LandingPage';
+import { CollectionsPage } from './CollectionsPage';
 import { hasRole } from '../lib/auth-utils';
 
 export const AppRouter: React.FC = () => {
@@ -11,8 +13,14 @@ export const AppRouter: React.FC = () => {
     return (
         <Router>
             <Routes>
-                {/* Main quiz application */}
-                <Route path="/" element={<EnhancedQuizApp />} />
+                {/* Landing page */}
+                <Route path="/" element={<LandingPage />} />
+                
+                {/* Collections page */}
+                <Route path="/collections" element={<CollectionsPage />} />
+                
+                {/* Quiz application */}
+                <Route path="/quiz/:slug" element={<EnhancedQuizApp />} />
                 
                 {/* Management routes - protected by admin role */}
                 <Route 

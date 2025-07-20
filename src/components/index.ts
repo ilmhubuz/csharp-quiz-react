@@ -1,5 +1,5 @@
 export { EnhancedQuizApp } from './EnhancedQuizApp';
-export { HomePage } from './HomePage';
+export { CollectionsPage } from './CollectionsPage';
 export { QuestionCard } from './QuestionCard';
 export { QuizResults } from './QuizResults';
 export { MCQOptions } from './MCQOptions';
@@ -8,4 +8,5 @@ export { CodeEditor } from './CodeEditor';
 export { DiffEditor } from './DiffEditor';
 export { MarkdownRenderer } from './MarkdownRenderer';
 export { ManagementProgressPage } from './ManagementProgressPage';
+export { default as LandingPage } from './LandingPage';
 export { AppRouter } from './AppRouter';
