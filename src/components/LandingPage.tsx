@@ -563,7 +563,7 @@ const LandingPage: React.FC = () => {
                                     Oylik
                                 </Typography>
                                 <Typography variant="h3" color="primary" gutterBottom>
-                                    1K
+                                    100K
                                     <Typography component="span" variant="h6" color="text.secondary">
                                         {' '}so'm
                                     </Typography>
